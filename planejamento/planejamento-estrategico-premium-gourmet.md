@@ -101,7 +101,7 @@ A Premium Gourmet possui cardápio digital via Saipos (configurado, mas sem divu
 
 **Entrega pontual prevista (Iris):** revisão do Instagram + 10 posts com orientação de publicação.
 
-**RECOMENDAÇÃO (fora do escopo atual):** Estruturar estratégia de Social Media recorrente com foco em food porn, bastidores e narrativa da marca. O potencial orgânico é significativo e está sendo desperdiçado.
+**RECOMENDAÇÃO (fora do escopo atual):** Estruturar estratégia de Social Media recorrente com foco em conteúdo de produto com alto apelo visual, bastidores e narrativa da marca. O potencial orgânico é significativo e está sendo desperdiçado.
 
 ### Mídia Paga
 
@@ -118,22 +118,20 @@ Não existe histórico de investimento estruturado em tráfego pago. A base zero
 
 ## MÓDULO 04 — DIAGNÓSTICO DE MATURIDADE DIGITAL
 
-### Estágio: V1 transitando para V2
+### Estágio: V1 — Início de estruturação
 
-A Premium Gourmet apresenta características típicas de um negócio V1 com alguns elementos incipientes de V2:
+A Premium Gourmet está no estágio inicial de maturidade digital. O negócio tem operação física estabelecida e produto comprovado, mas no digital — fora do iFood — praticamente não existe estrutura:
 
-**V1 — Presente:**
-- Canais próprios praticamente sem geração de receita digital direta
-- Tracking: zero (sem pixel ativo, sem dados de conversão no canal próprio)
-- CPL, CAC, ROAS: desconhecidos
-- Estrutura comercial: praticamente inexistente no canal próprio
-- Sem metas de marketing e vendas definidas
+- Tracking: zero. Sem pixel ativo, sem dados de conversão no canal próprio
+- CPL, CAC, ROAS: desconhecidos e nunca mensurados
+- Canal próprio: sem fluxo de recebimento de pedidos estruturado
+- Estrutura comercial própria: inexistente
+- CRM e automação: não existem
+- Metas de marketing e vendas: nunca foram definidas
 
-**Elementos V2 que já existem:**
-- Operação delivery madura e escalada (7 lojas, volume consistente)
-- Produto comprovado e avaliado (nota 4,7-4,8 no iFood)
-- Base de clientes existente (VIP Group + histórico Saipos)
-- Consciência da necessidade de estruturação — sócia Lis começa com foco em operações
+O que existe de positivo é operacional, não digital: 7 lojas funcionando, produto com nota 4,7-4,8 no iFood, base de clientes real — mas tudo isso está dentro do ecossistema do iFood, não do canal próprio.
+
+**O projeto começa do zero no digital.** Não há histórico de campanhas, não há baseline de performance, não há infraestrutura de conversão. A construção é total.
 
 ### Principais gargalos identificados
 
@@ -208,7 +206,7 @@ O mercado de feijoada delivery em Salvador é **fragmentado e majoritariamente i
 
 **Onde podemos nos diferenciar:**
 - Narrativa de marca autêntica (história real, empresa familiar, feijoada feita pela mãe)
-- Food porn com identidade visual premium — vermelho + dourado + sofisticação
+- Conteúdo de produto com alto apelo visual e identidade premium — vermelho + dourado + sofisticação
 - Programa de fidelidade e canal próprio (nenhum concorrente relevante tem isso estruturado)
 - Duo delivery + eventos: um só fornecedor para o dia a dia e para celebrações
 
@@ -285,7 +283,7 @@ O mercado de feijoada delivery em Salvador é **fragmentado e majoritariamente i
 | **Grupo VIP WhatsApp** | Ativação imediata da base | Persona 1 e 2 | Retenção → Recompra | CONTRATADO |
 
 **Canais fora do escopo atual (recomendação futura):**
-- Social Media recorrente (Instagram/TikTok com food porn)
+- Social Media recorrente (Instagram/TikTok com conteúdo de produto de alto impacto visual)
 - E-mail marketing
 - Influenciadores locais (potencial enorme, já comprovado)
 - Frente B2B/eventos (estratégia separada, Q4 2026)
@@ -300,14 +298,14 @@ O mercado de feijoada delivery em Salvador é **fragmentado e majoritariamente i
 
 **Estratégia de mídia paga:**
 
-**Premissa central — food porn first:** O criativo é o produto. Antes de qualquer copy ou oferta, a imagem da feijoada precisa vender. Uma foto certa de uma feijoada fumegante, servida, com todos os acompanhamentos, já é o melhor argumento.
+**Premissa central — criativo de produto primeiro:** O criativo é o produto. Antes de qualquer copy ou oferta, a imagem da feijoada precisa vender. Uma foto certa de uma feijoada fumegante, servida, com todos os acompanhamentos, já é o melhor argumento.
 
 **Distribuição do orçamento de mídia:**
 
 | Canal/Campanha | % do orçamento | Função |
 |----------------|---------------|--------|
 | **Google Search (institucional)** | 15% | Captura quem já busca por "feijoada delivery Salvador", "pedir feijoada", "buffet feijoada Salvador" |
-| **Meta — Público Aberto (food porn)** | 45% | Aquisição de novos clientes com conteúdo forte. Segmentação geográfica hiperlocal (raio de entrega). Algoritmo aberto para aprendizado |
+| **Meta — Público Aberto (criativo de produto)** | 45% | Aquisição de novos clientes com conteúdo visual de alto impacto. Segmentação geográfica hiperlocal (raio de entrega). Algoritmo aberto para aprendizado |
 | **Meta — Remarketing** | 15% | Reengajamento de quem interagiu com o conteúdo ou visitou o cardápio mas não pediu |
 | **Meta — Recompra (base)** | 15% | Campanhas para base de clientes, ofertas de fim de semana, kits, datas comemorativas |
 | **Teste/Flexível** | 10% | Rotação de criativos, teste de audiências secundárias, ajuste conforme dados |
@@ -320,7 +318,7 @@ O mercado de feijoada delivery em Salvador é **fragmentado e majoritariamente i
 
 **Estratégia Meta Ads:**
 - Raio geográfico: Brotas e área de cobertura de entrega (1ª fase) → expandir para demais lojas na sequência
-- Formato de criativo: vídeo curto (15-30s) de food porn + fotos de produto com qualidade de cardápio gourmet
+- Formato de criativo: vídeo curto (15-30s) com apelo visual de produto + fotos de produto com qualidade de cardápio gourmet
 - Público aberto: deixar o algoritmo trabalhar com o criativo certo — não restringir demais no início
 - Mensagem central: rapidez + qualidade + kit para família
 
@@ -452,7 +450,7 @@ Hyperflow, ActiveCampaign, ZP First, ferramentas de WhatsApp Business API. Nenhu
 | Instalação e configuração do pixel Meta + Google Tag | Tráfego | Sem. 1 |
 | Revisão Instagram + primeiros 10 posts (com calendário de publicação) | Social | Sem. 1-2 |
 | Configuração de conta Meta Ads + Google Ads | Tráfego | Sem. 2 |
-| Criação das primeiras artes e vídeos (food porn) | Design | Sem. 2-3 |
+| Criação das primeiras artes e vídeos de produto (alto apelo visual) | Design | Sem. 2-3 |
 
 ### Fase 02 — ATIVAR BASE (Outubro/2026 — semanas 4-6)
 
@@ -472,7 +470,7 @@ Hyperflow, ActiveCampaign, ZP First, ferramentas de WhatsApp Business API. Nenhu
 
 | Ação | Responsável | Prazo |
 |------|-------------|-------|
-| Lançamento das campanhas Meta Ads (público aberto, food porn) | Tráfego | Sem. 5 |
+| Lançamento das campanhas Meta Ads (público aberto, criativo de produto) | Tráfego | Sem. 5 |
 | Lançamento Google Search (termos de demanda ativa) | Tráfego | Sem. 5 |
 | Fase de aprendizado (algoritmo + dados de conversão) | Tráfego | Sem. 5-8 |
 | Campanha de remarketing (quem interagiu mas não pediu) | Tráfego | Sem. 7 |
