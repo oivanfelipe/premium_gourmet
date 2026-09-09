@@ -1,0 +1,1820 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Gourmet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #FFFFFF;
+    --black: #111111;
+    --red: #C41E1E;
+    --red-light: #f5e8e8;
+    --gold: #B8862A;
+    --gold-light: #f5eedf;
+    --gray-1: #F8F6F4;
+    --gray-2: #EDEBE8;
+    --gray-3: #C8C4BE;
+    --gray-4: #888480;
+    --gray-5: #555250;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--black);
+    font-family: var(--font-body);
+    color: var(--black);
+    font-size: 16px;
+  }
+
+  /* ── Progress bar ── */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--red);
+    z-index: 100;
+    transition: width .35s ease;
+    pointer-events: none;
+  }
+
+  /* ── Slide counter ── */
+  #counter {
+    position: fixed;
+    bottom: 28px; right: 32px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--gray-4);
+    z-index: 100;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .04em;
+  }
+
+  /* ── Nav arrows ── */
+  .nav-btn {
+    position: fixed;
+    right: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray-4);
+    font-size: 22px;
+    z-index: 100;
+    transition: opacity .2s, color .2s;
+    padding: 8px;
+    line-height: 1;
+  }
+  #prev { top: 50%; transform: translateY(-150%); }
+  #next { top: 50%; transform: translateY(50%); }
+  .nav-btn:hover { color: var(--red); }
+
+  /* ── Dot nav ── */
+  #dots {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    z-index: 100;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gray-3);
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+  }
+  .dot.active {
+    background: var(--red);
+    transform: scale(1.4);
+  }
+
+  /* ── Deck (scroll-snap container) ── */
+  #deck {
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #deck::-webkit-scrollbar { display: none; }
+
+  /* ── Individual slide ── */
+  .slide {
+    width: 100%;
+    height: 100vh;
+    scroll-snap-align: start;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── Slide header bar ── */
+  .slide-header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 56px 20px;
+    border-bottom: 1px solid var(--gray-2);
+  }
+  .slide-logo {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--red);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .slide-module {
+    font-size: 12px;
+    color: var(--gray-4);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  /* ── Slide body ── */
+  .slide-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 36px 56px 28px;
+    overflow: hidden;
+  }
+
+  /* ── Slide title ── */
+  .slide-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 3.8vw, 56px);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--black);
+    text-wrap: balance;
+    margin-bottom: 28px;
+  }
+  .slide-title em {
+    color: var(--red);
+    font-style: italic;
+  }
+  .slide-title .gold { color: var(--gold); }
+
+  /* ── Eyebrow ── */
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    width: 48px;
+    height: 2px;
+    background: var(--red);
+    margin-bottom: 24px;
+  }
+
+  /* ── Content grid ── */
+  .content-grid {
+    display: grid;
+    gap: 20px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .col-2 { grid-template-columns: 1fr 1fr; }
+  .col-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .col-4 { grid-template-columns: repeat(4, 1fr); }
+
+  /* ── Card ── */
+  .card {
+    background: var(--gray-1);
+    border-radius: 3px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 3px solid transparent;
+  }
+  .card.accent { border-left-color: var(--red); }
+  .card.gold-accent { border-left-color: var(--gold); }
+  .card-label {
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gray-4);
+    font-weight: 500;
+  }
+  .card-value {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: 500;
+    color: var(--black);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .card-value.red { color: var(--red); }
+  .card-value.gold { color: var(--gold); }
+  .card-desc { font-size: 13px; color: var(--gray-5); line-height: 1.5; }
+
+  /* ── Bullet list ── */
+  .bullet-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+  }
+  .bullet-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 15px;
+    color: var(--gray-5);
+    line-height: 1.55;
+  }
+  .bullet-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+  .bullet-list li strong { color: var(--black); font-weight: 500; }
+
+  /* ── Insight box ── */
+  .insight {
+    background: var(--black);
+    color: var(--white);
+    border-radius: 3px;
+    padding: 18px 22px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .insight strong { color: var(--gold); }
+
+  /* ── Agenda ── */
+  .agenda-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .agenda-item {
+    background: var(--gray-1);
+    border-radius: 3px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .agenda-num {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--gray-3);
+    line-height: 1;
+  }
+  .agenda-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--black);
+    line-height: 1.35;
+  }
+  .agenda-sub { font-size: 12px; color: var(--gray-4); margin-top: 2px; }
+
+  /* ── Cover slide ── */
+  .cover-slide {
+    background: var(--black) !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0;
+  }
+  .cover-eyebrow {
+    font-size: 12px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .cover-title {
+    font-family: var(--font-display);
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 400;
+    color: var(--white);
+    line-height: 1.0;
+    margin-bottom: 8px;
+  }
+  .cover-subtitle {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 300;
+    color: var(--gray-3);
+    font-style: italic;
+    margin-bottom: 36px;
+  }
+  .cover-meta {
+    font-size: 13px;
+    color: var(--gray-5);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .cover-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 28px auto;
+  }
+
+  /* ── Pillar cards ── */
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .pillar-card {
+    background: var(--gray-1);
+    border-radius: 3px;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--red);
+  }
+  .pillar-card:nth-child(2)::before { background: var(--gold); }
+  .pillar-card:nth-child(3)::before { background: var(--gray-3); }
+  .pillar-card:nth-child(4)::before { background: var(--black); }
+  .pillar-icon { font-size: 26px; }
+  .pillar-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--black);
+    line-height: 1.2;
+  }
+  .pillar-desc { font-size: 13px; color: var(--gray-5); line-height: 1.6; }
+
+  /* ── KPI row ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .kpi-card {
+    background: var(--gray-1);
+    border-radius: 3px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .kpi-label {
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gray-4);
+    font-weight: 500;
+  }
+  .kpi-val {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--black);
+    line-height: 1;
+  }
+  .kpi-val.red { color: var(--red); }
+  .kpi-val.gold { color: var(--gold); }
+  .kpi-unit { font-size: 12px; color: var(--gray-4); }
+
+  /* ── Investment slide ── */
+  .invest-slide {
+    background: var(--black) !important;
+  }
+  .invest-slide .slide-header {
+    border-bottom-color: #333;
+  }
+  .invest-slide .slide-logo { color: var(--gold); }
+  .invest-slide .slide-module { color: var(--gray-4); }
+  .invest-slide .slide-body { color: var(--white); }
+  .invest-slide .slide-title { color: var(--white); }
+  .invest-slide .eyebrow { color: var(--gold); }
+  .invest-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .invest-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gray-4);
+    border-bottom: 1px solid #333;
+    font-weight: 500;
+  }
+  .invest-table td {
+    padding: 12px 14px;
+    color: var(--gray-3);
+    border-bottom: 1px solid #222;
+    font-size: 14px;
+  }
+  .invest-table tr:last-child td {
+    border-bottom: none;
+    color: var(--white);
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .invest-table .val { font-variant-numeric: tabular-nums; text-align: right; color: var(--gold); }
+  .invest-table tr:last-child .val { color: var(--gold); font-size: 20px; }
+
+  /* ── Projection table ── */
+  .proj-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .proj-table th {
+    text-align: left;
+    padding: 9px 12px;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gray-4);
+    border-bottom: 2px solid var(--gray-2);
+    font-weight: 500;
+  }
+  .proj-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--gray-2);
+    color: var(--gray-5);
+    font-variant-numeric: tabular-nums;
+  }
+  .proj-table td:first-child { font-weight: 500; color: var(--black); }
+  .proj-table .highlight { color: var(--red); font-weight: 600; }
+  .proj-table .gold { color: var(--gold); font-weight: 600; }
+
+  /* ── Journey flow ── */
+  .journey {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: auto;
+  }
+  .journey-step {
+    flex: 1 1 0;
+    background: var(--gray-1);
+    border-radius: 3px;
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .journey-step.active { background: var(--black); }
+  .journey-step.active .journey-icon { color: var(--gold); }
+  .journey-step.active .journey-label { color: var(--white); }
+  .journey-step.ifood { background: var(--red-light); border: 1px solid var(--red); }
+  .journey-icon { font-size: 22px; }
+  .journey-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--black);
+    line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .journey-desc { font-size: 11px; color: var(--gray-4); line-height: 1.4; }
+  .journey-arrow {
+    flex: 0 0 auto;
+    color: var(--gray-3);
+    font-size: 18px;
+    padding: 0 4px;
+  }
+
+  /* ── Channel pills ── */
+  .channel-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .channel-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--gray-1);
+    border-radius: 3px;
+  }
+  .channel-row.future { opacity: .4; }
+  .channel-icon { font-size: 20px; flex-shrink: 0; }
+  .channel-name { font-weight: 500; font-size: 15px; flex: 1; }
+  .channel-role { font-size: 13px; color: var(--gray-4); }
+  .phase-badge {
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .phase-badge.p1 { background: var(--red); color: var(--white); }
+  .phase-badge.p2 { background: var(--gray-2); color: var(--gray-4); }
+
+  /* ── Phase cards (objective slide) ── */
+  .phase-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .phase-card {
+    border-radius: 3px;
+    padding: 28px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .phase-card.active { background: var(--black); }
+  .phase-card.active .phase-card-num { color: var(--gold); }
+  .phase-card.active .phase-card-title { color: var(--white); }
+  .phase-card.active .phase-card-desc { color: var(--gray-3); }
+  .phase-card.future { background: var(--gray-1); }
+  .phase-card.future .phase-card-num { color: var(--gray-3); }
+  .phase-card-badge {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 2px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    align-self: flex-start;
+  }
+  .phase-card.active .phase-card-badge { background: var(--red); color: var(--white); }
+  .phase-card.future .phase-card-badge { background: var(--gray-2); color: var(--gray-4); }
+  .phase-card-num {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 1;
+  }
+  .phase-card-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .phase-card-desc { font-size: 14px; line-height: 1.65; }
+  .phase-card-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .phase-card-list li {
+    font-size: 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.45;
+  }
+  .phase-card.active .phase-card-list li { color: var(--gray-3); }
+  .phase-card.future .phase-card-list li { color: var(--gray-5); }
+  .phase-card-list li::before {
+    content: '→';
+    flex-shrink: 0;
+  }
+  .phase-card.active .phase-card-list li::before { color: var(--gold); }
+  .phase-card.future .phase-card-list li::before { color: var(--gray-3); }
+
+  /* ── Media plan table ── */
+  .media-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .media-table th {
+    text-align: left;
+    padding: 9px 12px;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gray-4);
+    border-bottom: 2px solid var(--gray-2);
+    font-weight: 500;
+  }
+  .media-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-2);
+    color: var(--gray-5);
+    font-variant-numeric: tabular-nums;
+  }
+  .media-table td:first-child { font-weight: 500; color: var(--black); }
+  .media-table tr.total-row td {
+    background: var(--black);
+    color: var(--white);
+    font-weight: 600;
+    border-bottom: none;
+  }
+  .media-table tr.total-row td:first-child { color: var(--gold); }
+  .media-table .cpl-cons { color: var(--gray-4); }
+  .media-table .cpl-base { color: var(--black); font-weight: 500; }
+  .media-table .cpl-opt { color: var(--red); font-weight: 600; }
+
+  /* ── Cronograma ── */
+  .crono-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .crono-card {
+    background: var(--gray-1);
+    border-radius: 3px;
+    padding: 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .crono-card:first-child { background: var(--black); }
+  .crono-card:first-child .crono-phase { color: var(--gold); }
+  .crono-card:first-child .crono-weeks { color: var(--gray-3); }
+  .crono-card:first-child .crono-dates { color: var(--gray-4); }
+  .crono-card:first-child .crono-actions li { color: var(--gray-3); }
+  .crono-phase {
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--red);
+  }
+  .crono-weeks {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--black);
+    line-height: 1.1;
+  }
+  .crono-dates { font-size: 12px; color: var(--gray-4); margin-bottom: 4px; }
+  .crono-actions {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .crono-actions li {
+    font-size: 12px;
+    color: var(--gray-5);
+    line-height: 1.4;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .crono-actions li::before {
+    content: '·';
+    color: var(--red);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .crono-card:first-child .crono-actions li::before { color: var(--gold); }
+
+  /* ── Competitor table ── */
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .comp-table th {
+    text-align: left;
+    padding: 9px 12px;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gray-4);
+    border-bottom: 2px solid var(--gray-2);
+    font-weight: 500;
+  }
+  .comp-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--gray-2);
+    color: var(--gray-5);
+  }
+  .comp-table td:first-child { font-weight: 500; color: var(--black); }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+  .badge.strong { background: var(--red-light); color: var(--red); }
+  .badge.weak { background: var(--gray-2); color: var(--gray-4); }
+  .badge.medium { background: var(--gold-light); color: var(--gold); }
+
+  /* ── Persona cards ── */
+  .persona-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .persona-card {
+    background: var(--gray-1);
+    border-radius: 3px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .persona-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--gray-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+  .persona-name { font-weight: 600; font-size: 16px; }
+  .persona-age { font-size: 13px; color: var(--gray-4); }
+  .persona-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .persona-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    background: var(--gray-2);
+    color: var(--gray-5);
+  }
+  .persona-insight { font-size: 13px; color: var(--gray-5); line-height: 1.55; margin-top: 4px; }
+  .persona-need {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--black);
+    border-left: 3px solid var(--red);
+    padding-left: 10px;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<span id="counter">1 / 19</span>
+<button class="nav-btn" id="prev" aria-label="Slide anterior">↑</button>
+<button class="nav-btn" id="next" aria-label="Próximo slide">↓</button>
+<div id="dots"></div>
+
+<div id="deck">
+
+<!-- ═══════════════ SLIDE 1 — CAPA ═══════════════ -->
+<section class="slide cover-slide">
+  <div class="cover-eyebrow">Planejamento Estratégico V4 · 2026</div>
+  <div class="cover-title">Premium<br>Gourmet</div>
+  <div class="cover-subtitle">Feijoada · Salvador, BA</div>
+  <div class="cover-line"></div>
+  <div class="cover-meta">7 Unidades · Tráfego Pago · Crescimento Previsível</div>
+</section>
+
+<!-- ═══════════════ SLIDE 2 — AGENDA ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">Agenda</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">O que vamos cobrir hoje</div>
+    <div class="divider"></div>
+    <div class="agenda-grid">
+      <div class="agenda-item">
+        <div class="agenda-num">01</div>
+        <div class="agenda-text">Diagnóstico de Mercado</div>
+        <div class="agenda-sub">Contexto, concorrência e oportunidades</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">02</div>
+        <div class="agenda-text">Diagnóstico da Empresa</div>
+        <div class="agenda-sub">Maturidade digital e gargalos atuais</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">03</div>
+        <div class="agenda-text">Objetivo Estratégico</div>
+        <div class="agenda-sub">Fases 1 e 2 — metas e norte do projeto</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">04</div>
+        <div class="agenda-text">Motor de Vendas</div>
+        <div class="agenda-sub">Jornada do lead à conversão no iFood</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">05</div>
+        <div class="agenda-text">Estratégia de Mídia</div>
+        <div class="agenda-sub">Meta Ads, plano por loja e CPL</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">06</div>
+        <div class="agenda-text">Quatro Pilares</div>
+        <div class="agenda-sub">Captação, conteúdo, CRM e dados</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">07</div>
+        <div class="agenda-text">Cronograma</div>
+        <div class="agenda-sub">Execução semana a semana</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">08</div>
+        <div class="agenda-text">KPIs Fase 1</div>
+        <div class="agenda-sub">Métricas de sucesso do projeto</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">09</div>
+        <div class="agenda-text">Investimento</div>
+        <div class="agenda-sub">Verba e projeção de retorno</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 3 — MERCADO ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">01 · Diagnóstico de Mercado</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Contexto e Oportunidade</div>
+    <h2 class="slide-title">Delivery de alimentação em Salvador cresce <em>acima da média</em> nacional</h2>
+    <div class="content-grid col-3" style="max-height: 52vh;">
+      <div class="card accent">
+        <div class="card-label">Delivery Salvador</div>
+        <div class="card-value red">+18%</div>
+        <div class="card-desc">crescimento anual em pedidos de delivery, impulsionado por apps e expansão de renda</div>
+      </div>
+      <div class="card gold-accent">
+        <div class="card-label">iFood em Salvador</div>
+        <div class="card-value gold">1ª</div>
+        <div class="card-desc">plataforma em market share — qualquer estratégia de conversão passa pelo iFood na Fase 1</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Feijoada como categoria</div>
+        <div class="card-value">↑</div>
+        <div class="card-desc">busca crescente por experiências gastronômicas regionais e autênticas via delivery</div>
+      </div>
+    </div>
+    <div class="insight" style="margin-top: 14px;">
+      <strong>Oportunidade:</strong> A feijoada premium ainda não tem um player dominante em digital em Salvador. Quem capturar a mente do consumidor primeiro com conteúdo de qualidade e anúncio direto constrói barreira competitiva duradoura.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 4 — DEPENDÊNCIA IFOOD ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">01 · Diagnóstico de Mercado</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Realidade do Negócio Hoje</div>
+    <h2 class="slide-title">80% do faturamento vem do <em>iFood</em></h2>
+    <div class="content-grid col-2" style="flex: 0 0 auto; margin-bottom: 20px;">
+      <div class="card accent">
+        <div class="card-label">Dependência iFood</div>
+        <div class="card-value red">80%</div>
+        <div class="card-desc">do faturamento total — exposição alta à variação de comissão e algoritmo</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Canal próprio</div>
+        <div class="card-value">0%</div>
+        <div class="card-desc">sem canal de entrega próprio, base de dados própria ou mecanismo de recompra direto</div>
+      </div>
+    </div>
+    <ul class="bullet-list">
+      <li><strong>Comissão de 25–30%</strong> por pedido corroe a margem em cada transação</li>
+      <li><strong>Zero dados do cliente</strong> — o iFood detém o relacionamento; a Premium Gourmet não conhece quem compra</li>
+      <li><strong>Algoritmo como risco</strong> — qualquer mudança no ranking do iFood afeta receita imediata</li>
+      <li><strong>Sem mecanismo de recompra</strong> — cada venda depende de o cliente abrir o app e encontrar a loja novamente</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 5 — DIAGNÓSTICO V1 ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">02 · Diagnóstico da Empresa</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Maturidade Digital — V1 Puro</div>
+    <h2 class="slide-title">Infraestrutura digital <em>inexistente</em> fora do iFood</h2>
+    <div class="content-grid col-2" style="flex: 0 0 auto; margin-bottom: 20px;">
+      <div>
+        <ul class="bullet-list">
+          <li><strong>Sem pixel de rastreamento</strong> instalado — zero audiência para remarketing</li>
+          <li><strong>Sem conta Meta Ads estruturada</strong> — campanhas nunca rodaram</li>
+          <li><strong>Sem base de leads</strong> — nenhum contato de clientes em posse da empresa</li>
+          <li><strong>Sem automação de mensagem</strong> — cada contato é manual e não escalável</li>
+        </ul>
+      </div>
+      <div>
+        <ul class="bullet-list">
+          <li><strong>Instagram existente</strong> mas sem estratégia, frequência ou call-to-action definido</li>
+          <li><strong>Sem conteúdo de produto</strong> com apelo visual para mídia paga</li>
+          <li><strong>Sem segmentação por loja</strong> — as 7 unidades não possuem campanhas individualizadas</li>
+          <li><strong>Sem histórico de dados</strong> — sem CPL, CAC ou LTV calculados</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>Ponto de partida real:</strong> A Premium Gourmet parte do zero em digital. Isso é uma vantagem — não há vícios a corrigir. O plano foi desenhado para V1 puro: estruturar antes de escalar.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 6 — GARGALO ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">02 · Diagnóstico da Empresa</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Gargalo Crítico</div>
+    <h2 class="slide-title">O negócio não possui <em>nenhum dado</em> sobre seus clientes</h2>
+    <div class="content-grid col-3" style="flex: 0 0 auto; margin-bottom: 20px;">
+      <div class="card accent">
+        <div class="card-label">Dados de cliente</div>
+        <div class="card-value red">Zero</div>
+        <div class="card-desc">Nenhum nome, contato ou histórico de compra em posse da empresa</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Recompra ativa</div>
+        <div class="card-value">Zero</div>
+        <div class="card-desc">Sem canal para comunicar, engajar ou trazer clientes de volta</div>
+      </div>
+      <div class="card gold-accent">
+        <div class="card-label">Oportunidade</div>
+        <div class="card-value gold">Alta</div>
+        <div class="card-desc">Quem captura dados próprios primeiro cria vantagem competitiva permanente</div>
+      </div>
+    </div>
+    <ul class="bullet-list">
+      <li><strong>Sem dados, não há como personalizar comunicação</strong> — toda mensagem é genérica e menos eficiente</li>
+      <li><strong>Sem dados, não há como calcular LTV</strong> — impossível saber quanto vale cada cliente ao longo do tempo</li>
+      <li><strong>A Fase 1 resolve exatamente isso:</strong> cada lead capturado pelo formulário é um dado próprio da Premium Gourmet</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 7 — CONCORRENTES ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">01 · Diagnóstico de Mercado</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Análise Competitiva</div>
+    <h2 class="slide-title">Nenhum concorrente domina o <em>digital</em> ainda</h2>
+    <table class="comp-table" style="flex: 1 1 auto; min-height: 0;">
+      <thead>
+        <tr>
+          <th>Concorrente</th>
+          <th>Presença Digital</th>
+          <th>Mídia Paga</th>
+          <th>Conteúdo</th>
+          <th>Ponto Fraco</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Feijoada da Bahia</td>
+          <td><span class="badge medium">Médio</span></td>
+          <td><span class="badge weak">Sem dados</span></td>
+          <td><span class="badge weak">Fraco</span></td>
+          <td>Sem frequência de conteúdo</td>
+        </tr>
+        <tr>
+          <td>Tempero Baiano</td>
+          <td><span class="badge weak">Baixo</span></td>
+          <td><span class="badge weak">Não roda</span></td>
+          <td><span class="badge weak">Fraco</span></td>
+          <td>Dependência de indicação</td>
+        </tr>
+        <tr>
+          <td>Cozinha da Vovó</td>
+          <td><span class="badge medium">Médio</span></td>
+          <td><span class="badge weak">Esporádico</span></td>
+          <td><span class="badge medium">Regular</span></td>
+          <td>Comunicação genérica</td>
+        </tr>
+        <tr>
+          <td>iFood Genéricos</td>
+          <td><span class="badge strong">Alto</span></td>
+          <td><span class="badge weak">Não roda</span></td>
+          <td><span class="badge weak">Inexistente</span></td>
+          <td>Sem diferencial claro</td>
+        </tr>
+        <tr>
+          <td><strong>Premium Gourmet</strong></td>
+          <td><span class="badge weak">Baixo (atual)</span></td>
+          <td><span class="badge strong">→ Vantagem</span></td>
+          <td><span class="badge strong">→ Vantagem</span></td>
+          <td>Ausência de dados — corrigindo</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="insight" style="margin-top: 12px;">
+      <strong>Janela de oportunidade:</strong> O mercado está sem um líder digital. Quem estruturar tráfego pago + conteúdo de produto com apelo visual primeiro vai capturar a memória do consumidor antes da concorrência acordar.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 8 — OBJETIVO ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">03 · Objetivo Estratégico</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Objetivo em Duas Fases</div>
+    <h2 class="slide-title">Construir <em>base própria</em> de clientes e reduzir dependência do iFood</h2>
+    <div class="phase-cards">
+      <div class="phase-card active">
+        <span class="phase-card-badge">Fase 1 · Meses 1–6</span>
+        <div class="phase-card-num">01</div>
+        <div class="phase-card-title">Capturar leads e alimentar o iFood com demanda própria</div>
+        <ul class="phase-card-list">
+          <li>Formulário nativo Meta Ads por loja (7 campanhas, raio 7km)</li>
+          <li>Mensagem automática pós-formulário → link iFood + convite grupo WhatsApp</li>
+          <li>iFood como único canal de conversão (sem canal próprio ainda)</li>
+          <li>WhatsApp como CRM de entrada — cardápio diário + agente de conversão</li>
+          <li>Meta: 150–250 leads/mês, CPL R$10–15</li>
+        </ul>
+      </div>
+      <div class="phase-card future">
+        <span class="phase-card-badge">Fase 2 · Meses 7–12</span>
+        <div class="phase-card-num">02</div>
+        <div class="phase-card-title">Criar canal próprio e reduzir dependência do iFood</div>
+        <ul class="phase-card-list">
+          <li>Canal de pedidos próprio (site ou app leve)</li>
+          <li>Reduzir dependência iFood de 80% → 60%</li>
+          <li>Google Search institucional + remarketing avançado</li>
+          <li>Programa de fidelidade sobre a base de leads capturada</li>
+          <li>Escala: base de 1.000+ contatos próprios</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 9 — PERSONAS ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">03 · Objetivo Estratégico</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Público-Alvo</div>
+    <h2 class="slide-title">Três personas, uma <em>jornada</em> de compra</h2>
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="persona-avatar">👨‍💼</div>
+        <div class="persona-name">André, 34</div>
+        <div class="persona-age">Gerente comercial · Pituba, Salvador</div>
+        <div class="persona-tags">
+          <span class="persona-tag">Executivo</span>
+          <span class="persona-tag">Delivery frequente</span>
+          <span class="persona-tag">Praticidade</span>
+        </div>
+        <div class="persona-need">Quer comida de qualidade, rápida, sem sair do escritório ou home office</div>
+        <div class="persona-insight">Usa iFood 3–4x por semana. Decide pelo visual do produto e avaliações. Ticket médio R$60–90.</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-avatar">👩‍🍳</div>
+        <div class="persona-name">Carla, 41</div>
+        <div class="persona-age">Dona de casa · Barra, Salvador</div>
+        <div class="persona-tags">
+          <span class="persona-tag">Família</span>
+          <span class="persona-tag">Tradição baiana</span>
+          <span class="persona-tag">Reunião</span>
+        </div>
+        <div class="persona-need">Busca opção de feijoada tradicional e farta para ocasiões em família, sem trabalho de cozinhar</div>
+        <div class="persona-insight">Compra em finais de semana. Alta fidelização se a experiência for boa. Ticket médio R$120–180.</div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-avatar">🎉</div>
+        <div class="persona-name">Rafael, 28</div>
+        <div class="persona-age">Analista · Imbuí, Salvador</div>
+        <div class="persona-tags">
+          <span class="persona-tag">Evento</span>
+          <span class="persona-tag">Grupo</span>
+          <span class="persona-tag">Social</span>
+        </div>
+        <div class="persona-need">Organiza almoços em grupo — quer praticidade e um produto que "apareça bem" para os convidados</div>
+        <div class="persona-insight">Pedido pontual mas de alto volume. Influenciado por conteúdo visual e indicação. Ticket médio R$200+.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 10 — MOTOR DE VENDAS ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">04 · Motor de Vendas</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Jornada do Lead — Fase 1</div>
+    <h2 class="slide-title">Do anúncio ao pedido no iFood — <em>automatizado</em></h2>
+    <div class="journey">
+      <div class="journey-step active">
+        <div class="journey-icon">📱</div>
+        <div class="journey-label">Anúncio<br>Meta Ads</div>
+        <div class="journey-desc">Criativo de produto com alto apelo visual. Público aberto, raio 7km por loja.</div>
+      </div>
+      <div class="journey-arrow">→</div>
+      <div class="journey-step active">
+        <div class="journey-icon">📋</div>
+        <div class="journey-label">Formulário<br>Nativo</div>
+        <div class="journey-desc">Instant Form dentro do Meta — sem landing page. Dados capturados: nome + contato.</div>
+      </div>
+      <div class="journey-arrow">→</div>
+      <div class="journey-step active">
+        <div class="journey-icon">⚡</div>
+        <div class="journey-label">Mensagem<br>Automática</div>
+        <div class="journey-desc">Ferramenta própria dispara em segundos pós-formulário.</div>
+      </div>
+      <div class="journey-arrow">→</div>
+      <div class="journey-step ifood">
+        <div class="journey-icon">🛵</div>
+        <div class="journey-label">Link iFood<br>+ Convite Grupo</div>
+        <div class="journey-desc">Mensagem entrega link da loja mais próxima + convite para o grupo WhatsApp.</div>
+      </div>
+      <div class="journey-arrow">→</div>
+      <div class="journey-step active">
+        <div class="journey-icon">💬</div>
+        <div class="journey-label">Grupo<br>WhatsApp</div>
+        <div class="journey-desc">Cardápio diário + agente para conversas individuais → direcionamento ao iFood.</div>
+      </div>
+      <div class="journey-arrow">→</div>
+      <div class="journey-step ifood">
+        <div class="journey-icon">✅</div>
+        <div class="journey-label">Pedido<br>iFood</div>
+        <div class="journey-desc">Único canal de conversão na Fase 1. Comissão do iFood, mas demanda é nossa.</div>
+      </div>
+      <div class="journey-arrow">→</div>
+      <div class="journey-step active">
+        <div class="journey-icon">📊</div>
+        <div class="journey-label">Base<br>Própria</div>
+        <div class="journey-desc">Cada lead = contato proprietário. Reativação e recompra independem do iFood.</div>
+      </div>
+    </div>
+    <div class="insight" style="margin-top: 16px;">
+      <strong>Diferencial da estratégia:</strong> Pagamos o iFood só pela entrega — mas geramos a demanda por conta própria, construindo base de clientes que o iFood nunca nos dará.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 11 — CANAIS ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">04 · Motor de Vendas</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Mix de Canais — Fase 1 vs. Fase 2</div>
+    <h2 class="slide-title">Canais ativos na <em>Fase 1</em>, expansão planejada para Fase 2</h2>
+    <div class="channel-grid">
+      <div class="channel-row">
+        <div class="channel-icon">📱</div>
+        <div class="channel-name">Meta Ads — Formulário Nativo</div>
+        <div class="channel-role">Captação de leads por loja (7 campanhas, raio 7km)</div>
+        <span class="phase-badge p1">Fase 1</span>
+      </div>
+      <div class="channel-row">
+        <div class="channel-icon">⚡</div>
+        <div class="channel-name">Mensagem Automática</div>
+        <div class="channel-role">Ferramenta própria — disparo imediato pós-formulário</div>
+        <span class="phase-badge p1">Fase 1</span>
+      </div>
+      <div class="channel-row">
+        <div class="channel-icon">🛵</div>
+        <div class="channel-name">iFood</div>
+        <div class="channel-role">Único canal de conversão (pedidos) na Fase 1</div>
+        <span class="phase-badge p1">Fase 1</span>
+      </div>
+      <div class="channel-row">
+        <div class="channel-icon">💬</div>
+        <div class="channel-name">Grupo WhatsApp (por loja)</div>
+        <div class="channel-role">CRM de entrada — cardápio diário + agente de conversão</div>
+        <span class="phase-badge p1">Fase 1</span>
+      </div>
+      <div class="channel-row">
+        <div class="channel-icon">📸</div>
+        <div class="channel-name">Instagram @feijoadapremiumgourmet</div>
+        <div class="channel-role">Construção de autoridade e conteúdo de produto</div>
+        <span class="phase-badge p1">Fase 1</span>
+      </div>
+      <div class="channel-row future">
+        <div class="channel-icon">🔍</div>
+        <div class="channel-name">Google Search + Canal Próprio</div>
+        <div class="channel-role">Busca ativa + pedidos sem comissão</div>
+        <span class="phase-badge p2">Fase 2</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 12 — ESTRATÉGIA DE MÍDIA ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">05 · Estratégia de Mídia</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Meta Ads — Fase 1</div>
+    <h2 class="slide-title">100% Meta Ads com <em>Formulário Nativo</em> — 7 campanhas geolocaliz.</h2>
+    <div class="content-grid col-2" style="flex: 0 0 auto; margin-bottom: 20px;">
+      <div>
+        <ul class="bullet-list">
+          <li><strong>Objetivo de campanha:</strong> Geração de Leads (Instant Form) — formulário dentro do Meta, sem landing page</li>
+          <li><strong>Segmentação:</strong> Público aberto por raio geográfico — 7km por loja (padrão iFood Salvador — validar por unidade)</li>
+          <li><strong>7 campanhas independentes</strong> — uma por loja, orçamento individualizado, otimização separada</li>
+        </ul>
+      </div>
+      <div>
+        <ul class="bullet-list">
+          <li><strong>Criativos:</strong> estático com criativo de produto com alto apelo visual — ensaio fotográfico (sem acervo atual)</li>
+          <li><strong>Fase de aprendizado:</strong> 30–45 dias por campanha — não alterar conjuntos durante este período</li>
+          <li><strong>Zero Google Search</strong> na Fase 1 — foco total em Meta para simplificar a estrutura e coletar dados</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>Lógica da estratégia:</strong> Formulário nativo tem fricção menor que landing page — menos cliques, mais conversão. O lead já está dentro do Meta quando preenche; a automação garante que o link do iFood chega em segundos.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 13 — PLANO DE MÍDIA ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">05 · Estratégia de Mídia</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Distribuição de Verba por Loja</div>
+    <h2 class="slide-title">R$2.500/mês divididos em <em>7 campanhas</em> — por loja, por raio</h2>
+    <div style="overflow-x: auto; flex: 1 1 auto; min-height: 0;">
+      <table class="media-table">
+        <thead>
+          <tr>
+            <th>Loja</th>
+            <th>Verba Diária</th>
+            <th>Verba Mensal</th>
+            <th>CPL Cons. R$15 → leads</th>
+            <th>CPL Base R$12 → leads</th>
+            <th>CPL Otim. R$8 → leads</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Loja 01</td>
+            <td>R$11,90</td>
+            <td>R$357</td>
+            <td class="cpl-cons">~24 leads</td>
+            <td class="cpl-base">~30 leads</td>
+            <td class="cpl-opt">~45 leads</td>
+          </tr>
+          <tr>
+            <td>Loja 02</td>
+            <td>R$11,90</td>
+            <td>R$357</td>
+            <td class="cpl-cons">~24 leads</td>
+            <td class="cpl-base">~30 leads</td>
+            <td class="cpl-opt">~45 leads</td>
+          </tr>
+          <tr>
+            <td>Loja 03</td>
+            <td>R$11,90</td>
+            <td>R$357</td>
+            <td class="cpl-cons">~24 leads</td>
+            <td class="cpl-base">~30 leads</td>
+            <td class="cpl-opt">~45 leads</td>
+          </tr>
+          <tr>
+            <td>Loja 04</td>
+            <td>R$11,90</td>
+            <td>R$357</td>
+            <td class="cpl-cons">~24 leads</td>
+            <td class="cpl-base">~30 leads</td>
+            <td class="cpl-opt">~45 leads</td>
+          </tr>
+          <tr>
+            <td>Loja 05</td>
+            <td>R$11,90</td>
+            <td>R$357</td>
+            <td class="cpl-cons">~24 leads</td>
+            <td class="cpl-base">~30 leads</td>
+            <td class="cpl-opt">~45 leads</td>
+          </tr>
+          <tr>
+            <td>Loja 06</td>
+            <td>R$11,90</td>
+            <td>R$357</td>
+            <td class="cpl-cons">~24 leads</td>
+            <td class="cpl-base">~30 leads</td>
+            <td class="cpl-opt">~45 leads</td>
+          </tr>
+          <tr>
+            <td>Loja 07</td>
+            <td>R$11,90</td>
+            <td>R$356</td>
+            <td class="cpl-cons">~24 leads</td>
+            <td class="cpl-base">~30 leads</td>
+            <td class="cpl-opt">~44 leads</td>
+          </tr>
+          <tr class="total-row">
+            <td>TOTAL</td>
+            <td>R$83,30/dia</td>
+            <td>R$2.500/mês</td>
+            <td>~167 leads/mês</td>
+            <td>~208 leads/mês</td>
+            <td>~312 leads/mês</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex; gap:14px; margin-top:12px; flex-wrap:wrap;">
+      <div class="card" style="flex:1; padding:14px 16px; min-width:180px;">
+        <div class="card-label">Raio por campanha</div>
+        <div style="font-weight:600; font-size:15px;">7km por loja</div>
+        <div class="card-desc">Padrão de entrega iFood em Salvador (validar por unidade)</div>
+      </div>
+      <div class="card" style="flex:1; padding:14px 16px; min-width:180px;">
+        <div class="card-label">Fase de aprendizado</div>
+        <div style="font-weight:600; font-size:15px;">30–45 dias</div>
+        <div class="card-desc">Não alterar conjuntos de anúncios neste período</div>
+      </div>
+      <div class="card gold-accent" style="flex:1; padding:14px 16px; min-width:180px;">
+        <div class="card-label">Meta de adesão grupo</div>
+        <div style="font-weight:600; font-size:15px; color:var(--gold);">>25% dos leads</div>
+        <div class="card-desc">KPI de qualidade da base — não apenas volume</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 14 — QUATRO PILARES ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">06 · Quatro Pilares</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Estrutura de Execução</div>
+    <h2 class="slide-title">Quatro pilares que sustentam o <em>crescimento</em> previsível</h2>
+    <div class="pillar-grid">
+      <div class="pillar-card">
+        <div class="pillar-icon">🎯</div>
+        <div class="pillar-title">Captação</div>
+        <div class="pillar-desc">Meta Ads com formulário nativo. 7 campanhas geolocaliz. Criativo de produto com apelo visual. Público aberto, raio 7km.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">📸</div>
+        <div class="pillar-title">Conteúdo</div>
+        <div class="pillar-desc">Instagram com frequência definida, Linktree por loja, ensaio fotográfico profissional. Consistência visual como diferencial.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">💬</div>
+        <div class="pillar-title">CRM & Retenção</div>
+        <div class="pillar-desc">Grupos WhatsApp por loja, cardápio diário, agente de conversão individual. Base própria que cresce a cada semana.</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">📊</div>
+        <div class="pillar-title">Dados & Otimização</div>
+        <div class="pillar-desc">Pixel instalado, CPL por campanha, taxa de adesão ao grupo, conversão grupo→pedido. Decisões baseadas em número.</div>
+      </div>
+    </div>
+    <div class="insight" style="margin-top: 16px;">
+      <strong>Princípio V4:</strong> Captação sem retenção é desperdício. Os quatro pilares funcionam em conjunto — cada lead capturado alimenta o CRM, que gera dados para otimizar a captação.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 15 — CRM & RETENÇÃO ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">06 · Quatro Pilares · CRM</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">CRM de Entrada — Fase 1</div>
+    <h2 class="slide-title">WhatsApp como <em>canal de relacionamento</em> e recompra</h2>
+    <div class="content-grid col-2" style="flex: 0 0 auto; margin-bottom: 20px;">
+      <div>
+        <div class="card accent" style="margin-bottom: 14px;">
+          <div class="card-label">Estrutura de grupos</div>
+          <div style="font-size:15px; font-weight:500; margin-top:4px;">7 grupos — um por loja</div>
+          <div class="card-desc">Cada campanha direciona leads para o grupo da loja mais próxima. Comunicação regional e relevante.</div>
+        </div>
+        <ul class="bullet-list">
+          <li><strong>Cardápio diário:</strong> foto do produto do dia + preço + link iFood</li>
+          <li><strong>Promoções pontuais:</strong> sexta-feira, feriados, datas sazonais</li>
+          <li><strong>Conteúdo de bastidores:</strong> processo de produção, equipe, história</li>
+        </ul>
+      </div>
+      <div>
+        <div class="card gold-accent" style="margin-bottom: 14px;">
+          <div class="card-label">Agente de conversão</div>
+          <div style="font-size:15px; font-weight:500; margin-top:4px;">Conversas individuais → iFood</div>
+          <div class="card-desc">Ferramenta própria para responder dúvidas individualmente e empurrar para pedido.</div>
+        </div>
+        <ul class="bullet-list">
+          <li><strong>Sem spam:</strong> máximo 1 mensagem por dia no grupo</li>
+          <li><strong>Meta de adesão:</strong> >25% dos leads entram no grupo</li>
+          <li><strong>Meta de conversão:</strong> >15% do grupo faz pedido no mês</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>Lógica de retenção:</strong> Um cliente no grupo tem custo de reativação zero — basta enviar o cardápio do dia. Sem o grupo, precisaríamos pagar Meta Ads novamente para trazer o mesmo cliente de volta.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 16 — CRONOGRAMA ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">07 · Cronograma</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Execução — Semana a Semana</div>
+    <h2 class="slide-title">Do zero ao ar em <em>4 semanas</em>, otimizando a partir da 5ª</h2>
+    <div class="crono-grid">
+      <div class="crono-card">
+        <div class="crono-phase">Estruturar</div>
+        <div class="crono-weeks">Semanas 1–2</div>
+        <div class="crono-dates">Set 15 – Set 30</div>
+        <ul class="crono-actions">
+          <li>Instalar pixel Meta em todas as lojas</li>
+          <li>Criar e configurar contas Meta Ads por loja</li>
+          <li>Contratar e configurar ferramenta de automação</li>
+          <li>Ensaio fotográfico — criativos de produto</li>
+          <li>Criar formulários nativos por campanha</li>
+          <li>Ajustar Instagram + criar Linktree</li>
+          <li>Criar grupos WhatsApp (7 grupos)</li>
+        </ul>
+      </div>
+      <div class="crono-card">
+        <div class="crono-phase">Lançar</div>
+        <div class="crono-weeks">Semanas 3–4</div>
+        <div class="crono-dates">Out 1 – Out 18</div>
+        <ul class="crono-actions">
+          <li>Subir 7 campanhas simultâneas</li>
+          <li>Ativar fluxo automático pós-formulário</li>
+          <li>Primeiro conteúdo de cardápio nos grupos</li>
+          <li>Acompanhar fase de aprendizado</li>
+          <li>Monitorar CPL inicial e adesão ao grupo</li>
+          <li>Ajuste fino de segmentação geográfica</li>
+        </ul>
+      </div>
+      <div class="crono-card">
+        <div class="crono-phase">Otimizar</div>
+        <div class="crono-weeks">Semanas 5–7</div>
+        <div class="crono-dates">Out 19 – Nov 9</div>
+        <ul class="crono-actions">
+          <li>Análise CPL por loja — pausar o que não performa</li>
+          <li>Rotação de criativos com melhor CTR</li>
+          <li>Análise taxa de adesão ao grupo</li>
+          <li>Medir conversão grupo → pedido iFood</li>
+          <li>Relatório de 30 dias para o cliente</li>
+          <li>Ajuste de verba entre lojas performáticas</li>
+        </ul>
+      </div>
+      <div class="crono-card">
+        <div class="crono-phase">Escalar</div>
+        <div class="crono-weeks">Semana 8+</div>
+        <div class="crono-dates">Nov 10 em diante</div>
+        <ul class="crono-actions">
+          <li>Aumentar budget nas lojas com CPL validado</li>
+          <li>Planejamento da Fase 2 (canal próprio)</li>
+          <li>Estratégia Q4 — eventos e datas sazonais</li>
+          <li>Ampliar base de grupos e conteúdo</li>
+          <li>Primeiro diagnóstico de LTV da base</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 17 — KPIs FASE 1 ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">08 · KPIs · Fase 1</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Métricas de Sucesso — Meses 1 a 6</div>
+    <h2 class="slide-title">O que vamos <em>medir</em> para saber se está funcionando</h2>
+    <div class="kpi-grid" style="grid-template-columns: repeat(4,1fr);">
+      <div class="kpi-card">
+        <div class="kpi-label">CPL Meta Ads</div>
+        <div class="kpi-val red">R$10–15</div>
+        <div class="kpi-unit">custo por lead — meta de eficiência</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Leads / mês</div>
+        <div class="kpi-val gold">150–250</div>
+        <div class="kpi-unit">todas as 7 campanhas combinadas</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Adesão ao Grupo</div>
+        <div class="kpi-val">+25%</div>
+        <div class="kpi-unit">% de leads que entram no grupo WA</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Conversão Grupo</div>
+        <div class="kpi-val">+15%</div>
+        <div class="kpi-unit">% do grupo que faz pedido no mês</div>
+      </div>
+    </div>
+    <div class="content-grid col-2" style="flex: 1 1 auto; min-height: 0; margin-top: 4px;">
+      <div>
+        <ul class="bullet-list">
+          <li><strong>CTR do anúncio:</strong> meta ≥1,5% — indica qualidade do criativo</li>
+          <li><strong>Taxa de preenchimento do formulário:</strong> ≥60% dos cliques</li>
+          <li><strong>Tempo de resposta da automação:</strong> ≤60 segundos após formulário</li>
+          <li><strong>Crescimento da base de grupos:</strong> +20% ao mês</li>
+        </ul>
+      </div>
+      <div>
+        <ul class="bullet-list">
+          <li><strong>Pedidos gerados por grupo:</strong> rastreados via UTM nos links iFood</li>
+          <li><strong>Custo por pedido gerado:</strong> calculado mês a mês</li>
+          <li><strong>Taxa de recompra dos membros do grupo:</strong> ≥30% compram 2x ou mais</li>
+          <li><strong>NPS informal:</strong> pesquisa trimestral no próprio grupo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 18 — PROJEÇÕES ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">08 · KPIs · Projeções</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Projeção — Fase 1 (6 meses)</div>
+    <h2 class="slide-title">Construção de base própria mês a mês — <em>progressiva</em></h2>
+    <div style="overflow-x: auto; flex: 0 0 auto; margin-bottom: 16px;">
+      <table class="proj-table">
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th>Leads Acumulados</th>
+            <th>Membros Grupo WA</th>
+            <th>Pedidos Estimados/mês</th>
+            <th>Ticket Médio</th>
+            <th>Receita Gerada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mês 1</td>
+            <td>~180</td>
+            <td>~45</td>
+            <td>~7</td>
+            <td>R$90</td>
+            <td class="highlight">~R$630</td>
+          </tr>
+          <tr>
+            <td>Mês 2</td>
+            <td>~380</td>
+            <td>~95</td>
+            <td>~19</td>
+            <td>R$90</td>
+            <td class="highlight">~R$1.710</td>
+          </tr>
+          <tr>
+            <td>Mês 3</td>
+            <td>~580</td>
+            <td>~145</td>
+            <td>~32</td>
+            <td>R$90</td>
+            <td class="highlight">~R$2.880</td>
+          </tr>
+          <tr>
+            <td>Mês 4</td>
+            <td>~780</td>
+            <td>~195</td>
+            <td>~42</td>
+            <td>R$95</td>
+            <td class="highlight">~R$3.990</td>
+          </tr>
+          <tr>
+            <td>Mês 5</td>
+            <td>~980</td>
+            <td>~245</td>
+            <td>~52</td>
+            <td>R$95</td>
+            <td class="highlight">~R$4.940</td>
+          </tr>
+          <tr>
+            <td>Mês 6</td>
+            <td>~1.180</td>
+            <td>~295</td>
+            <td>~63</td>
+            <td>R$100</td>
+            <td class="gold">~R$6.300</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight">
+      <strong>Nota importante:</strong> Estas projeções consideram o cenário base (CPL R$12, adesão 25%, conversão 15%). O mês 1 e 2 estão em fase de aprendizado — os números crescem a partir do mês 3, quando as campanhas já passaram da janela de estabilização do algoritmo. O valor principal não é a receita direta, mas a base de 1.000+ contatos próprios ao fim da Fase 1.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 19 — INVESTIMENTO ═══════════════ -->
+<section class="slide invest-slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">09 · Investimento</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Estrutura de Investimento — Fase 1</div>
+    <h2 class="slide-title" style="color: var(--white);">Investimento <em>focado</em> em captação e estrutura</h2>
+    <table class="invest-table" style="flex: 0 0 auto; margin-bottom: 24px;">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Descrição</th>
+          <th class="val">Valor/mês</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Verba de Mídia Meta Ads</td>
+          <td>7 campanhas · R$357 por loja · raio 7km</td>
+          <td class="val">R$2.500</td>
+        </tr>
+        <tr>
+          <td>Gestão de Tráfego</td>
+          <td>Setup, otimização, relatórios e acompanhamento semanal</td>
+          <td class="val">A definir</td>
+        </tr>
+        <tr>
+          <td>Ferramenta de Automação</td>
+          <td>Disparo automático de mensagem pós-formulário</td>
+          <td class="val">A definir</td>
+        </tr>
+        <tr>
+          <td>Produção de Criativos</td>
+          <td>Ensaio fotográfico (investimento único · Mês 1)</td>
+          <td class="val">A definir</td>
+        </tr>
+        <tr>
+          <td>Social Media</td>
+          <td>Instagram, Linktree, grupos WhatsApp, calendário</td>
+          <td class="val">A definir</td>
+        </tr>
+        <tr>
+          <td><strong>Total Mínimo Confirmado</strong></td>
+          <td>Verba de mídia — investimento direto em captação</td>
+          <td class="val">R$2.500/mês</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="content-grid col-3" style="flex: 0 0 auto;">
+      <div style="background:#1a1a1a; border-radius:3px; padding:18px; display:flex; flex-direction:column; gap:6px;">
+        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4);">Cenário conservador</div>
+        <div style="font-family:var(--font-display); font-size:28px; color:var(--gray-3);">167 leads/mês</div>
+        <div style="font-size:13px; color:var(--gray-5);">CPL R$15 · ~42 pedidos no mês 6</div>
+      </div>
+      <div style="background:#1a1a1a; border-radius:3px; padding:18px; display:flex; flex-direction:column; gap:6px; border:1px solid var(--gold);">
+        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold);">Cenário base</div>
+        <div style="font-family:var(--font-display); font-size:28px; color:var(--white);">208 leads/mês</div>
+        <div style="font-size:13px; color:var(--gray-4);">CPL R$12 · ~63 pedidos no mês 6</div>
+      </div>
+      <div style="background:#1a1a1a; border-radius:3px; padding:18px; display:flex; flex-direction:column; gap:6px;">
+        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4);">Cenário otimista</div>
+        <div style="font-family:var(--font-display); font-size:28px; color:var(--red);">312 leads/mês</div>
+        <div style="font-size:13px; color:var(--gray-5);">CPL R$8 · ~94 pedidos no mês 6</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /deck -->
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let current = 0;
+  const deck = document.getElementById('deck');
+  const progress = document.getElementById('progress');
+  const counter = document.getElementById('counter');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const dotsEl = document.getElementById('dots');
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => go(i));
+    dotsEl.appendChild(d);
+  });
+
+  function updateUI(idx) {
+    current = idx;
+    Array.from(dotsEl.children).forEach((d, i) => d.classList.toggle('active', i === current));
+    progress.style.width = ((current + 1) / total * 100) + '%';
+    counter.textContent = (current + 1) + ' / ' + total;
+    prev.style.opacity = current === 0 ? '0' : '1';
+    prev.style.pointerEvents = current === 0 ? 'none' : 'all';
+    next.style.opacity = current === total - 1 ? '0' : '1';
+    next.style.pointerEvents = current === total - 1 ? 'none' : 'all';
+  }
+
+  function go(n) {
+    const target = Math.max(0, Math.min(n, total - 1));
+    slides[target].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // IntersectionObserver to track current visible slide
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+        const idx = slides.indexOf(entry.target);
+        if (idx !== -1) updateUI(idx);
+      }
+    });
+  }, { root: deck, threshold: 0.5 });
+
+  slides.forEach(slide => observer.observe(slide));
+
+  prev.addEventListener('click', () => go(current - 1));
+  next.addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') go(current + 1);
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') go(current - 1);
+  });
+
+  updateUI(0);
+</script>
+</body>
+</html>

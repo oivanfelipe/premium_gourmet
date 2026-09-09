@@ -20,19 +20,43 @@
     --gray-3: #C8C4BE;
     --gray-4: #888480;
     --gray-5: #555250;
-
     --font-display: 'Cormorant Garamond', Georgia, serif;
     --font-body: 'DM Sans', system-ui, sans-serif;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html, body {
+  html { height: 100%; }
+  body {
     height: 100%;
     overflow: hidden;
     background: var(--black);
     font-family: var(--font-body);
+    font-size: 16px;
     color: var(--black);
+  }
+
+  /* ── Deck: scroll-snap container ── */
+  #deck {
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #deck::-webkit-scrollbar { display: none; }
+
+  /* ── Slides ── */
+  .slide {
+    width: 100%;
+    height: 100vh;
+    scroll-snap-align: start;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
   }
 
   /* ── Progress bar ── */
@@ -41,7 +65,7 @@
     top: 0; left: 0;
     height: 3px;
     background: var(--red);
-    z-index: 100;
+    z-index: 200;
     transition: width .35s ease;
     pointer-events: none;
   }
@@ -51,11 +75,11 @@
     position: fixed;
     top: 22px; right: 28px;
     font-family: var(--font-body);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
     letter-spacing: .08em;
     color: var(--gray-4);
-    z-index: 100;
+    z-index: 200;
   }
 
   /* ── Dot nav ── */
@@ -65,7 +89,7 @@
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
-    z-index: 100;
+    z-index: 200;
   }
   .dot {
     width: 6px; height: 6px;
@@ -79,59 +103,81 @@
     transform: scale(1.4);
   }
 
-  /* ── Slides container ── */
-  #deck {
-    width: 100%;
-    height: 100%;
-    position: relative;
-  }
-
-  .slide {
-    position: absolute;
-    inset: 0;
-    background: var(--white);
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .45s ease;
-    overflow: hidden;
-  }
-  .slide.active {
-    opacity: 1;
-    pointer-events: all;
-  }
-
   /* ── Nav arrows ── */
   .nav-btn {
     position: fixed;
     top: 50%; transform: translateY(-50%);
-    width: 44px; height: 44px;
-    background: rgba(17,17,17,.06);
+    width: 48px; height: 48px;
+    background: rgba(17,17,17,.07);
     border: none;
     border-radius: 50%;
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    z-index: 100;
-    transition: background .2s;
+    z-index: 200;
+    transition: background .2s, opacity .2s;
   }
-  .nav-btn:hover { background: rgba(17,17,17,.13); }
+  .nav-btn:hover { background: rgba(17,17,17,.15); }
   #nav-prev { left: 16px; }
   #nav-next { right: 16px; }
-  .nav-btn svg { width: 18px; height: 18px; stroke: var(--gray-5); stroke-width: 2; fill: none; }
+  .nav-btn svg { width: 20px; height: 20px; stroke: var(--gray-5); stroke-width: 2; fill: none; }
 
   /* ══════════════════════════════════════════
-     SLIDE LAYOUTS
+     COMMON SLIDE LAYOUTS
   ══════════════════════════════════════════ */
 
-  /* Slide 1 — Cover */
+  /* Standard layout */
+  .s-std {
+    padding: 52px 80px 64px;
+  }
+  @media (max-width: 900px) {
+    .s-std { padding: 40px 36px 56px; }
+  }
+
+  .slide-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .slide-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 3.8vw, 56px);
+    font-weight: 400;
+    line-height: 1.12;
+    text-wrap: balance;
+    color: var(--black);
+    max-width: 860px;
+    margin-bottom: 36px;
+  }
+  .slide-title em {
+    font-style: italic;
+    color: var(--red);
+  }
+  .slide-rule {
+    width: 100%;
+    height: 1px;
+    background: var(--gray-2);
+    margin-bottom: 36px;
+  }
+
+  /* Centered layout */
+  .s-center {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 80px;
+  }
+
+  /* ── COVER ── */
   .s-cover {
     background: var(--black) !important;
     color: var(--white);
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 0;
   }
   .s-cover .cover-rule {
     width: 48px; height: 2px;
@@ -140,16 +186,16 @@
   }
   .s-cover .cover-eyebrow {
     font-family: var(--font-body);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
     letter-spacing: .14em;
     text-transform: uppercase;
     color: var(--gray-4);
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
   .s-cover .cover-title {
     font-family: var(--font-display);
-    font-size: clamp(52px, 7vw, 96px);
+    font-size: clamp(56px, 8vw, 104px);
     font-weight: 300;
     line-height: 1;
     letter-spacing: -.01em;
@@ -162,11 +208,11 @@
   }
   .s-cover .cover-sub {
     font-family: var(--font-display);
-    font-size: clamp(20px, 2.5vw, 32px);
+    font-size: clamp(22px, 2.8vw, 36px);
     font-weight: 300;
     font-style: italic;
     color: var(--gray-4);
-    margin-bottom: 48px;
+    margin-bottom: 52px;
   }
   .s-cover .cover-meta {
     display: flex;
@@ -175,7 +221,7 @@
     justify-content: center;
   }
   .s-cover .cover-meta span {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 400;
     color: var(--gray-4);
     letter-spacing: .06em;
@@ -185,53 +231,7 @@
     background: var(--gray-5);
   }
 
-  /* Standard layout with header stripe */
-  .s-std {
-    padding: 56px 80px 72px;
-    gap: 0;
-  }
-  @media (max-width: 900px) {
-    .s-std { padding: 44px 40px 64px; }
-  }
-  .slide-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--red);
-    margin-bottom: 12px;
-    display: block;
-  }
-  .slide-title {
-    font-family: var(--font-display);
-    font-size: clamp(28px, 3.2vw, 48px);
-    font-weight: 400;
-    line-height: 1.15;
-    text-wrap: balance;
-    color: var(--black);
-    max-width: 820px;
-    margin-bottom: 40px;
-  }
-  .slide-title em {
-    font-style: italic;
-    color: var(--red);
-  }
-  .slide-rule {
-    width: 100%;
-    height: 1px;
-    background: var(--gray-2);
-    margin-bottom: 40px;
-  }
-
-  /* Centered layout */
-  .s-center {
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 60px 80px;
-  }
-
-  /* ── Agenda slide ── */
+  /* ── Agenda ── */
   .agenda-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -241,13 +241,13 @@
   .agenda-item {
     background: var(--gray-1);
     border-radius: 8px;
-    padding: 22px 24px;
+    padding: 24px 26px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
   .agenda-num {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: .12em;
     color: var(--red);
@@ -255,27 +255,21 @@
   }
   .agenda-text {
     font-family: var(--font-display);
-    font-size: 17px;
+    font-size: 19px;
     font-weight: 400;
     line-height: 1.3;
     color: var(--black);
   }
 
-  /* ── 2-col layout ── */
+  /* ── 2-col ── */
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 48px;
     flex: 1;
   }
-  .one-third-two-third {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 48px;
-    flex: 1;
-  }
 
-  /* ── Stat big number ── */
+  /* ── Stat ── */
   .stat-num {
     font-family: var(--font-display);
     font-size: clamp(64px, 9vw, 120px);
@@ -284,7 +278,7 @@
     color: var(--red);
   }
   .stat-label {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 400;
     color: var(--gray-5);
     margin-top: 8px;
@@ -292,7 +286,7 @@
     max-width: 320px;
   }
 
-  /* ── Donut chart ── */
+  /* ── Donut ── */
   .donut-wrap {
     display: flex;
     flex-direction: column;
@@ -310,7 +304,7 @@
     display: flex;
     align-items: center;
     gap: 7px;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--gray-5);
   }
   .legend-dot {
@@ -336,20 +330,19 @@
     max-width: 520px;
   }
   .funnel-bar {
-    height: 48px;
+    height: 52px;
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0 22px;
     color: var(--white);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
   }
-  .funnel-bar .f-label { font-weight: 500; }
   .funnel-bar .f-val {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 20px;
     font-style: italic;
   }
   .funnel-arrow {
@@ -358,9 +351,9 @@
     margin: 2px 0;
   }
   .funnel-loss {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--gray-4);
-    letter-spacing: .04em;
+    letter-spacing: .03em;
     margin-bottom: 2px;
   }
 
@@ -369,8 +362,8 @@
     background: var(--red-light);
     border-left: 3px solid var(--red);
     border-radius: 0 6px 6px 0;
-    padding: 16px 20px;
-    font-size: 14px;
+    padding: 18px 22px;
+    font-size: 15px;
     line-height: 1.6;
     color: var(--black);
   }
@@ -387,7 +380,7 @@
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.55;
     color: var(--black);
   }
@@ -398,23 +391,24 @@
     border-radius: 50%;
     background: var(--red);
     flex-shrink: 0;
-    margin-top: 6px;
+    margin-top: 7px;
   }
 
   /* ── Tags ── */
   .tag {
     display: inline-flex;
     align-items: center;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: .1em;
+    letter-spacing: .08em;
     text-transform: uppercase;
-    padding: 3px 9px;
+    padding: 4px 10px;
     border-radius: 3px;
   }
   .tag-red { background: var(--red-light); color: var(--red); }
   .tag-gold { background: var(--gold-light); color: var(--gold); }
   .tag-gray { background: var(--gray-2); color: var(--gray-5); }
+  .tag-green { background: #e8f5e8; color: #2d7a38; }
 
   /* ── Persona cards ── */
   .persona-cards {
@@ -432,7 +426,7 @@
     gap: 14px;
   }
   .persona-icon {
-    width: 44px; height: 44px;
+    width: 46px; height: 46px;
     border-radius: 50%;
     background: var(--red-light);
     display: flex; align-items: center; justify-content: center;
@@ -440,12 +434,12 @@
   }
   .persona-name {
     font-family: var(--font-display);
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 500;
     color: var(--black);
   }
   .persona-detail {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.6;
     color: var(--gray-5);
   }
@@ -459,25 +453,25 @@
   /* ── Journey flow ── */
   .journey {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0;
     flex-wrap: nowrap;
     overflow-x: auto;
-    padding: 4px 0;
+    padding: 4px 0 12px;
   }
   .journey-step {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     flex-shrink: 0;
   }
   .journey-box {
     background: var(--black);
     color: var(--white);
     border-radius: 6px;
-    padding: 10px 14px;
-    font-size: 11px;
+    padding: 12px 16px;
+    font-size: 12px;
     font-weight: 500;
     letter-spacing: .04em;
     text-align: center;
@@ -487,24 +481,24 @@
   .journey-box.j-gold { background: var(--gold); }
   .journey-box.j-light { background: var(--gray-2); color: var(--black); }
   .journey-sub {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--gray-4);
     text-align: center;
-    max-width: 80px;
+    max-width: 90px;
     line-height: 1.3;
   }
   .journey-arrow {
-    width: 20px; height: 1px;
+    width: 24px; height: 1px;
     background: var(--gray-3);
     flex-shrink: 0;
     position: relative;
-    top: -10px;
+    top: 18px;
   }
   .journey-arrow::after {
     content: '';
     position: absolute;
     right: 0; top: -3px;
-    border: 3px solid transparent;
+    border: 4px solid transparent;
     border-left-color: var(--gray-3);
   }
 
@@ -512,12 +506,12 @@
   .budget-bars {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
   }
   .budget-row {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
   }
   .budget-header {
     display: flex;
@@ -525,13 +519,13 @@
     align-items: baseline;
   }
   .budget-name {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--black);
   }
   .budget-pct {
     font-family: var(--font-display);
-    font-size: 16px;
+    font-size: 18px;
     font-style: italic;
     color: var(--red);
   }
@@ -545,16 +539,16 @@
     height: 100%;
     border-radius: 4px;
     background: var(--red);
-    transition: width .5s ease;
   }
   .budget-fill.gold { background: var(--gold); }
   .budget-fill.dark { background: var(--black); }
   .budget-note {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--gray-4);
+    line-height: 1.4;
   }
 
-  /* ── 4 pillars ── */
+  /* ── 4 Pillars ── */
   .pillars-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -570,7 +564,7 @@
     gap: 12px;
   }
   .pillar-num {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: .14em;
     text-transform: uppercase;
@@ -578,16 +572,16 @@
   }
   .pillar-title {
     font-family: var(--font-display);
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 500;
   }
   .pillar-desc {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--gray-5);
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
-  /* ── CRM journeys ── */
+  /* ── CRM ── */
   .crm-journeys {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -604,7 +598,7 @@
   }
   .crm-title {
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
     color: var(--black);
   }
   .crm-flow {
@@ -614,58 +608,55 @@
     flex-wrap: wrap;
   }
   .crm-node {
-    font-size: 11px;
+    font-size: 12px;
     background: var(--white);
     border: 1px solid var(--gray-2);
     border-radius: 4px;
-    padding: 4px 9px;
+    padding: 4px 10px;
     color: var(--black);
     white-space: nowrap;
   }
   .crm-node.red { border-color: var(--red); background: var(--red-light); color: var(--red); font-weight: 600; }
-  .crm-sep {
-    font-size: 10px;
-    color: var(--gray-3);
-  }
+  .crm-sep { font-size: 11px; color: var(--gray-3); }
 
-  /* ── Timeline ── */
-  .timeline {
+  /* ── Timeline week-by-week ── */
+  .timeline-weeks {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0;
     flex: 1;
     align-items: start;
   }
-  .timeline-phase {
+  .timeline-col {
     padding: 0 16px;
     border-left: 2px solid var(--gray-2);
     position: relative;
   }
-  .timeline-phase:first-child { border-left-color: var(--red); }
-  .timeline-phase::before {
+  .timeline-col:first-child { border-left-color: var(--red); }
+  .timeline-col::before {
     content: '';
     position: absolute;
-    left: -6px; top: 8px;
+    left: -6px; top: 6px;
     width: 10px; height: 10px;
     border-radius: 50%;
     background: var(--gray-2);
     border: 2px solid var(--white);
   }
-  .timeline-phase:first-child::before { background: var(--red); }
-  .timeline-month {
-    font-size: 10px;
+  .timeline-col:first-child::before { background: var(--red); }
+  .timeline-period {
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: .12em;
+    letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--gray-4);
     margin-bottom: 6px;
   }
-  .timeline-name {
+  .timeline-phase-name {
     font-family: var(--font-display);
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 500;
     color: var(--black);
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   .timeline-items {
     list-style: none;
@@ -674,7 +665,7 @@
     gap: 8px;
   }
   .timeline-items li {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--gray-5);
     line-height: 1.4;
     display: flex;
@@ -684,7 +675,7 @@
   .timeline-items li::before {
     content: '→';
     color: var(--red);
-    font-size: 11px;
+    font-size: 12px;
     flex-shrink: 0;
     margin-top: 1px;
   }
@@ -698,13 +689,13 @@
   .kpi-card {
     background: var(--gray-1);
     border-radius: 8px;
-    padding: 20px 18px;
+    padding: 22px 18px;
     display: flex;
     flex-direction: column;
     gap: 6px;
   }
   .kpi-label {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: .1em;
     text-transform: uppercase;
@@ -712,25 +703,27 @@
   }
   .kpi-val {
     font-family: var(--font-display);
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 300;
     color: var(--black);
+    line-height: 1;
   }
   .kpi-desc {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--gray-4);
     line-height: 1.4;
+    margin-top: 2px;
   }
 
-  /* ── Projection table + chart ── */
+  /* ── Proj table ── */
   .proj-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 14px;
   }
   .proj-table th {
     text-align: left;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: .1em;
     text-transform: uppercase;
@@ -747,7 +740,7 @@
   .proj-table tr:last-child td { border-bottom: none; }
   .proj-table .td-num {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 20px;
     font-style: italic;
     color: var(--gold);
     font-variant-numeric: tabular-nums;
@@ -755,7 +748,7 @@
   .proj-table .td-pp {
     color: var(--red);
     font-weight: 600;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   /* ── Investment ── */
@@ -763,7 +756,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
   }
   .invest-card {
     background: var(--gray-1);
@@ -771,7 +764,7 @@
     padding: 28px 24px;
   }
   .invest-card-label {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: .12em;
     text-transform: uppercase;
@@ -780,19 +773,19 @@
   }
   .invest-card-val {
     font-family: var(--font-display);
-    font-size: clamp(28px, 3vw, 40px);
+    font-size: clamp(28px, 3vw, 42px);
     font-weight: 300;
     color: var(--gold);
   }
   .invest-card-val em {
     font-style: normal;
-    font-size: 14px;
+    font-size: 15px;
     color: var(--gray-4);
     font-weight: 400;
     font-family: var(--font-body);
   }
   .invest-card-desc {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--gray-5);
     margin-top: 8px;
     line-height: 1.5;
@@ -810,6 +803,7 @@
     font-weight: 500;
     color: var(--gray-4);
     letter-spacing: .06em;
+    text-transform: uppercase;
   }
   .invest-total-val {
     font-family: var(--font-display);
@@ -821,31 +815,26 @@
     font-style: italic;
     color: var(--gold);
   }
-  .invest-roas {
-    text-align: right;
-  }
+  .invest-roas { text-align: right; }
   .invest-roas-val {
     font-family: var(--font-display);
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 300;
     color: var(--red);
     font-style: italic;
   }
-  .invest-roas-label {
-    font-size: 11px;
-    color: var(--gray-4);
-  }
+  .invest-roas-label { font-size: 12px; color: var(--gray-4); }
 
   /* ── Channel table ── */
   .ch-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 14px;
     flex: 1;
   }
   .ch-table th {
     text-align: left;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: .1em;
     text-transform: uppercase;
@@ -854,7 +843,7 @@
     border-bottom: 1px solid var(--gray-2);
   }
   .ch-table td {
-    padding: 12px 12px 12px 0;
+    padding: 13px 12px 13px 0;
     border-bottom: 1px solid var(--gray-2);
     color: var(--black);
     vertical-align: middle;
@@ -862,41 +851,102 @@
   }
   .ch-table tr:last-child td { border-bottom: none; }
   .ch-table .td-ch { font-weight: 500; }
-  .ch-table .td-fn { font-size: 12px; color: var(--gray-5); }
+  .ch-table .td-fn { font-size: 13px; color: var(--gray-5); }
 
-  /* ── Objective arrow ── */
-  .obj-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin: 32px 0;
+  /* ── Objective two-phase ── */
+  .phase-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    flex: 1;
   }
-  .obj-val {
-    text-align: center;
-  }
-  .obj-pct {
-    font-family: var(--font-display);
-    font-size: clamp(56px, 7vw, 88px);
-    font-weight: 300;
-    line-height: 1;
-  }
-  .obj-desc {
-    font-size: 12px;
-    color: var(--gray-5);
-    margin-top: 4px;
-  }
-  .obj-mid {
+  .phase-card {
+    border-radius: 10px;
+    padding: 30px 28px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 6px;
+    gap: 14px;
   }
-  .obj-period {
+  .phase-card.active { background: var(--black); color: var(--white); }
+  .phase-card.future { background: var(--gray-1); }
+  .phase-tag {
     font-size: 11px;
-    color: var(--gray-4);
-    letter-spacing: .06em;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
   }
+  .phase-card.active .phase-tag { color: var(--red); }
+  .phase-card.future .phase-tag { color: var(--gray-4); }
+  .phase-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .phase-card.active .phase-title { color: var(--white); }
+  .phase-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .phase-items li {
+    font-size: 14px;
+    line-height: 1.5;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .phase-card.active .phase-items li { color: var(--gray-3); }
+  .phase-card.future .phase-items li { color: var(--gray-5); }
+  .phase-items li::before {
+    content: '→';
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .phase-card.active .phase-items li::before { color: var(--red); }
+  .phase-card.future .phase-items li::before { color: var(--gray-3); }
+
+  /* ── Media plan table ── */
+  .media-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    flex: 1;
+  }
+  .media-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gray-4);
+    padding: 0 14px 10px 0;
+    border-bottom: 2px solid var(--gray-2);
+  }
+  .media-table th:not(:first-child) { text-align: center; }
+  .media-table td {
+    padding: 11px 14px 11px 0;
+    border-bottom: 1px solid var(--gray-2);
+    vertical-align: middle;
+  }
+  .media-table td:not(:first-child) { text-align: center; }
+  .media-table tr:last-child td {
+    border-top: 2px solid var(--gray-2);
+    border-bottom: none;
+    font-weight: 600;
+  }
+  .media-table .td-store { font-weight: 500; color: var(--black); }
+  .media-table .td-money {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-style: italic;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+  }
+  .media-table .td-leads { font-size: 13px; color: var(--gray-5); }
+  .media-table .td-leads span { display: block; }
+  .media-table .td-total .td-money { color: var(--red); font-size: 20px; }
 
   /* ── Diag boxes ── */
   .diag-grid {
@@ -910,12 +960,12 @@
     padding: 22px 20px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
   .diag-box.bad { background: var(--red-light); border: 1px solid #e8c5c5; }
   .diag-box.good { background: #edf5ee; border: 1px solid #bdd8bf; }
   .diag-box-label {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: .12em;
     text-transform: uppercase;
@@ -926,10 +976,10 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 9px;
   }
   .diag-items li {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--black);
     line-height: 1.4;
     display: flex;
@@ -987,15 +1037,15 @@
     <div class="agenda-grid">
       <div class="agenda-item">
         <span class="agenda-num">01</span>
-        <span class="agenda-text">Contexto de mercado e diagnóstico</span>
+        <span class="agenda-text">Contexto de mercado e diagnóstico de maturidade</span>
       </div>
       <div class="agenda-item">
         <span class="agenda-num">02</span>
-        <span class="agenda-text">O que identificamos como principal gargalo</span>
+        <span class="agenda-text">Principal gargalo identificado</span>
       </div>
       <div class="agenda-item">
         <span class="agenda-num">03</span>
-        <span class="agenda-text">Objetivo estratégico do projeto</span>
+        <span class="agenda-text">Objetivo estratégico em duas fases</span>
       </div>
       <div class="agenda-item">
         <span class="agenda-num">04</span>
@@ -1003,11 +1053,11 @@
       </div>
       <div class="agenda-item">
         <span class="agenda-num">05</span>
-        <span class="agenda-text">Canais, estratégia e motor de vendas</span>
+        <span class="agenda-text">Motor de vendas, canais e plano de mídia</span>
       </div>
       <div class="agenda-item">
         <span class="agenda-num">06</span>
-        <span class="agenda-text">Execução, métricas e projeção de resultado</span>
+        <span class="agenda-text">Cronograma, KPIs e projeção de resultados</span>
       </div>
     </div>
   </section>
@@ -1030,35 +1080,35 @@
         </div>
       </div>
       <div>
-        <p style="font-size:13px; color:var(--gray-5); margin-bottom:16px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; font-size:10px;">SAZONALIDADE DO NEGÓCIO</p>
-        <div style="display:flex; flex-direction:column; gap:10px;">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="width:90px; font-size:12px; color:var(--gray-5); flex-shrink:0;">Fim de semana</div>
+        <p style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:16px;">Sazonalidade do negócio</p>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:100px; font-size:13px; color:var(--gray-5); flex-shrink:0;">Fim de semana</div>
             <div style="flex:1; height:8px; background:var(--gray-2); border-radius:4px;"><div style="height:100%;width:95%;background:var(--red);border-radius:4px;"></div></div>
-            <div style="font-size:11px; color:var(--gray-4); width:36px; text-align:right;">Pico</div>
+            <div style="font-size:12px; color:var(--gray-4); width:44px; text-align:right;">Pico</div>
           </div>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="width:90px; font-size:12px; color:var(--gray-5); flex-shrink:0;">Nov / Dez</div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:100px; font-size:13px; color:var(--gray-5); flex-shrink:0;">Nov / Dez</div>
             <div style="flex:1; height:8px; background:var(--gray-2); border-radius:4px;"><div style="height:100%;width:90%;background:var(--gold);border-radius:4px;"></div></div>
-            <div style="font-size:11px; color:var(--gray-4); width:36px; text-align:right;">Alto</div>
+            <div style="font-size:12px; color:var(--gray-4); width:44px; text-align:right;">Alto</div>
           </div>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="width:90px; font-size:12px; color:var(--gray-5); flex-shrink:0;">Seg–Sex</div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:100px; font-size:13px; color:var(--gray-5); flex-shrink:0;">Seg–Sex</div>
             <div style="flex:1; height:8px; background:var(--gray-2); border-radius:4px;"><div style="height:100%;width:60%;background:var(--black);border-radius:4px;"></div></div>
-            <div style="font-size:11px; color:var(--gray-4); width:36px; text-align:right;">Médio</div>
+            <div style="font-size:12px; color:var(--gray-4); width:44px; text-align:right;">Médio</div>
           </div>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="width:90px; font-size:12px; color:var(--gray-5); flex-shrink:0;">Março</div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:100px; font-size:13px; color:var(--gray-5); flex-shrink:0;">Março</div>
             <div style="flex:1; height:8px; background:var(--gray-2); border-radius:4px;"><div style="height:100%;width:30%;background:var(--gray-3);border-radius:4px;"></div></div>
-            <div style="font-size:11px; color:var(--gray-4); width:36px; text-align:right;">Baixo</div>
+            <div style="font-size:12px; color:var(--gray-4); width:44px; text-align:right;">Baixo</div>
           </div>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="width:90px; font-size:12px; color:var(--gray-5); flex-shrink:0;">Mai–Out</div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div style="width:100px; font-size:13px; color:var(--gray-5); flex-shrink:0;">Mai–Out</div>
             <div style="flex:1; height:8px; background:var(--gray-2); border-radius:4px;"><div style="height:100%;width:70%;background:var(--gold);border-radius:4px; opacity:.7;"></div></div>
-            <div style="font-size:11px; color:var(--gray-4); width:36px; text-align:right;">Eventos</div>
+            <div style="font-size:12px; color:var(--gray-4); width:44px; text-align:right;">Eventos</div>
           </div>
         </div>
-        <p style="margin-top:20px; font-size:12px; color:var(--gray-4); line-height:1.5;">Sazonalidade previsível = planejamento possível. Dá para antecipar picos com campanhas e não perder oportunidade.</p>
+        <p style="margin-top:20px; font-size:13px; color:var(--gray-4); line-height:1.5;">Sazonalidade previsível = planejamento possível. Dá para antecipar picos com campanhas e não perder oportunidade.</p>
       </div>
     </div>
   </section>
@@ -1072,16 +1122,10 @@
       <div class="donut-wrap">
         <svg width="240" height="240" viewBox="0 0 240 240" aria-label="Gráfico: 80% iFood, 20% canal próprio">
           <circle cx="120" cy="120" r="90" fill="none" stroke="#F8F6F4" stroke-width="36"/>
-          <!-- 80% = 0.8 * 2π*90 = 452.4; circumference = 565.5 -->
           <circle cx="120" cy="120" r="90" fill="none" stroke="#C41E1E" stroke-width="36"
-            stroke-dasharray="452.4 113.1"
-            stroke-dashoffset="141.4"
-            stroke-linecap="butt"/>
-          <!-- 20% -->
+            stroke-dasharray="452.4 113.1" stroke-dashoffset="141.4" stroke-linecap="butt"/>
           <circle cx="120" cy="120" r="90" fill="none" stroke="#B8862A" stroke-width="36"
-            stroke-dasharray="113.1 452.4"
-            stroke-dashoffset="282.7"
-            stroke-linecap="butt"/>
+            stroke-dasharray="113.1 452.4" stroke-dashoffset="282.7" stroke-linecap="butt"/>
           <text x="120" y="112" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="42" fill="#111" font-weight="300">80%</text>
           <text x="120" y="138" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" fill="#888480">iFood</text>
         </svg>
@@ -1098,19 +1142,19 @@
           <li>Quebra do contrato de exclusividade com o iFood em <strong>julho de 2026</strong> — esse é o gatilho do projeto</li>
           <li>Cada real vendido pelo iFood gera menos margem do que a já baixa de 10%</li>
           <li>Você não tem acesso ao dado do cliente: nome, bairro, frequência — nada</li>
-          <li>Qualquer mudança de política ou aumento de taxa impacta 80% do seu negócio</li>
+          <li>Qualquer mudança de política ou aumento de taxa impacta 80% do negócio</li>
         </ul>
         <div style="display:flex; gap:12px; flex-wrap:wrap;">
           <div style="background:var(--gray-1); border-radius:8px; padding:14px 18px;">
-            <div style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:4px;">Faturamento mensal</div>
+            <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:4px;">Faturamento mensal</div>
             <div style="font-family:var(--font-display); font-size:28px; font-weight:300; color:var(--gold);">~R$150k</div>
           </div>
           <div style="background:var(--gray-1); border-radius:8px; padding:14px 18px;">
-            <div style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:4px;">Pedidos/dia (FDS)</div>
+            <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:4px;">Pedidos/dia (FDS)</div>
             <div style="font-family:var(--font-display); font-size:28px; font-weight:300; color:var(--black);">100–200</div>
           </div>
           <div style="background:var(--gray-1); border-radius:8px; padding:14px 18px;">
-            <div style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:4px;">Nota iFood</div>
+            <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:4px;">Nota iFood</div>
             <div style="font-family:var(--font-display); font-size:28px; font-weight:300; color:var(--black);">4,7–4,8</div>
           </div>
         </div>
@@ -1120,7 +1164,7 @@
 
   <!-- ═══════ SLIDE 5 — DIAGNÓSTICO ═══════ -->
   <section class="slide s-std" id="s5">
-    <span class="slide-label">Diagnóstico de Maturidade</span>
+    <span class="slide-label">Diagnóstico de Maturidade Digital — V1</span>
     <h2 class="slide-title">Operação forte. <em>Motor de vendas próprio: inexistente.</em></h2>
     <div class="slide-rule"></div>
     <div class="diag-grid">
@@ -1152,7 +1196,7 @@
         </div>
       </div>
       <div style="background:var(--gray-1); border-radius:8px; padding:22px 20px;">
-        <p style="font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--gray-4); margin-bottom:14px;">Ativos subutilizados</p>
+        <p style="font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--gray-4); margin-bottom:14px;">Ativos subutilizados</p>
         <ul class="bullet-list">
           <li>Grupo VIP de 250 clientes sem régua ativa de comunicação</li>
           <li>Base histórica do Saipos: clientes, frequência e ticket — não mapeada</li>
@@ -1165,7 +1209,7 @@
   <!-- ═══════ SLIDE 6 — GARGALO ═══════ -->
   <section class="slide s-std" id="s6">
     <span class="slide-label">Diagnóstico</span>
-    <h2 class="slide-title">O principal gargalo está na <em>conversão do canal próprio</em></h2>
+    <h2 class="slide-title">O principal gargalo: <em>a empresa não capta nem conhece o próprio cliente</em></h2>
     <div class="slide-rule"></div>
     <div class="two-col" style="align-items:center;">
       <div class="funnel">
@@ -1181,18 +1225,18 @@
         </div>
         <div class="funnel-step">
           <div class="funnel-bar" style="width:88%; background:#2d2d2d;">
-            <span class="f-label">Considera pedir direto</span>
+            <span class="f-label">Considera comprar direto</span>
             <span class="f-val">~30</span>
           </div>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center;">
           <div class="funnel-arrow"></div>
-          <div class="funnel-loss">não encontra caminho fácil</div>
+          <div class="funnel-loss">não encontra canal fácil</div>
         </div>
         <div class="funnel-step">
-          <div class="funnel-bar" style="width:72%; background:var(--gray-4);">
+          <div class="funnel-bar" style="width:68%; background:var(--gray-4);">
             <span class="f-label">Chega ao WhatsApp</span>
-            <span class="f-val">~15</span>
+            <span class="f-val">~12</span>
           </div>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center;">
@@ -1200,24 +1244,24 @@
           <div class="funnel-loss">demora no atendimento</div>
         </div>
         <div class="funnel-step">
-          <div class="funnel-bar" style="width:56%; background:var(--red);">
+          <div class="funnel-bar" style="width:50%; background:var(--red);">
             <span class="f-label">Pedido realizado</span>
-            <span class="f-val">~8</span>
+            <span class="f-val">~6</span>
           </div>
         </div>
       </div>
       <div style="display:flex; flex-direction:column; gap:18px;">
         <p style="font-size:15px; line-height:1.7; color:var(--black);">
-          O produto convence. A operação física funciona. O problema é que o canal próprio não tem um fluxo de recebimento pronto — e quem tenta pedir direto encontra fricção.
+          O produto convence. A operação física funciona. O problema é simples: a empresa não captura o cliente. Quem compra no iFood não é seu cliente — é cliente do iFood.
         </p>
         <ul class="bullet-list">
-          <li><strong>Atendimento humano sobrecarregado:</strong> uma pessoa, múltiplas funções, sem automação</li>
-          <li><strong>Base de 250 clientes VIP</strong> sem nenhuma régua de comunicação ativa</li>
-          <li><strong>Prioridade operacional dada ao iFood</strong> — pedidos do canal próprio ficam em segundo plano</li>
+          <li><strong>Sem nome, sem telefone, sem histórico:</strong> cada venda no iFood é anônima para a Premium Gourmet</li>
+          <li><strong>Sem remarketing possível:</strong> não tem base, não tem retargeting</li>
+          <li><strong>Sem CRM:</strong> os 250 do grupo VIP foram captados manualmente, sem processo</li>
           <li><strong>Tracking zero:</strong> impossível medir o que não está sendo rastreado</li>
         </ul>
         <div class="insight">
-          <strong>Premissa do plano:</strong> antes de ligar o tráfego pago, a estrutura de conversão precisa estar pronta. Tráfego sem estrutura é custo — não é resultado.
+          <strong>Premissa do plano:</strong> a Fase 1 resolve exatamente isso — capturar nome e telefone, construir base, redirecionar para comprar no iFood enquanto a estrutura própria não existe.
         </div>
       </div>
     </div>
@@ -1230,7 +1274,7 @@
     <div class="slide-rule"></div>
     <div class="comp-grid">
       <div>
-        <p style="font-size:13px; color:var(--gray-5); line-height:1.6; margin-bottom:20px;">O mercado de feijoada delivery em Salvador tem dezenas de players — mas a maioria opera sem padronização, sem branding e sem presença digital estruturada.</p>
+        <p style="font-size:15px; color:var(--gray-5); line-height:1.6; margin-bottom:20px;">O mercado de feijoada delivery em Salvador tem dezenas de players — mas a maioria opera sem padronização, sem branding e sem presença digital estruturada.</p>
         <div class="insight" style="margin-bottom:20px;">
           <strong>Nenhum concorrente relevante tem CRM estruturado ou régua de recompra.</strong> Quem montar isso primeiro vence.
         </div>
@@ -1257,17 +1301,17 @@
             </tr>
             <tr>
               <td class="td-ch">Cobertura em Salvador</td>
-              <td><span class="tag" style="background:#e8f5e8;color:#2d7a38;">7 lojas</span></td>
+              <td><span class="tag tag-green">7 lojas</span></td>
               <td style="text-align:center; font-size:13px; color:var(--gray-4);">1–2 lojas</td>
             </tr>
             <tr>
-              <td class="td-ch">Canal próprio estruturado</td>
+              <td class="td-ch">Base de leads própria</td>
               <td><span class="tag tag-red">Em construção</span></td>
               <td style="text-align:center; font-size:13px; color:var(--gray-4);">Nenhum</td>
             </tr>
             <tr>
               <td class="td-ch">Identidade visual e marca</td>
-              <td><span class="tag" style="background:#e8f5e8;color:#2d7a38;">Definida</span></td>
+              <td><span class="tag tag-green">Definida</span></td>
               <td style="text-align:center; font-size:13px; color:var(--gray-4);">Genérica</td>
             </tr>
             <tr>
@@ -1277,7 +1321,7 @@
             </tr>
             <tr>
               <td class="td-ch">Delivery + eventos</td>
-              <td><span class="tag" style="background:#e8f5e8;color:#2d7a38;">Sim</span></td>
+              <td><span class="tag tag-green">Sim</span></td>
               <td style="text-align:center; font-size:13px; color:var(--gray-4);">Raro</td>
             </tr>
           </tbody>
@@ -1289,46 +1333,34 @@
   <!-- ═══════ SLIDE 8 — OBJETIVO ESTRATÉGICO ═══════ -->
   <section class="slide s-std" id="s8">
     <span class="slide-label">Objetivo Estratégico</span>
-    <h2 class="slide-title">Construir o motor de vendas diretas — <em>reduzir o iFood de 80% para 60% em 12 meses</em></h2>
+    <h2 class="slide-title">Duas fases: <em>construir a base primeiro, reduzir dependência depois</em></h2>
     <div class="slide-rule"></div>
-    <div class="obj-arrow">
-      <div class="obj-val">
-        <div class="obj-pct" style="color:var(--red);">80%</div>
-        <div class="obj-desc">iFood hoje<br>Canal próprio: 20%</div>
+    <div class="phase-cards">
+      <div class="phase-card active">
+        <div class="phase-tag">Fase 1 — Agora (meses 1–6)</div>
+        <div class="phase-title">Capturar leads e alimentar o iFood com demanda própria</div>
+        <ul class="phase-items">
+          <li>Anúncio Meta com Formulário Nativo captura nome + telefone</li>
+          <li>Lead recebe link do iFood da loja mais próxima automaticamente</li>
+          <li>Entra no grupo WhatsApp: cardápio diário + agente de vendas</li>
+          <li>iFood é o único canal de conversão — a estrutura que já existe</li>
+          <li>Meta: 150–250 leads/mês, CPL R$10–15, base WhatsApp crescendo</li>
+        </ul>
       </div>
-      <div class="obj-mid">
-        <svg width="80" height="24" viewBox="0 0 80 24">
-          <line x1="4" y1="12" x2="72" y2="12" stroke="#C41E1E" stroke-width="2"/>
-          <polyline points="64,5 76,12 64,19" fill="none" stroke="#C41E1E" stroke-width="2"/>
-        </svg>
-        <span class="obj-period">12 meses</span>
-      </div>
-      <div class="obj-val">
-        <div class="obj-pct" style="color:var(--black);">60%</div>
-        <div class="obj-desc">iFood (meta)<br>Canal próprio: 40%</div>
+      <div class="phase-card future">
+        <div class="phase-tag">Fase 2 — Canal Próprio (meses 7–12)</div>
+        <div class="phase-title">Construir canal direto e reduzir iFood de 80% para 60%</div>
+        <ul class="phase-items">
+          <li>Estrutura de conversão própria: chatbot, cardápio digital, checkout</li>
+          <li>Base de leads já construída na Fase 1 = audiência pronta para migrar</li>
+          <li>Google Search entra como canal de intenção ativa</li>
+          <li>CRM completo: recompra, reativação, eventos Q4</li>
+          <li>Meta: iFood 60% do faturamento, canal próprio 40%</li>
+        </ul>
       </div>
     </div>
-    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
-      <div class="kpi-card">
-        <div class="kpi-label">Base CRM</div>
-        <div class="kpi-val" style="color:var(--gold);">1.000+</div>
-        <div class="kpi-desc">Clientes ativos no canal próprio (hoje: ~250 VIPs)</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Taxa de Recompra</div>
-        <div class="kpi-val">&gt;30%</div>
-        <div class="kpi-desc">Via CRM, sem depender de mídia para cada venda</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Tempo de Resposta</div>
-        <div class="kpi-val" style="color:var(--red);">&lt;5min</div>
-        <div class="kpi-desc">Com chatbot ativo no WhatsApp (hoje: indefinido)</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">CAC Canal Próprio</div>
-        <div class="kpi-val">Baseline</div>
-        <div class="kpi-desc">Estabelecer nos primeiros 90 dias — hoje: desconhecido</div>
-      </div>
+    <div style="margin-top:20px; background:var(--gray-1); border-radius:8px; padding:16px 22px;">
+      <p style="font-size:14px; color:var(--gray-5); line-height:1.6;"><strong style="color:var(--black);">Por que essa sequência?</strong> A empresa hoje não tem canal de entrega próprio — não tem chatbot, não tem cardápio digital, não tem estrutura. Colocar tráfego em algo que não existe é desperdiçar mídia. A Fase 1 usa o que já funciona (iFood) enquanto constrói o que vai libertar (a base de clientes própria).</p>
     </div>
   </section>
 
@@ -1370,7 +1402,7 @@
         <div class="persona-detail">
           <strong>Potencial</strong>Cliente recorrente semanal → LTV alto com baixo custo de manutenção
         </div>
-        <span class="tag tag-gray" style="width:fit-content;">Meta Ads · Google Search · WhatsApp</span>
+        <span class="tag tag-gray" style="width:fit-content;">Meta Ads · Grupo WhatsApp</span>
       </div>
       <div class="persona-card">
         <div class="persona-icon">🎉</div>
@@ -1387,259 +1419,380 @@
         <div class="persona-detail">
           <strong>Sazonalidade</strong>Alta nov–dez (corporativo) · mai–out (social)
         </div>
-        <span class="tag tag-gold" style="width:fit-content;">Campanha Q4 2026</span>
+        <span class="tag tag-gold" style="width:fit-content;">Fase 2 — Campanha Q4 2026</span>
       </div>
     </div>
   </section>
 
   <!-- ═══════ SLIDE 10 — MOTOR DE VENDAS ═══════ -->
   <section class="slide s-std" id="s10">
-    <span class="slide-label">Estratégia</span>
-    <h2 class="slide-title">O motor de vendas diretas <em>começa com a estrutura certa</em></h2>
+    <span class="slide-label">Motor de Vendas — Fase 1</span>
+    <h2 class="slide-title">Do anúncio à compra: <em>iFood como canal de conversão, WhatsApp como CRM</em></h2>
     <div class="slide-rule"></div>
-    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:36px;">
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:32px;">
       <div style="overflow-x:auto;">
-        <div class="journey" style="gap:0; justify-content:center; min-width:700px;">
+        <div class="journey" style="justify-content:center; min-width:780px; gap:0;">
           <div class="journey-step">
-            <div class="journey-box j-red">ANÚNCIO</div>
-            <div class="journey-sub">Meta Ads<br>Google Search</div>
+            <div class="journey-box j-red">ANÚNCIO<br>META ADS</div>
+            <div class="journey-sub">Formulário Nativo<br>Instagram/Facebook</div>
           </div>
-          <div class="journey-arrow" style="width:28px;"></div>
+          <div class="journey-arrow" style="width:24px;"></div>
           <div class="journey-step">
-            <div class="journey-box">WHATSAPP</div>
-            <div class="journey-sub">Clique no<br>anúncio</div>
+            <div class="journey-box">LEAD<br>CAPTURADO</div>
+            <div class="journey-sub">Nome + Telefone<br>no Meta</div>
           </div>
-          <div class="journey-arrow" style="width:28px;"></div>
+          <div class="journey-arrow" style="width:24px;"></div>
           <div class="journey-step">
-            <div class="journey-box j-red">CHATBOT</div>
-            <div class="journey-sub">Recepção<br>automática 24h</div>
+            <div class="journey-box j-red">MENSAGEM<br>AUTOMÁTICA</div>
+            <div class="journey-sub">Via ferramenta<br>própria</div>
           </div>
-          <div class="journey-arrow" style="width:28px;"></div>
+          <div class="journey-arrow" style="width:24px;"></div>
           <div class="journey-step">
-            <div class="journey-box">PEDIDO</div>
-            <div class="journey-sub">Cardápio +<br>confirmação</div>
+            <div class="journey-box j-light">LINK iFood<br>+ GRUPO</div>
+            <div class="journey-sub">Loja mais próxima<br>+ convite WA</div>
           </div>
-          <div class="journey-arrow" style="width:28px;"></div>
+          <div class="journey-arrow" style="width:24px;"></div>
           <div class="journey-step">
-            <div class="journey-box j-red">CRM</div>
-            <div class="journey-sub">Dado capturado<br>automaticamente</div>
+            <div class="journey-box">GRUPO<br>WHATSAPP</div>
+            <div class="journey-sub">Cardápio diário<br>+ agente</div>
           </div>
-          <div class="journey-arrow" style="width:28px;"></div>
+          <div class="journey-arrow" style="width:24px;"></div>
           <div class="journey-step">
-            <div class="journey-box">RECOMPRA</div>
-            <div class="journey-sub">Régua<br>automática</div>
+            <div class="journey-box j-gold">PEDIDO<br>iFOOD</div>
+            <div class="journey-sub">Conversão via<br>canal existente</div>
           </div>
-          <div class="journey-arrow" style="width:28px;"></div>
+          <div class="journey-arrow" style="width:24px;"></div>
           <div class="journey-step">
-            <div class="journey-box j-gold">LTV</div>
-            <div class="journey-sub">Cliente<br>rentabilizado</div>
+            <div class="journey-box j-red">BASE<br>PRÓPRIA</div>
+            <div class="journey-sub">Ativo da<br>Fase 2</div>
           </div>
         </div>
       </div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
         <div class="insight">
-          <strong>A grande migração:</strong> clientes que já conhecem a Premium Gourmet pelo iFood são os mais fáceis de converter. Precisam de um incentivo e um caminho fácil — não de mais convencimento sobre o produto.
+          <strong>A lógica da Fase 1:</strong> o lead não precisa de canal próprio para converter — precisa de um caminho fácil até o iFood. A mensagem automática entrega esse caminho e ainda adiciona o lead ao grupo.
         </div>
         <div style="background:var(--gray-1); border-radius:8px; padding:18px 20px;">
-          <p style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:12px;">Mecanismos de migração iFood → canal próprio</p>
+          <p style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:12px;">O grupo WhatsApp como CRM de entrada</p>
           <ul class="bullet-list">
-            <li>QR Code na embalagem com oferta exclusiva no primeiro pedido direto</li>
-            <li>Frete grátis como principal alavanca (funciona melhor que desconto no preço)</li>
-            <li>Vantagem percebida: atendimento direto, personalizado, sem taxa de plataforma</li>
+            <li>Cardápio enviado diariamente → interesse recorrente</li>
+            <li>Agente de vendas conversa individualmente com leads interessados</li>
+            <li>Direciona para o iFood da loja mais próxima</li>
+            <li>Base cresce organicamente a cada campanha ativa</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════ SLIDE 11 — CANAIS ═══════ -->
+  <!-- ═══════ SLIDE 11 — CANAIS FASE 1 ═══════ -->
   <section class="slide s-std" id="s11">
-    <span class="slide-label">Seleção de Canais</span>
-    <h2 class="slide-title">Cada canal tem um papel: <em>nada é colocado por acaso</em></h2>
+    <span class="slide-label">Seleção de Canais — Fase 1</span>
+    <h2 class="slide-title">Cada canal tem um papel: <em>simples, integrado e executável agora</em></h2>
     <div class="slide-rule"></div>
     <table class="ch-table" style="flex:1;">
       <thead>
         <tr>
           <th>Canal</th>
-          <th>Função estratégica</th>
-          <th>Etapa da jornada</th>
+          <th>Função na Fase 1</th>
+          <th>Etapa</th>
           <th>Status</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="td-ch">Meta Ads (Facebook/Instagram)</td>
-          <td class="td-fn">Aquisição com criativo de produto + recompra da base</td>
-          <td class="td-fn">Descoberta → Intenção</td>
-          <td><span class="tag tag-red">Contratado</span></td>
+          <td class="td-ch">Meta Ads — Formulário Nativo</td>
+          <td class="td-fn">7 campanhas por loja · raio 7km (padrão iFood) · captura nome + telefone via Instant Form</td>
+          <td class="td-fn">Aquisição → Lead</td>
+          <td><span class="tag tag-red">Fase 1</span></td>
         </tr>
         <tr>
-          <td class="td-ch">Google Search</td>
-          <td class="td-fn">Captura quem já busca feijoada delivery em Salvador</td>
-          <td class="td-fn">Consideração → Transacional</td>
-          <td><span class="tag tag-red">Contratado</span></td>
-        </tr>
-        <tr>
-          <td class="td-ch">WhatsApp CRM + Chatbot</td>
-          <td class="td-fn">Conversão, atendimento automatizado e recompra</td>
-          <td class="td-fn">Transacional → Retenção</td>
-          <td><span class="tag tag-red">Contratado</span></td>
-        </tr>
-        <tr>
-          <td class="td-ch">Grupo VIP WhatsApp</td>
-          <td class="td-fn">Ativação imediata da base: 250 clientes prontos para comprar</td>
-          <td class="td-fn">Retenção → Recompra</td>
-          <td><span class="tag tag-red">Contratado</span></td>
-        </tr>
-        <tr>
-          <td class="td-ch">Instagram (pontual)</td>
-          <td class="td-fn">Autoridade, prova social, 10 posts com orientação</td>
-          <td class="td-fn">Descoberta → Consideração</td>
-          <td><span class="tag tag-red">Contratado</span></td>
+          <td class="td-ch">Mensagem Automática</td>
+          <td class="td-fn">Ferramenta própria dispara imediatamente após captura · link iFood + convite grupo</td>
+          <td class="td-fn">Lead → Compra</td>
+          <td><span class="tag tag-red">Fase 1</span></td>
         </tr>
         <tr>
           <td class="td-ch">iFood</td>
-          <td class="td-fn">Manter receita existente enquanto migra clientes</td>
-          <td class="td-fn">Transacional</td>
-          <td><span class="tag tag-gray">Mantido (não é escopo V4)</span></td>
+          <td class="td-fn">Único canal de conversão na Fase 1 · lead recebe link direto da loja mais próxima</td>
+          <td class="td-fn">Conversão</td>
+          <td><span class="tag tag-red">Fase 1 — conversão</span></td>
+        </tr>
+        <tr>
+          <td class="td-ch">Grupo WhatsApp</td>
+          <td class="td-fn">CRM de entrada · cardápio diário · agente de vendas direto para quem demonstrar interesse</td>
+          <td class="td-fn">Retenção → Recompra</td>
+          <td><span class="tag tag-red">Fase 1</span></td>
+        </tr>
+        <tr>
+          <td class="td-ch">Instagram @feijoadapremiumgourmet</td>
+          <td class="td-fn">Autoridade de marca · conteúdo de produto · destino dos anúncios no perfil</td>
+          <td class="td-fn">Descoberta → Consideração</td>
+          <td><span class="tag tag-red">Fase 1</span></td>
+        </tr>
+        <tr>
+          <td class="td-ch">Google Search + Canal Próprio</td>
+          <td class="td-fn">Captura de intenção ativa · checkout sem comissão · estrutura de conversão direta</td>
+          <td class="td-fn">Consideração → Transação</td>
+          <td><span class="tag tag-gray">Fase 2</span></td>
         </tr>
       </tbody>
     </table>
-    <p style="margin-top:16px; font-size:12px; color:var(--gray-4); font-style:italic;">Fora do escopo atual: Social Media recorrente, e-mail marketing, influenciadores locais, frente B2B/eventos dedicada. Recomendado para fase 2.</p>
+    <p style="margin-top:14px; font-size:13px; color:var(--gray-4); font-style:italic;">Fase 2 ativada quando a base de leads da Fase 1 justificar o investimento em canal próprio. Estrutura mais simples = menor risco de execução no início.</p>
   </section>
 
-  <!-- ═══════ SLIDE 12 — MÍDIA ═══════ -->
+  <!-- ═══════ SLIDE 12 — ESTRATÉGIA DE MÍDIA ═══════ -->
   <section class="slide s-std" id="s12">
-    <span class="slide-label">Estratégia de Mídia Paga</span>
-    <h2 class="slide-title">Orçamento focado em resultado: <em>criativo de produto primeiro, algoritmo aberto</em></h2>
+    <span class="slide-label">Estratégia de Mídia — Meta Ads</span>
+    <h2 class="slide-title">100% Meta Ads na Fase 1: <em>7 campanhas, uma por loja, criativo de produto</em></h2>
     <div class="slide-rule"></div>
     <div class="two-col" style="align-items:start;">
       <div>
-        <p style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:16px;">Distribuição do orçamento de mídia</p>
+        <p style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:16px;">Estrutura das campanhas — objetivo: Geração de Leads</p>
         <div class="budget-bars">
           <div class="budget-row">
             <div class="budget-header">
-              <span class="budget-name">Meta — Público Aberto (criativo de produto)</span>
-              <span class="budget-pct">45%</span>
+              <span class="budget-name">7 campanhas separadas (1 por loja)</span>
+              <span class="budget-pct">100%</span>
             </div>
-            <div class="budget-track"><div class="budget-fill" style="width:45%"></div></div>
-            <span class="budget-note">Aquisição de novos clientes · segmentação geográfica hiperlocal · algoritmo livre para aprender</span>
+            <div class="budget-track"><div class="budget-fill" style="width:100%"></div></div>
+            <span class="budget-note">Cada campanha segmentada por raio de 7km da loja — padrão de entrega do iFood em Salvador</span>
           </div>
           <div class="budget-row">
             <div class="budget-header">
-              <span class="budget-name">Google Search (institucional)</span>
-              <span class="budget-pct">15%</span>
+              <span class="budget-name">Objetivo da campanha: Lead Generation</span>
             </div>
-            <div class="budget-track"><div class="budget-fill gold" style="width:15%"></div></div>
-            <span class="budget-note">"feijoada delivery Salvador" · captura intenção antes do iFood · destino: WhatsApp com chatbot</span>
+            <span class="budget-note">Formulário nativo (Instant Form) dentro do Meta — zero atrito, sem sair do app</span>
           </div>
           <div class="budget-row">
             <div class="budget-header">
-              <span class="budget-name">Meta — Remarketing</span>
-              <span class="budget-pct">15%</span>
+              <span class="budget-name">Público: aberto + geo por loja</span>
             </div>
-            <div class="budget-track"><div class="budget-fill dark" style="width:15%"></div></div>
-            <span class="budget-note">Reengajamento de quem interagiu mas não pediu</span>
+            <span class="budget-note">Algoritmo livre para aprender · apenas restrição geográfica de 7km por loja</span>
           </div>
           <div class="budget-row">
             <div class="budget-header">
-              <span class="budget-name">Meta — Recompra (base CRM)</span>
-              <span class="budget-pct">15%</span>
+              <span class="budget-name">Criativo: produto com alto apelo visual</span>
             </div>
-            <div class="budget-track"><div class="budget-fill dark" style="width:15%"></div></div>
-            <span class="budget-note">Ofertas de fim de semana · kits · datas comemorativas para a base</span>
-          </div>
-          <div class="budget-row">
-            <div class="budget-header">
-              <span class="budget-name">Teste / Flexível</span>
-              <span class="budget-pct">10%</span>
-            </div>
-            <div class="budget-track"><div class="budget-fill" style="width:10%;background:var(--gray-3);"></div></div>
-            <span class="budget-note">Rotação de criativos · audiências secundárias · ajuste conforme dados</span>
+            <span class="budget-note">Foto estática em alta resolução · feijoada em apresentação gourmet · sem texto no criativo</span>
           </div>
         </div>
       </div>
       <div style="display:flex; flex-direction:column; gap:16px;">
         <div class="insight">
-          <strong>O criativo é o produto.</strong> Antes de qualquer copy ou oferta, uma imagem certa da feijoada fumegante já é o melhor argumento. Criativo de produto com alto apelo visual é a aposta principal.
+          <strong>Por que Instant Form?</strong> O lead fica dentro do Meta — sem cair em landing page, sem barreira de clique, sem pixel para configurar. Conversão maior, CPL menor, e o dado (nome + telefone) vai direto para a ferramenta de automação.
         </div>
         <div style="background:var(--gray-1); border-radius:8px; padding:18px;">
-          <p style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:12px;">Premissas de campanha</p>
+          <p style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:12px;">Premissas da campanha</p>
           <ul class="bullet-list">
-            <li>Formatos: vídeo curto (15–30s) + foto gourmet do produto</li>
-            <li>Raio 1ª fase: cobertura de entrega de Brotas → expandir por loja</li>
-            <li>Fase de aprendizado: 45 dias com eficiência reduzida (~50%) — esperada e prevista</li>
-            <li>Destino dos anúncios: WhatsApp com chatbot ativo (não site estático)</li>
+            <li>Raio de 7km por loja — padrão de entrega do iFood em Salvador (validar por loja)</li>
+            <li>Formato: imagem estática gourmet (Fase 1) · vídeo na Fase 2</li>
+            <li>Fase de aprendizado: 30–45 dias com CPL elevado — esperado e previsto no budget</li>
+            <li>Sem Google Search na Fase 1 — reduz complexidade e foco em uma frente</li>
           </ul>
         </div>
         <div style="display:flex; gap:12px;">
           <div style="background:var(--red-light); border-radius:8px; padding:14px 16px; flex:1;">
-            <div style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--red); margin-bottom:4px;">CPO estimado (mês 3+)</div>
-            <div style="font-family:var(--font-display); font-size:26px; font-weight:300; color:var(--black);">R$20–35</div>
-            <div style="font-size:11px; color:var(--gray-4); margin-top:2px;">Custo por pedido gerado</div>
+            <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--red); margin-bottom:4px;">CPL Meta (mês 2+)</div>
+            <div style="font-family:var(--font-display); font-size:28px; font-weight:300; color:var(--black);">R$10–15</div>
+            <div style="font-size:12px; color:var(--gray-4); margin-top:2px;">Custo por lead capturado</div>
           </div>
           <div style="background:var(--gold-light); border-radius:8px; padding:14px 16px; flex:1;">
-            <div style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:4px;">Ticket médio</div>
-            <div style="font-family:var(--font-display); font-size:26px; font-weight:300; color:var(--black);">R$75</div>
-            <div style="font-size:11px; color:var(--gray-4); margin-top:2px;">Mix semana + fim de semana</div>
+            <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:4px;">Ticket médio iFood</div>
+            <div style="font-family:var(--font-display); font-size:28px; font-weight:300; color:var(--black);">R$75</div>
+            <div style="font-size:12px; color:var(--gray-4); margin-top:2px;">Mix semana + fim de semana</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════ SLIDE 13 — QUATRO PILARES ═══════ -->
+  <!-- ═══════ SLIDE 13 — PLANO DE MÍDIA ═══════ -->
   <section class="slide s-std" id="s13">
+    <span class="slide-label">Plano de Mídia — Distribuição de Verba</span>
+    <h2 class="slide-title">R$2.500/mês divididos em <em>7 campanhas, uma por loja</em></h2>
+    <div class="slide-rule"></div>
+    <div style="flex:1; display:flex; flex-direction:column; gap:20px;">
+      <div style="overflow-x:auto;">
+        <table class="media-table">
+          <thead>
+            <tr>
+              <th>Campanha / Loja</th>
+              <th>Verba Diária</th>
+              <th>Verba Mensal</th>
+              <th>CPL Conservador<br><span style="font-weight:400; letter-spacing:0; text-transform:none; font-size:10px;">R$15/lead</span></th>
+              <th>CPL Base<br><span style="font-weight:400; letter-spacing:0; text-transform:none; font-size:10px;">R$12/lead</span></th>
+              <th>CPL Otimista<br><span style="font-weight:400; letter-spacing:0; text-transform:none; font-size:10px;">R$8/lead</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-store">Loja 01</td>
+              <td class="td-money">R$11,90</td>
+              <td class="td-money">R$357</td>
+              <td class="td-leads">24 leads</td>
+              <td class="td-leads">30 leads</td>
+              <td class="td-leads">45 leads</td>
+            </tr>
+            <tr>
+              <td class="td-store">Loja 02</td>
+              <td class="td-money">R$11,90</td>
+              <td class="td-money">R$357</td>
+              <td class="td-leads">24 leads</td>
+              <td class="td-leads">30 leads</td>
+              <td class="td-leads">45 leads</td>
+            </tr>
+            <tr>
+              <td class="td-store">Loja 03</td>
+              <td class="td-money">R$11,90</td>
+              <td class="td-money">R$357</td>
+              <td class="td-leads">24 leads</td>
+              <td class="td-leads">30 leads</td>
+              <td class="td-leads">45 leads</td>
+            </tr>
+            <tr>
+              <td class="td-store">Loja 04</td>
+              <td class="td-money">R$11,90</td>
+              <td class="td-money">R$357</td>
+              <td class="td-leads">24 leads</td>
+              <td class="td-leads">30 leads</td>
+              <td class="td-leads">45 leads</td>
+            </tr>
+            <tr>
+              <td class="td-store">Loja 05</td>
+              <td class="td-money">R$11,90</td>
+              <td class="td-money">R$357</td>
+              <td class="td-leads">24 leads</td>
+              <td class="td-leads">30 leads</td>
+              <td class="td-leads">45 leads</td>
+            </tr>
+            <tr>
+              <td class="td-store">Loja 06</td>
+              <td class="td-money">R$11,90</td>
+              <td class="td-money">R$357</td>
+              <td class="td-leads">24 leads</td>
+              <td class="td-leads">30 leads</td>
+              <td class="td-leads">45 leads</td>
+            </tr>
+            <tr>
+              <td class="td-store">Loja 07</td>
+              <td class="td-money">R$11,90</td>
+              <td class="td-money">R$357</td>
+              <td class="td-leads">24 leads</td>
+              <td class="td-leads">30 leads</td>
+              <td class="td-leads">45 leads</td>
+            </tr>
+            <tr class="td-total">
+              <td class="td-store" style="color:var(--black);">Total — 7 Lojas</td>
+              <td class="td-money" style="color:var(--red); font-size:20px;">R$83,30</td>
+              <td class="td-money" style="color:var(--red); font-size:20px;">R$2.500</td>
+              <td class="td-leads" style="font-weight:600; font-size:14px; color:var(--black);">~167 leads/mês</td>
+              <td class="td-leads" style="font-weight:600; font-size:14px; color:var(--black);">~208 leads/mês</td>
+              <td class="td-leads" style="font-weight:600; font-size:14px; color:var(--black);">~312 leads/mês</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+        <div style="background:var(--gray-1); border-radius:8px; padding:16px 18px;">
+          <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:6px;">Raio por campanha</div>
+          <div style="font-family:var(--font-display); font-size:28px; font-weight:300; color:var(--black);">7 km</div>
+          <div style="font-size:12px; color:var(--gray-4); margin-top:4px;">Raio padrão de entrega do iFood em Salvador — validar por loja</div>
+        </div>
+        <div style="background:var(--red-light); border-radius:8px; padding:16px 18px;">
+          <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--red); margin-bottom:6px;">Fase de aprendizado</div>
+          <div style="font-family:var(--font-display); font-size:28px; font-weight:300; color:var(--black);">30–45d</div>
+          <div style="font-size:12px; color:var(--gray-4); margin-top:4px;">CPL acima do target nos primeiros 30–45 dias — previsto no budget</div>
+        </div>
+        <div style="background:var(--gold-light); border-radius:8px; padding:16px 18px;">
+          <div style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); margin-bottom:6px;">Adesão ao grupo</div>
+          <div style="font-family:var(--font-display); font-size:28px; font-weight:300; color:var(--black);">25%+</div>
+          <div style="font-size:12px; color:var(--gray-4); margin-top:4px;">Meta de leads que aceitam convite do grupo WhatsApp</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ SLIDE 14 — QUATRO PILARES ═══════ -->
+  <section class="slide s-std" id="s14">
     <span class="slide-label">Estratégia</span>
     <h2 class="slide-title"><em>Quatro pilares</em> que se alimentam: aquisição não funciona sem retenção</h2>
     <div class="slide-rule"></div>
     <div class="pillars-grid">
       <div class="pillar-card">
         <div class="pillar-num">01 — Aquisição</div>
-        <div class="pillar-title">Trazer clientes novos para o canal próprio</div>
-        <div class="pillar-desc">Meta Ads com criativo de produto (45% do orçamento) + Google Search para intenção ativa. Raio hiperlocal, algoritmo aberto, fase de aprendizado prevista.</div>
+        <div class="pillar-title">Capturar leads qualificados para o canal próprio</div>
+        <div class="pillar-desc">7 campanhas Meta Ads com Formulário Nativo. Raio hiperlocal por loja, algoritmo aberto, criativo de produto com alto apelo visual. Fase 1: 100% do budget de mídia aqui.</div>
       </div>
       <div class="pillar-card">
         <div class="pillar-num">02 — Engajamento</div>
-        <div class="pillar-title">Transformar conhecimento em conexão com a marca</div>
-        <div class="pillar-desc">Grupo VIP ativado com estratégia. Instagram com 10 posts de qualidade. Narrativa autêntica: a história real da família, o produto que vende quando mostrado.</div>
+        <div class="pillar-title">Transformar lead em cliente fiel via grupo</div>
+        <div class="pillar-desc">Grupo WhatsApp com cardápio diário + agente de vendas. Instagram construindo autoridade de marca. Narrativa autêntica: o produto que viraliza quando mostrado bem.</div>
       </div>
       <div class="pillar-card">
         <div class="pillar-num">03 — Monetização</div>
-        <div class="pillar-title">Garantir que quem chega, compra</div>
-        <div class="pillar-desc">Chatbot 24h no WhatsApp. Fluxo de pedido sem fricção. Frete grátis como principal alavanca. Kit como produto principal (R$50/pessoa = argumento de valor).</div>
+        <div class="pillar-title">Lead convertido no iFood (Fase 1)</div>
+        <div class="pillar-desc">Mensagem automática pós-formulário entrega o link do iFood da loja mais próxima. Caminho simples, sem fricção. Fase 2: checkout próprio com maior margem.</div>
       </div>
       <div class="pillar-card">
         <div class="pillar-num">04 — Retenção</div>
         <div class="pillar-title">A próxima venda não deve custar mídia</div>
-        <div class="pillar-desc">Réguas automáticas de recompra, reativação e datas especiais. Quanto maior a base ativa, menor o custo por receita gerada. CRM é o ativo de longo prazo.</div>
+        <div class="pillar-desc">Grupo WhatsApp como CRM de entrada. Réguas de recompra e reativação na Fase 2. Quanto maior a base ativa, menor o CAC médio da operação inteira.</div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════ SLIDE 14 — CRM / RETENÇÃO ═══════ -->
-  <section class="slide s-std" id="s14">
+  <!-- ═══════ SLIDE 15 — CRM / RETENÇÃO ═══════ -->
+  <section class="slide s-std" id="s15">
     <span class="slide-label">CRM e Retenção</span>
     <h2 class="slide-title">Quem já comprou uma vez é <em>o cliente mais barato de vender</em></h2>
     <div class="slide-rule"></div>
     <div class="crm-journeys">
       <div class="crm-card">
-        <div class="crm-title">Jornada 1 — Recompra (cliente ativo)</div>
+        <div class="crm-title">Jornada 1 — Lead novo (pós-formulário)</div>
         <div class="crm-flow">
-          <div class="crm-node red">Pedido</div>
+          <div class="crm-node red">Formulário</div>
+          <div class="crm-sep">→</div>
+          <div class="crm-node">Msg automática</div>
+          <div class="crm-sep">→</div>
+          <div class="crm-node">Link iFood + Grupo</div>
+          <div class="crm-sep">→</div>
+          <div class="crm-node red">1ª compra</div>
+        </div>
+        <p style="font-size:12px; color:var(--gray-4); margin-top:4px;">Disparo imediato após lead capturado. Janela de intenção ainda aberta.</p>
+      </div>
+      <div class="crm-card">
+        <div class="crm-title">Jornada 2 — Grupo WhatsApp (CRM de entrada)</div>
+        <div class="crm-flow">
+          <div class="crm-node">Entrou no grupo</div>
+          <div class="crm-sep">→</div>
+          <div class="crm-node red">Cardápio diário</div>
+          <div class="crm-sep">→</div>
+          <div class="crm-node">Interesse sinalizado</div>
+          <div class="crm-sep">→</div>
+          <div class="crm-node">Agente direciona</div>
+          <div class="crm-sep">→</div>
+          <div class="crm-node red">Pedido iFood</div>
+        </div>
+        <p style="font-size:12px; color:var(--gray-4); margin-top:4px;">Cardápio todo dia mantém a marca presente sem custo de mídia.</p>
+      </div>
+      <div class="crm-card">
+        <div class="crm-title">Jornada 3 — Recompra (Fase 2 — CRM estruturado)</div>
+        <div class="crm-flow">
+          <div class="crm-node red">Pedido realizado</div>
           <div class="crm-sep">→</div>
           <div class="crm-node">CRM captura</div>
           <div class="crm-sep">→</div>
-          <div class="crm-node">Janela de recompra</div>
+          <div class="crm-node">Janela ~10 dias</div>
           <div class="crm-sep">→</div>
           <div class="crm-node">Oferta automática</div>
           <div class="crm-sep">→</div>
           <div class="crm-node red">Novo pedido</div>
         </div>
-        <p style="font-size:11px; color:var(--gray-4); margin-top:4px;">Janela definida com dados históricos do Saipos. Referência: ~10 dias.</p>
+        <p style="font-size:12px; color:var(--gray-4); margin-top:4px;">Janela definida com dados históricos do Saipos. Referência: ~10 dias.</p>
       </div>
       <div class="crm-card">
-        <div class="crm-title">Jornada 2 — Reativação (cliente inativo)</div>
+        <div class="crm-title">Jornada 4 — Reativação (cliente esfriando)</div>
         <div class="crm-flow">
           <div class="crm-node">Ativo (&lt;30d)</div>
           <div class="crm-sep">·</div>
@@ -1649,159 +1802,151 @@
           <div class="crm-sep">·</div>
           <div class="crm-node">Perdido (&gt;120d)</div>
         </div>
-        <p style="font-size:11px; color:var(--gray-4); margin-top:4px;">Cada segmento recebe mensagem e oferta específica. Quem "esfriou" é prioridade — custo de reativação baixo.</p>
-      </div>
-      <div class="crm-card">
-        <div class="crm-title">Jornada 3 — Boas-vindas (primeira compra no canal próprio)</div>
-        <div class="crm-flow">
-          <div class="crm-node red">1º pedido direto</div>
-          <div class="crm-sep">→</div>
-          <div class="crm-node">Mensagem de boas-vindas</div>
-          <div class="crm-sep">→</div>
-          <div class="crm-node">Oferta exclusiva</div>
-          <div class="crm-sep">→</div>
-          <div class="crm-node red">Régua ativa</div>
-        </div>
-        <p style="font-size:11px; color:var(--gray-4); margin-top:4px;">Clientes migrados do iFood entram aqui. A primeira compra direta define o vínculo.</p>
-      </div>
-      <div class="crm-card">
-        <div class="crm-title">Jornada 4 — VIP e fidelização (top 20%)</div>
-        <div class="crm-flow">
-          <div class="crm-node">Segmentar top 20%</div>
-          <div class="crm-sep">→</div>
-          <div class="crm-node red">Tratamento diferenciado</div>
-          <div class="crm-sep">→</div>
-          <div class="crm-node">Cashback recorrente</div>
-          <div class="crm-sep">→</div>
-          <div class="crm-node">Referral</div>
-        </div>
-        <p style="font-size:11px; color:var(--gray-4); margin-top:4px;">Top clientes por frequência + ticket. São os embaixadores naturais da marca.</p>
+        <p style="font-size:12px; color:var(--gray-4); margin-top:4px;">Cada segmento recebe mensagem específica. Quem "esfriou" é prioridade — reativação barata.</p>
       </div>
     </div>
     <div style="margin-top:16px;">
-      <p style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:10px;">Réguas automáticas fase 1</p>
+      <p style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:10px;">Réguas automáticas — Fase 1</p>
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <span class="tag tag-red">Boas-vindas</span>
-        <span class="tag tag-red">Recompra (janela pós-pedido)</span>
-        <span class="tag tag-red">Reativação (clientes esfriando)</span>
-        <span class="tag tag-red">Aniversário do cliente</span>
-        <span class="tag tag-red">Oferta de fim de semana (qui/sex)</span>
+        <span class="tag tag-red">Mensagem pós-formulário</span>
+        <span class="tag tag-red">Cardápio diário (grupo)</span>
+        <span class="tag tag-red">Oferta fim de semana (qui/sex)</span>
+        <span class="tag tag-gray">Recompra via CRM — Fase 2</span>
+        <span class="tag tag-gray">Aniversário — Fase 2</span>
       </div>
     </div>
   </section>
 
-  <!-- ═══════ SLIDE 15 — FASES DE EXECUÇÃO ═══════ -->
-  <section class="slide s-std" id="s15">
-    <span class="slide-label">Plano de Execução</span>
-    <h2 class="slide-title">Sequência importa: <em>estrutura antes de aquisição</em></h2>
-    <div class="slide-rule"></div>
-    <div class="timeline">
-      <div class="timeline-phase">
-        <div class="timeline-month">Setembro 2026</div>
-        <div class="timeline-name">Estruturar</div>
-        <ul class="timeline-items">
-          <li>Mapeamento completo do Saipos</li>
-          <li>Levantamento do baseline de receita</li>
-          <li>Instalação do pixel Meta + Google Tag</li>
-          <li>Diagnóstico técnico WhatsApp + integrações</li>
-          <li>Revisão Instagram + primeiros 10 posts</li>
-          <li>Configuração contas Meta Ads + Google Ads</li>
-          <li>Criação dos primeiros criativos de produto</li>
-        </ul>
-      </div>
-      <div class="timeline-phase">
-        <div class="timeline-month">Outubro 2026 — início</div>
-        <div class="timeline-name">Ativar Base</div>
-        <ul class="timeline-items">
-          <li>Configuração e lançamento do chatbot</li>
-          <li>Segmentação da base do Saipos</li>
-          <li>Primeira régua de reativação</li>
-          <li>Ativação do Grupo VIP com estratégia</li>
-          <li>Régua de recompra rodando</li>
-          <li>Teste de insert iFood → canal próprio</li>
-        </ul>
-      </div>
-      <div class="timeline-phase">
-        <div class="timeline-month">Out–Nov 2026</div>
-        <div class="timeline-name">Adquirir</div>
-        <ul class="timeline-items">
-          <li>Lançamento Meta Ads (público aberto)</li>
-          <li>Lançamento Google Search</li>
-          <li>Fase de aprendizado do algoritmo</li>
-          <li>Campanha de remarketing (sem. 7)</li>
-          <li>Campanha recompra via base CRM</li>
-          <li>Início frente eventos (LP + campanha)</li>
-        </ul>
-      </div>
-      <div class="timeline-phase">
-        <div class="timeline-month">Nov–Dez 2026</div>
-        <div class="timeline-name">Otimizar</div>
-        <ul class="timeline-items">
-          <li>Revisão de criativos com dados reais</li>
-          <li>Otimização das réguas de CRM</li>
-          <li>Escala de budget nas campanhas que performaram</li>
-          <li>Campanha especial Q4 (eventos corporativos)</li>
-          <li>Dashboard atualizado com dados do trimestre</li>
-          <li>Retrospectiva e planejamento 2027</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════ SLIDE 16 — MENSURAÇÃO ═══════ -->
+  <!-- ═══════ SLIDE 16 — CRONOGRAMA ═══════ -->
   <section class="slide s-std" id="s16">
-    <span class="slide-label">Mensuração e KPIs</span>
-    <h2 class="slide-title">O KPI estratégico é um: <em>% de receita fora do iFood</em></h2>
+    <span class="slide-label">Cronograma de Execução</span>
+    <h2 class="slide-title">Estrutura antes de tráfego: <em>cada semana tem um entregável claro</em></h2>
+    <div class="slide-rule"></div>
+    <div class="timeline-weeks">
+      <div class="timeline-col">
+        <div class="timeline-period">Set 15–30 · Semanas 1–2</div>
+        <div class="timeline-phase-name">Estruturar</div>
+        <ul class="timeline-items">
+          <li>Instalação do Pixel Meta em todas as 7 lojas</li>
+          <li>Criação das 7 contas de anúncio no Meta Ads</li>
+          <li>Configuração da ferramenta de automação (disparo pós-formulário)</li>
+          <li>Briefing e produção dos criativos gourmet (sessão de fotos)</li>
+          <li>Configuração dos Formulários Nativos por loja</li>
+          <li>Ajuste do perfil @feijoadapremiumgourmet + bio + destaques</li>
+        </ul>
+      </div>
+      <div class="timeline-col">
+        <div class="timeline-period">Out 5–18 · Semanas 3–4</div>
+        <div class="timeline-phase-name">Lançar</div>
+        <ul class="timeline-items">
+          <li>Lançamento das 7 campanhas Meta Ads (objetivo: Lead Gen)</li>
+          <li>Ativação do fluxo automático: formulário → mensagem → iFood + grupo</li>
+          <li>Criação e ativação dos 7 grupos WhatsApp (1 por loja)</li>
+          <li>Início do envio diário de cardápio nos grupos</li>
+          <li>Primeiros 10 posts no Instagram (orientação social media)</li>
+          <li>Monitoramento diário de CPL e volume de leads</li>
+        </ul>
+      </div>
+      <div class="timeline-col">
+        <div class="timeline-period">Out 19 – Nov 9 · Semanas 5–7</div>
+        <div class="timeline-phase-name">Otimizar</div>
+        <ul class="timeline-items">
+          <li>Análise de CPL por loja e rotação de criativos</li>
+          <li>Redistribuição de budget para campanhas com melhor CPL</li>
+          <li>Teste de variações de formulário (campos, headline)</li>
+          <li>Análise de taxa de adesão ao grupo por campanha</li>
+          <li>Primeiro relatório de resultado: leads × adesão × pedidos</li>
+          <li>Ajuste de raio (7km → expandir onde performance justificar)</li>
+        </ul>
+      </div>
+      <div class="timeline-col">
+        <div class="timeline-period">Nov 10+ · Semana 8+</div>
+        <div class="timeline-phase-name">Escalar</div>
+        <ul class="timeline-items">
+          <li>Escala de budget nas campanhas validadas</li>
+          <li>Início planejamento Fase 2 (canal próprio)</li>
+          <li>Campanha especial Q4 · eventos corporativos</li>
+          <li>Avaliação de Google Search para Fase 2</li>
+          <li>Revisão de KPIs: CPL real × meta, taxa de conversão grupo → pedido</li>
+          <li>Retrospectiva e roadmap 2027</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ SLIDE 17 — KPIs ═══════ -->
+  <section class="slide s-std" id="s17">
+    <span class="slide-label">Mensuração e KPIs — Fase 1</span>
+    <h2 class="slide-title">Os números que vamos perseguir: <em>leads, custo e adesão</em></h2>
     <div class="slide-rule"></div>
     <div class="kpi-grid" style="margin-bottom:24px;">
       <div class="kpi-card">
-        <div class="kpi-label">KPI Principal</div>
-        <div class="kpi-val" style="color:var(--red); font-size:20px; font-family:var(--font-display);">% Receita<br>Canal Próprio</div>
-        <div class="kpi-desc">O norte do projeto. Tudo converge aqui.</div>
+        <div class="kpi-label">CPL Meta Ads</div>
+        <div class="kpi-val" style="color:var(--red);">R$10–15</div>
+        <div class="kpi-desc">Custo por lead capturado via Formulário Nativo · mês 2+ (pós-aprendizado)</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Aquisição</div>
-        <div class="kpi-val" style="font-size:22px;">CAC · ROAS</div>
-        <div class="kpi-desc">Custo por cliente + retorno sobre o investimento em mídia</div>
+        <div class="kpi-label">Leads / mês</div>
+        <div class="kpi-val" style="color:var(--gold);">150–250</div>
+        <div class="kpi-desc">Meta base com CPL R$12 · 7 campanhas ativas · cresce após otimização</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">CRM</div>
-        <div class="kpi-val" style="font-size:22px;">Recompra %</div>
-        <div class="kpi-desc">Taxa de segunda compra no canal próprio (meta: &gt;30%)</div>
+        <div class="kpi-label">Adesão ao Grupo</div>
+        <div class="kpi-val">&gt;25%</div>
+        <div class="kpi-desc">% dos leads que aceitam o convite do grupo WhatsApp</div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Atendimento</div>
-        <div class="kpi-val" style="color:var(--red);">&lt;5min</div>
-        <div class="kpi-desc">Tempo de primeira resposta no WhatsApp com chatbot</div>
+        <div class="kpi-label">Conversão Grupo → Pedido</div>
+        <div class="kpi-val">&gt;15%</div>
+        <div class="kpi-desc">% dos membros do grupo que geram pelo menos 1 pedido no iFood</div>
       </div>
     </div>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
       <div style="background:var(--gray-1); border-radius:8px; padding:18px 20px;">
-        <p style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:12px;">Periodicidade de alinhamento</p>
+        <p style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:12px;">KPIs de campanha (por loja)</p>
         <div style="display:flex; flex-direction:column; gap:10px;">
-          <div style="display:flex; justify-content:space-between; font-size:13px; border-bottom:1px solid var(--gray-2); padding-bottom:10px;">
-            <span style="font-weight:500;">Check-in operacional</span>
-            <span style="color:var(--gray-5);">Quinzenal</span>
+          <div style="display:flex; justify-content:space-between; font-size:14px; border-bottom:1px solid var(--gray-2); padding-bottom:10px;">
+            <span style="font-weight:500;">Impressões por campanha</span>
+            <span style="color:var(--gray-5); font-family:var(--font-display); font-style:italic;">3.000–8.000/mês</span>
           </div>
-          <div style="display:flex; justify-content:space-between; font-size:13px; border-bottom:1px solid var(--gray-2); padding-bottom:10px;">
-            <span style="font-weight:500;">Revisão estratégica</span>
-            <span style="color:var(--gray-5);">Mensal</span>
+          <div style="display:flex; justify-content:space-between; font-size:14px; border-bottom:1px solid var(--gray-2); padding-bottom:10px;">
+            <span style="font-weight:500;">CTR (taxa de clique no form)</span>
+            <span style="color:var(--gray-5); font-family:var(--font-display); font-style:italic;">&gt;2%</span>
           </div>
-          <div style="display:flex; justify-content:space-between; font-size:13px;">
-            <span style="font-weight:500;">Retrospectiva de trimestre</span>
-            <span style="color:var(--gray-5);">Trimestral</span>
+          <div style="display:flex; justify-content:space-between; font-size:14px; border-bottom:1px solid var(--gray-2); padding-bottom:10px;">
+            <span style="font-weight:500;">Taxa de conclusão do form</span>
+            <span style="color:var(--gray-5); font-family:var(--font-display); font-style:italic;">&gt;60%</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:14px;">
+            <span style="font-weight:500;">Leads por loja / mês</span>
+            <span style="color:var(--gray-5); font-family:var(--font-display); font-style:italic;">20–45</span>
           </div>
         </div>
       </div>
-      <div class="insight">
-        <strong>Para o dashboard funcionar, precisamos do cliente:</strong><br><br>
-        Faturamento real por canal (iFood vs. próprio) · dados de pedidos do Saipos · confirmação dos pedidos WhatsApp para fechar o funil.
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div class="insight">
+          <strong>O dashboard de Fase 1 é simples:</strong> CPL × Volume de leads × Adesão ao grupo × Pedidos gerados. Tudo medível com formulário nativo + relatório Meta + acompanhamento manual do grupo.
+        </div>
+        <div style="background:var(--gray-1); border-radius:8px; padding:16px 20px;">
+          <p style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:10px;">Frequência de alinhamento</p>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; font-size:13px;">
+              <span>Check-in de campanha</span><span style="color:var(--gray-4);">Semanal</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:13px;">
+              <span>Relatório de resultado</span><span style="color:var(--gray-4);">Quinzenal</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:13px;">
+              <span>Revisão estratégica</span><span style="color:var(--gray-4);">Mensal</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════ SLIDE 17 — PROJEÇÃO ═══════ -->
-  <section class="slide s-std" id="s17">
+  <!-- ═══════ SLIDE 18 — PROJEÇÃO ═══════ -->
+  <section class="slide s-std" id="s18">
     <span class="slide-label">Projeção de Resultados</span>
     <h2 class="slide-title">Crescimento previsível em 6 meses: <em>de 20% para ~35% de receita própria</em></h2>
     <div class="slide-rule"></div>
@@ -1824,108 +1969,101 @@
               <td class="td-pp" style="color:var(--gray-4);">~20%</td>
             </tr>
             <tr>
-              <td style="font-weight:500;">Mês 1<br><span style="font-size:11px; color:var(--gray-4); font-weight:400;">Estruturação + CRM</span></td>
+              <td style="font-weight:500;">Mês 1<br><span style="font-size:12px; color:var(--gray-4); font-weight:400;">Fase de aprendizado</span></td>
               <td class="td-num">~105</td>
               <td class="td-num">R$7,8k</td>
-              <td class="td-pp">+crescendo</td>
+              <td class="td-pp">crescendo</td>
             </tr>
             <tr>
-              <td style="font-weight:500;">Mês 3<br><span style="font-size:11px; color:var(--gray-4); font-weight:400;">Campanhas + CRM rodando</span></td>
+              <td style="font-weight:500;">Mês 3<br><span style="font-size:12px; color:var(--gray-4); font-weight:400;">Leads + grupo rodando</span></td>
               <td class="td-num">~280</td>
               <td class="td-num">R$21k</td>
-              <td class="td-pp">~34% <span style="font-size:10px;">(+14p.p.)</span></td>
+              <td class="td-pp">~34% <span style="font-size:11px;">(+14p.p.)</span></td>
             </tr>
             <tr>
-              <td style="font-weight:500;">Mês 6<br><span style="font-size:11px; color:var(--gray-4); font-weight:400;">Escala + eventos Q4</span></td>
+              <td style="font-weight:500;">Mês 6<br><span style="font-size:12px; color:var(--gray-4); font-weight:400;">Escala + eventos Q4</span></td>
               <td class="td-num">520+</td>
               <td class="td-num">R$52,5k</td>
-              <td class="td-pp">~35% <span style="font-size:10px;">(+15p.p.)</span></td>
+              <td class="td-pp">~35% <span style="font-size:11px;">(+15p.p.)</span></td>
             </tr>
           </tbody>
         </table>
-        <p style="margin-top:16px; font-size:11px; color:var(--gray-4); line-height:1.5; font-style:italic;">Cenário conservador. Premissas: investimento R$2.500/mês em mídia, CPO R$20–35 após fase de aprendizado, ticket médio R$75, recompra 25% via CRM nos primeiros 90 dias.</p>
+        <p style="margin-top:16px; font-size:12px; color:var(--gray-4); line-height:1.5; font-style:italic;">Cenário base. Premissas: R$2.500/mês em mídia, CPL R$12 (mês 2+), adesão ao grupo 25%, conversão grupo 15%, ticket médio R$75.</p>
       </div>
       <div>
-        <p style="font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:16px;">Receita canal próprio — evolução mensal (R$)</p>
+        <p style="font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:16px;">Receita canal próprio — evolução mensal (R$)</p>
         <svg width="100%" height="200" viewBox="0 0 360 200" preserveAspectRatio="xMidYMid meet" aria-label="Gráfico de crescimento de receita">
-          <!-- grid lines -->
           <line x1="40" y1="20" x2="360" y2="20" stroke="#EDEBE8" stroke-width="1"/>
           <line x1="40" y1="70" x2="360" y2="70" stroke="#EDEBE8" stroke-width="1"/>
           <line x1="40" y1="120" x2="360" y2="120" stroke="#EDEBE8" stroke-width="1"/>
           <line x1="40" y1="170" x2="360" y2="170" stroke="#EDEBE8" stroke-width="1"/>
-          <!-- y labels -->
           <text x="36" y="24" text-anchor="end" font-family="DM Sans" font-size="10" fill="#888480">52k</text>
           <text x="36" y="74" text-anchor="end" font-family="DM Sans" font-size="10" fill="#888480">35k</text>
           <text x="36" y="124" text-anchor="end" font-family="DM Sans" font-size="10" fill="#888480">21k</text>
           <text x="36" y="174" text-anchor="end" font-family="DM Sans" font-size="10" fill="#888480">7k</text>
-          <!-- area fill -->
           <path d="M60,170 C90,160 130,130 180,120 C220,112 260,50 310,22 L310,188 L60,188 Z"
             fill="#C41E1E" opacity="0.08"/>
-          <!-- line -->
           <path d="M60,170 C90,160 130,130 180,120 C220,112 260,50 310,22"
             fill="none" stroke="#C41E1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- dots -->
           <circle cx="60" cy="170" r="5" fill="#C41E1E"/>
           <circle cx="120" cy="155" r="5" fill="#C41E1E"/>
           <circle cx="180" cy="120" r="5" fill="#C41E1E"/>
           <circle cx="240" cy="80" r="5" fill="#C41E1E"/>
           <circle cx="310" cy="22" r="5" fill="#C41E1E"/>
-          <!-- x labels -->
           <text x="60" y="198" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#888480">Hoje</text>
           <text x="120" y="198" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#888480">Mês 1</text>
           <text x="180" y="198" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#888480">Mês 2</text>
           <text x="240" y="198" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#888480">Mês 3</text>
           <text x="310" y="198" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#888480">Mês 6</text>
-          <!-- callout -->
           <rect x="270" y="4" width="80" height="22" rx="4" fill="#C41E1E"/>
           <text x="310" y="18" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="white">R$52,5k</text>
         </svg>
         <div class="insight" style="margin-top:16px;">
-          <strong>Mês 6 inclui eventos Q4:</strong> ~20 eventos gerando ~R$15k · base CRM com +600 clientes ativos · campanhas otimizadas com criativos validados.
+          <strong>Mês 6 inclui eventos Q4:</strong> ~20 eventos gerando ~R$15k · base de leads 750–1.500 capturados · grupos com 200–400 membros ativos.
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════ SLIDE 18 — INVESTIMENTO (sempre último) ═══════ -->
-  <section class="slide s-std" id="s18">
+  <!-- ═══════ SLIDE 19 — INVESTIMENTO (sempre último) ═══════ -->
+  <section class="slide s-std" id="s19">
     <span class="slide-label">Investimento</span>
-    <h2 class="slide-title"><em>R$2.800–3.100/mês</em> para construir um ativo permanente de vendas diretas</h2>
+    <h2 class="slide-title"><em>R$2.800–3.100/mês</em> para construir um ativo permanente de geração de leads</h2>
     <div class="slide-rule"></div>
     <div class="invest-cards">
       <div class="invest-card">
         <div class="invest-card-label">Verba de Mídia</div>
         <div class="invest-card-val">R$2.500 <em>/mês</em></div>
-        <div class="invest-card-desc">Meta Ads + Google Search · distribuição por campanha conforme estratégia · ajustável conforme performance</div>
+        <div class="invest-card-desc">7 campanhas Meta Ads (1 por loja) · Formulário Nativo · Público aberto + raio 7km · ajustável conforme CPL real</div>
       </div>
       <div class="invest-card">
-        <div class="invest-card-label">Ferramentas de CRM</div>
+        <div class="invest-card-label">Ferramentas e Automação</div>
         <div class="invest-card-val">R$300–600 <em>/mês</em></div>
-        <div class="invest-card-desc">Automação, chatbot e réguas de WhatsApp · ferramenta definida após diagnóstico técnico do Saipos · princípio: aproveitar o máximo do que já existe</div>
+        <div class="invest-card-desc">Ferramenta de disparo pós-formulário · gestão dos grupos WhatsApp · relatórios automatizados · ferramenta definida no setup</div>
       </div>
       <div class="invest-card">
-        <div class="invest-card-label">ROAS Esperado (mês 3+)</div>
-        <div class="invest-card-val" style="color:var(--red);">3–4x</div>
-        <div class="invest-card-desc">Retorno sobre investimento em mídia após fase de aprendizado · não incluí receita gerada pelo CRM (que tem custo menor)</div>
+        <div class="invest-card-label">CPL Esperado (mês 2+)</div>
+        <div class="invest-card-val" style="color:var(--red);">R$10–15</div>
+        <div class="invest-card-desc">Custo por lead com nome + telefone · CPL mês 1 acima do target (fase de aprendizado) · benchmark: R$8 otimista / R$15 conservador</div>
       </div>
     </div>
     <div class="invest-total">
       <div>
-        <div class="invest-total-label">TOTAL INVESTIMENTO MARKETING / MÊS</div>
+        <div class="invest-total-label">Total investimento marketing / mês</div>
         <div class="invest-total-val">~R$2.800 <em>a</em> R$3.100</div>
       </div>
       <div class="invest-roas">
-        <div class="invest-roas-val">R$52,5k</div>
-        <div class="invest-roas-label">receita canal próprio estimada no mês 6</div>
+        <div class="invest-roas-val">150–312</div>
+        <div class="invest-roas-label">leads/mês capturados (cenário base–otimista)</div>
       </div>
     </div>
-    <p style="margin-top:16px; font-size:11px; color:var(--gray-4); line-height:1.5; font-style:italic; text-align:center;">Valores referentes ao investimento direto em mídia e ferramentas. Honorários da V4 Company não incluídos nesta estimativa. Projeções baseadas em cenário conservador com premissas declaradas.</p>
+    <p style="margin-top:16px; font-size:12px; color:var(--gray-4); line-height:1.5; font-style:italic; text-align:center;">Valores referentes ao investimento direto em mídia e ferramentas. Honorários da V4 Company não incluídos nesta estimativa. Projeções baseadas em cenário base com premissas declaradas.</p>
   </section>
 
 </div><!-- #deck -->
 
 <script>
-  const slides = document.querySelectorAll('.slide');
+  const slides = Array.from(document.querySelectorAll('.slide'));
   const total = slides.length;
   let current = 0;
 
@@ -1934,6 +2072,7 @@
   const dotsEl = document.getElementById('dots');
   const prev = document.getElementById('nav-prev');
   const next = document.getElementById('nav-next');
+  const deck = document.getElementById('deck');
 
   // Build dots
   slides.forEach((_, i) => {
@@ -1943,12 +2082,9 @@
     dotsEl.appendChild(d);
   });
 
-  function go(n) {
-    slides[current].classList.remove('active');
-    dotsEl.children[current].classList.remove('active');
-    current = Math.max(0, Math.min(n, total - 1));
-    slides[current].classList.add('active');
-    dotsEl.children[current].classList.add('active');
+  function updateUI(idx) {
+    current = idx;
+    Array.from(dotsEl.children).forEach((d, i) => d.classList.toggle('active', i === current));
     progress.style.width = ((current + 1) / total * 100) + '%';
     counter.textContent = (current + 1) + ' / ' + total;
     prev.style.opacity = current === 0 ? '0' : '1';
@@ -1957,23 +2093,42 @@
     next.style.pointerEvents = current === total - 1 ? 'none' : 'all';
   }
 
+  function go(n) {
+    const target = Math.max(0, Math.min(n, total - 1));
+    slides[target].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Track current slide with IntersectionObserver
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+        const idx = slides.indexOf(entry.target);
+        if (idx !== -1) updateUI(idx);
+      }
+    });
+  }, { root: deck, threshold: 0.5 });
+
+  slides.forEach(slide => observer.observe(slide));
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); go(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); go(current - 1); }
+  });
+
+  // Buttons
   prev.addEventListener('click', () => go(current - 1));
   next.addEventListener('click', () => go(current + 1));
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(current + 1);
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(current - 1);
-  });
-
-  // Touch/swipe
-  let touchX = 0;
-  document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
-  document.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchX;
-    if (Math.abs(dx) > 50) dx < 0 ? go(current + 1) : go(current - 1);
+  // Touch swipe
+  let touchY = 0;
+  deck.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+  deck.addEventListener('touchend', e => {
+    const dy = e.changedTouches[0].clientY - touchY;
+    if (Math.abs(dy) > 50) dy < 0 ? go(current + 1) : go(current - 1);
   }, { passive: true });
 
-  go(0);
+  updateUI(0);
 </script>
 </body>
 </html>
