@@ -804,6 +804,58 @@
     padding-left: 10px;
     line-height: 1.4;
   }
+
+  /* ── Motor de Vendas two-track ── */
+  .motor-wrap { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+  .motor-track { display: flex; flex-direction: column; gap: 7px; }
+  .motor-lane-badge {
+    display: inline-flex; align-items: center;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    font-weight: 600; padding: 3px 10px; border-radius: 2px; align-self: flex-start;
+  }
+  .motor-lane-badge.red { background: var(--red); color: var(--white); }
+  .motor-lane-badge.gold { background: var(--gold); color: var(--white); }
+  .motor-steps { display: flex; align-items: stretch; gap: 0; }
+  .mst {
+    flex: 1 1 0; border-radius: 3px; padding: 14px 8px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; gap: 5px; min-width: 0; background: var(--gray-1);
+  }
+  .mst.blk { background: var(--black); }
+  .mst.blk .mst-name, .mst.blk .mst-sub { color: var(--gray-3); }
+  .mst.ifds { background: var(--red-light); border: 1px solid var(--red); }
+  .mst.convs { background: var(--red); }
+  .mst.convs .mst-name, .mst.convs .mst-sub { color: var(--white); }
+  .mst.bases { background: var(--gold-light); border: 1px solid rgba(184,134,42,.35); }
+  .mst.basehigh { background: var(--gold); }
+  .mst.basehigh .mst-name, .mst.basehigh .mst-sub { color: var(--white); }
+  .mst-icon { font-size: 18px; }
+  .mst-name {
+    font-size: 11px; font-weight: 600; letter-spacing: .04em;
+    text-transform: uppercase; line-height: 1.3; color: var(--black);
+  }
+  .mst-sub { font-size: 10px; color: var(--gray-4); line-height: 1.3; }
+  .marw { flex: 0 0 auto; font-size: 14px; color: var(--gray-3); padding: 0 5px; align-self: center; }
+  .marw.g { color: var(--gold); }
+  .motor-fork-row {
+    display: flex; align-items: center; gap: 8px; padding: 2px 0;
+  }
+  .fork-spacer { width: 23%; flex-shrink: 0; }
+  .fork-text {
+    font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--gray-4); display: flex; align-items: center; gap: 6px;
+  }
+  .fork-down-icon { color: var(--gold); font-size: 16px; }
+
+  /* ── Estratégia de Mídia 4-cards ── */
+  .estrategia-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    flex: 1 1 auto; min-height: 0; margin-bottom: 16px;
+  }
+  .ecard { background: var(--gray-1); border-radius: 3px; padding: 24px 26px; display: flex; flex-direction: column; gap: 10px; }
+  .ecard-icon { font-size: 26px; }
+  .ecard-title { font-size: 15px; font-weight: 600; color: var(--black); }
+  .ecard-desc { font-size: 14px; color: var(--gray-5); line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -867,18 +919,23 @@
       </div>
       <div class="agenda-item">
         <div class="agenda-num">07</div>
-        <div class="agenda-text">Cronograma</div>
-        <div class="agenda-sub">Execução semana a semana</div>
-      </div>
-      <div class="agenda-item">
-        <div class="agenda-num">08</div>
         <div class="agenda-text">KPIs Fase 1</div>
         <div class="agenda-sub">Métricas de sucesso do projeto</div>
       </div>
       <div class="agenda-item">
+        <div class="agenda-num">08</div>
+        <div class="agenda-text">Projeções</div>
+        <div class="agenda-sub">Construção de base mês a mês</div>
+      </div>
+      <div class="agenda-item">
         <div class="agenda-num">09</div>
         <div class="agenda-text">Investimento</div>
-        <div class="agenda-sub">Verba e projeção de retorno</div>
+        <div class="agenda-sub">Verba de mídia e cenários de CPL</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">10</div>
+        <div class="agenda-text">Cronograma</div>
+        <div class="agenda-sub">Execução semana a semana</div>
       </div>
     </div>
   </div>
@@ -1171,53 +1228,82 @@
     <span class="slide-module">04 · Motor de Vendas</span>
   </div>
   <div class="slide-body">
-    <div class="eyebrow">Jornada do Lead — Fase 1</div>
-    <h2 class="slide-title">Do anúncio ao pedido no iFood — <em>automatizado</em></h2>
-    <div class="journey">
-      <div class="journey-step active">
-        <div class="journey-icon">📱</div>
-        <div class="journey-label">Anúncio<br>Meta Ads</div>
-        <div class="journey-desc">Criativo de produto com alto apelo visual. Público aberto, raio 7km por loja.</div>
+    <div class="eyebrow">Dois caminhos simultâneos — Fase 1</div>
+    <h2 class="slide-title">O formulário abre <em>duas jornadas</em> ao mesmo tempo</h2>
+    <div class="motor-wrap">
+
+      <!-- Track 1: Conversão -->
+      <div class="motor-track">
+        <span class="motor-lane-badge red">Conversão → iFood</span>
+        <div class="motor-steps">
+          <div class="mst blk">
+            <div class="mst-icon">📱</div>
+            <div class="mst-name">Anúncio<br>Meta Ads</div>
+            <div class="mst-sub">criativo visual · raio 7km</div>
+          </div>
+          <div class="marw">→</div>
+          <div class="mst blk">
+            <div class="mst-icon">📋</div>
+            <div class="mst-name">Form<br>Nativo</div>
+            <div class="mst-sub">Instant Form · sem landing page</div>
+          </div>
+          <div class="marw">→</div>
+          <div class="mst ifds">
+            <div class="mst-icon">🛵</div>
+            <div class="mst-name">Link<br>iFood</div>
+            <div class="mst-sub">loja mais próxima da geolocalização</div>
+          </div>
+          <div class="marw">→</div>
+          <div class="mst convs">
+            <div class="mst-icon">✅</div>
+            <div class="mst-name">Pedido<br>iFood</div>
+            <div class="mst-sub">único canal de conversão · Fase 1</div>
+          </div>
+        </div>
       </div>
-      <div class="journey-arrow">→</div>
-      <div class="journey-step active">
-        <div class="journey-icon">📋</div>
-        <div class="journey-label">Formulário<br>Nativo</div>
-        <div class="journey-desc">Instant Form dentro do Meta — sem landing page. Dados capturados: nome + contato.</div>
+
+      <!-- Fork connector -->
+      <div class="motor-fork-row">
+        <div class="fork-spacer"></div>
+        <div class="fork-text">
+          <span class="fork-down-icon">↘</span>
+          <span>em paralelo — junto com o link iFood, o lead recebe:</span>
+        </div>
       </div>
-      <div class="journey-arrow">→</div>
-      <div class="journey-step active">
-        <div class="journey-icon">⚡</div>
-        <div class="journey-label">Mensagem<br>Automática</div>
-        <div class="journey-desc">Ferramenta própria dispara em segundos pós-formulário.</div>
+
+      <!-- Track 2: Base Própria -->
+      <div class="motor-track">
+        <span class="motor-lane-badge gold">Base Própria</span>
+        <div class="motor-steps">
+          <div class="mst bases">
+            <div class="mst-icon">⚡</div>
+            <div class="mst-name">Msg<br>Automática</div>
+            <div class="mst-sub">disparo em segundos pós-form</div>
+          </div>
+          <div class="marw g">→</div>
+          <div class="mst bases">
+            <div class="mst-icon">💬</div>
+            <div class="mst-name">Convite<br>Grupo WA</div>
+            <div class="mst-sub">mesmo msg que entrega o link iFood</div>
+          </div>
+          <div class="marw g">→</div>
+          <div class="mst bases">
+            <div class="mst-icon">👥</div>
+            <div class="mst-name">Grupo<br>WhatsApp</div>
+            <div class="mst-sub">cardápio diário + agente de conversão</div>
+          </div>
+          <div class="marw g">→</div>
+          <div class="mst basehigh">
+            <div class="mst-icon">📊</div>
+            <div class="mst-name">Base<br>Própria</div>
+            <div class="mst-sub">contato proprietário da marca</div>
+          </div>
+        </div>
       </div>
-      <div class="journey-arrow">→</div>
-      <div class="journey-step ifood">
-        <div class="journey-icon">🛵</div>
-        <div class="journey-label">Link iFood<br>+ Convite Grupo</div>
-        <div class="journey-desc">Mensagem entrega link da loja mais próxima + convite para o grupo WhatsApp.</div>
+
+      <div class="insight" style="margin-top: 10px;">
+        <strong>Chave da estratégia:</strong> O lead é direcionado ao iFood — mas a Premium Gourmet captura o contato. A mensagem automática serve a conversão e constrói a base própria ao mesmo tempo, sem custo adicional.
       </div>
-      <div class="journey-arrow">→</div>
-      <div class="journey-step active">
-        <div class="journey-icon">💬</div>
-        <div class="journey-label">Grupo<br>WhatsApp</div>
-        <div class="journey-desc">Cardápio diário + agente para conversas individuais → direcionamento ao iFood.</div>
-      </div>
-      <div class="journey-arrow">→</div>
-      <div class="journey-step ifood">
-        <div class="journey-icon">✅</div>
-        <div class="journey-label">Pedido<br>iFood</div>
-        <div class="journey-desc">Único canal de conversão na Fase 1. Comissão do iFood, mas demanda é nossa.</div>
-      </div>
-      <div class="journey-arrow">→</div>
-      <div class="journey-step active">
-        <div class="journey-icon">📊</div>
-        <div class="journey-label">Base<br>Própria</div>
-        <div class="journey-desc">Cada lead = contato proprietário. Reativação e recompra independem do iFood.</div>
-      </div>
-    </div>
-    <div class="insight" style="margin-top: 16px;">
-      <strong>Diferencial da estratégia:</strong> Pagamos o iFood só pela entrega — mas geramos a demanda por conta própria, construindo base de clientes que o iFood nunca nos dará.
     </div>
   </div>
 </section>
@@ -1280,25 +1366,31 @@
   </div>
   <div class="slide-body">
     <div class="eyebrow">Meta Ads — Fase 1</div>
-    <h2 class="slide-title">100% Meta Ads com <em>Formulário Nativo</em> — 7 campanhas geolocaliz.</h2>
-    <div class="content-grid col-2" style="flex: 0 0 auto; margin-bottom: 20px;">
-      <div>
-        <ul class="bullet-list">
-          <li><strong>Objetivo de campanha:</strong> Geração de Leads (Instant Form) — formulário dentro do Meta, sem landing page</li>
-          <li><strong>Segmentação:</strong> Público aberto por raio geográfico — 7km por loja (padrão iFood Salvador — validar por unidade)</li>
-          <li><strong>7 campanhas independentes</strong> — uma por loja, orçamento individualizado, otimização separada</li>
-        </ul>
+    <h2 class="slide-title">100% Meta Ads · <em>Formulário Nativo</em> · 7 campanhas independentes</h2>
+    <div class="estrategia-grid">
+      <div class="ecard">
+        <div class="ecard-icon">🎯</div>
+        <div class="ecard-title">Objetivo de campanha</div>
+        <div class="ecard-desc">Geração de Leads com Instant Form — formulário dentro do Meta, sem landing page, sem fricção de clique externo</div>
       </div>
-      <div>
-        <ul class="bullet-list">
-          <li><strong>Criativos:</strong> estático com criativo de produto com alto apelo visual — ensaio fotográfico (sem acervo atual)</li>
-          <li><strong>Fase de aprendizado:</strong> 30–45 dias por campanha — não alterar conjuntos durante este período</li>
-          <li><strong>Zero Google Search</strong> na Fase 1 — foco total em Meta para simplificar a estrutura e coletar dados</li>
-        </ul>
+      <div class="ecard">
+        <div class="ecard-icon">📍</div>
+        <div class="ecard-title">Segmentação geográfica</div>
+        <div class="ecard-desc">Público aberto por raio de 7km por loja — 7 campanhas independentes, orçamento e otimização separados por unidade</div>
+      </div>
+      <div class="ecard">
+        <div class="ecard-icon">🎨</div>
+        <div class="ecard-title">Criativos</div>
+        <div class="ecard-desc">Imagem estática com criativo de produto com alto apelo visual — ensaio fotográfico a produzir (sem acervo atual)</div>
+      </div>
+      <div class="ecard">
+        <div class="ecard-icon">⏱</div>
+        <div class="ecard-title">Fase de aprendizado</div>
+        <div class="ecard-desc">30–45 dias por campanha sem alteração de conjuntos — respeitar a janela do algoritmo antes de qualquer ajuste</div>
       </div>
     </div>
     <div class="insight">
-      <strong>Lógica da estratégia:</strong> Formulário nativo tem fricção menor que landing page — menos cliques, mais conversão. O lead já está dentro do Meta quando preenche; a automação garante que o link do iFood chega em segundos.
+      <strong>Por que formulário nativo:</strong> Menos cliques = maior taxa de conversão. O lead preenche sem sair do Meta; a automação entrega o link iFood em segundos. Zero Google Search na Fase 1 — foco e dados primeiro.
     </div>
   </div>
 </section>
@@ -1320,8 +1412,8 @@
             <th>Verba Diária</th>
             <th>Verba Mensal</th>
             <th>CPL Cons. R$15 → leads</th>
-            <th>CPL Base R$12 → leads</th>
-            <th>CPL Otim. R$8 → leads</th>
+            <th>CPL Base R$10 → leads</th>
+            <th>CPL Otim. R$7 → leads</th>
           </tr>
         </thead>
         <tbody>
@@ -1330,64 +1422,64 @@
             <td>R$11,90</td>
             <td>R$357</td>
             <td class="cpl-cons">~24 leads</td>
-            <td class="cpl-base">~30 leads</td>
-            <td class="cpl-opt">~45 leads</td>
+            <td class="cpl-base">~36 leads</td>
+            <td class="cpl-opt">~51 leads</td>
           </tr>
           <tr>
             <td>Loja 02</td>
             <td>R$11,90</td>
             <td>R$357</td>
             <td class="cpl-cons">~24 leads</td>
-            <td class="cpl-base">~30 leads</td>
-            <td class="cpl-opt">~45 leads</td>
+            <td class="cpl-base">~36 leads</td>
+            <td class="cpl-opt">~51 leads</td>
           </tr>
           <tr>
             <td>Loja 03</td>
             <td>R$11,90</td>
             <td>R$357</td>
             <td class="cpl-cons">~24 leads</td>
-            <td class="cpl-base">~30 leads</td>
-            <td class="cpl-opt">~45 leads</td>
+            <td class="cpl-base">~36 leads</td>
+            <td class="cpl-opt">~51 leads</td>
           </tr>
           <tr>
             <td>Loja 04</td>
             <td>R$11,90</td>
             <td>R$357</td>
             <td class="cpl-cons">~24 leads</td>
-            <td class="cpl-base">~30 leads</td>
-            <td class="cpl-opt">~45 leads</td>
+            <td class="cpl-base">~36 leads</td>
+            <td class="cpl-opt">~51 leads</td>
           </tr>
           <tr>
             <td>Loja 05</td>
             <td>R$11,90</td>
             <td>R$357</td>
             <td class="cpl-cons">~24 leads</td>
-            <td class="cpl-base">~30 leads</td>
-            <td class="cpl-opt">~45 leads</td>
+            <td class="cpl-base">~36 leads</td>
+            <td class="cpl-opt">~51 leads</td>
           </tr>
           <tr>
             <td>Loja 06</td>
             <td>R$11,90</td>
             <td>R$357</td>
             <td class="cpl-cons">~24 leads</td>
-            <td class="cpl-base">~30 leads</td>
-            <td class="cpl-opt">~45 leads</td>
+            <td class="cpl-base">~36 leads</td>
+            <td class="cpl-opt">~51 leads</td>
           </tr>
           <tr>
             <td>Loja 07</td>
             <td>R$11,90</td>
             <td>R$356</td>
             <td class="cpl-cons">~24 leads</td>
-            <td class="cpl-base">~30 leads</td>
-            <td class="cpl-opt">~44 leads</td>
+            <td class="cpl-base">~36 leads</td>
+            <td class="cpl-opt">~51 leads</td>
           </tr>
           <tr class="total-row">
             <td>TOTAL</td>
             <td>R$83,30/dia</td>
             <td>R$2.500/mês</td>
-            <td>~167 leads/mês</td>
-            <td>~208 leads/mês</td>
-            <td>~312 leads/mês</td>
+            <td>~168 leads/mês</td>
+            <td>~252 leads/mês</td>
+            <td>~357 leads/mês</td>
           </tr>
         </tbody>
       </table>
@@ -1490,11 +1582,173 @@
   </div>
 </section>
 
-<!-- ═══════════════ SLIDE 16 — CRONOGRAMA ═══════════════ -->
+<!-- ═══════════════ SLIDE 16 — KPIs FASE 1 ═══════════════ -->
 <section class="slide">
   <div class="slide-header">
     <span class="slide-logo">Premium Gourmet</span>
-    <span class="slide-module">07 · Cronograma</span>
+    <span class="slide-module">07 · KPIs · Fase 1</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Métricas de Sucesso — Meses 1 a 6</div>
+    <h2 class="slide-title">O que vamos <em>medir</em> para saber se está funcionando</h2>
+    <div class="kpi-grid" style="grid-template-columns: repeat(4,1fr);">
+      <div class="kpi-card">
+        <div class="kpi-label">CPL Meta Ads</div>
+        <div class="kpi-val red">R$10–15</div>
+        <div class="kpi-unit">custo por lead — meta de eficiência</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Leads / mês</div>
+        <div class="kpi-val gold">170–252</div>
+        <div class="kpi-unit">todas as 7 campanhas combinadas</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Adesão ao Grupo</div>
+        <div class="kpi-val">+25%</div>
+        <div class="kpi-unit">% de leads que entram no grupo WA</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Conversão Grupo</div>
+        <div class="kpi-val">+15%</div>
+        <div class="kpi-unit">% do grupo que faz pedido no mês</div>
+      </div>
+    </div>
+    <div class="content-grid col-2" style="flex: 1 1 auto; min-height: 0; margin-top: 4px;">
+      <div>
+        <ul class="bullet-list">
+          <li><strong>CTR do anúncio:</strong> meta ≥1,5% — indica qualidade do criativo</li>
+          <li><strong>Taxa de preenchimento do formulário:</strong> ≥60% dos cliques</li>
+          <li><strong>Tempo de resposta da automação:</strong> ≤60 segundos após formulário</li>
+          <li><strong>Crescimento da base de grupos:</strong> +20% ao mês</li>
+        </ul>
+      </div>
+      <div>
+        <ul class="bullet-list">
+          <li><strong>Custo por pedido gerado:</strong> calculado mês a mês</li>
+          <li><strong>Taxa de recompra dos membros do grupo:</strong> ≥30% compram 2x ou mais</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 18 — PROJEÇÕES ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">08 · KPIs · Projeções</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Projeção — Fase 1 (6 meses)</div>
+    <h2 class="slide-title">Construção de base própria mês a mês — <em>progressiva</em></h2>
+    <div style="overflow-x: auto; flex: 0 0 auto; margin-bottom: 16px;">
+      <table class="proj-table">
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th>Leads Acumulados</th>
+            <th>Membros Grupo WA</th>
+            <th>Pedidos Estimados/mês</th>
+            <th>Ticket Médio</th>
+            <th>Receita Gerada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mês 1</td>
+            <td>~252</td>
+            <td>~63</td>
+            <td>~9</td>
+            <td>R$90</td>
+            <td class="highlight">~R$810</td>
+          </tr>
+          <tr>
+            <td>Mês 2</td>
+            <td>~504</td>
+            <td>~117</td>
+            <td>~18</td>
+            <td>R$90</td>
+            <td class="highlight">~R$1.620</td>
+          </tr>
+          <tr>
+            <td>Mês 3</td>
+            <td>~756</td>
+            <td>~163</td>
+            <td>~24</td>
+            <td>R$90</td>
+            <td class="highlight">~R$2.160</td>
+          </tr>
+          <tr>
+            <td>Mês 4</td>
+            <td>~1.008</td>
+            <td>~201</td>
+            <td>~30</td>
+            <td>R$95</td>
+            <td class="highlight">~R$2.850</td>
+          </tr>
+          <tr>
+            <td>Mês 5</td>
+            <td>~1.260</td>
+            <td>~234</td>
+            <td>~35</td>
+            <td>R$95</td>
+            <td class="highlight">~R$3.325</td>
+          </tr>
+          <tr>
+            <td>Mês 6</td>
+            <td>~1.512</td>
+            <td>~262</td>
+            <td>~39</td>
+            <td>R$100</td>
+            <td class="gold">~R$3.900</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight">
+      <strong>Nota importante:</strong> Estas projeções consideram o cenário base (CPL R$10, adesão 25%, conversão 15%). O mês 1 e 2 estão em fase de aprendizado — os números crescem a partir do mês 3, quando as campanhas já passaram da janela de estabilização do algoritmo. O valor principal não é a receita direta, mas a base de 1.500+ contatos próprios ao fim da Fase 1.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 19 — INVESTIMENTO ═══════════════ -->
+<section class="slide invest-slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">09 · Investimento</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">Verba de Mídia — Fase 1</div>
+    <h2 class="slide-title" style="color: var(--white);">R$2.500/mês em <em>mídia paga</em> — o único investimento desta fase</h2>
+    <div style="font-size:14px; color:var(--gray-4); margin-bottom:32px; line-height:1.6;">7 campanhas independentes · ~R$357 por loja/mês · raio 7km por unidade · orçamento e otimização separados</div>
+    <div class="content-grid col-3" style="flex: 1 1 auto; min-height: 0;">
+      <div style="background:#1a1a1a; border-radius:3px; padding:28px; display:flex; flex-direction:column; gap:10px;">
+        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4);">Cenário conservador</div>
+        <div style="font-family:var(--font-display); font-size:36px; color:var(--gray-3);">168 leads/mês</div>
+        <div style="font-size:13px; color:var(--gray-5);">CPL R$15</div>
+        <div style="font-size:13px; color:var(--gray-5);">~39 membros grupo no mês 6</div>
+      </div>
+      <div style="background:#1a1a1a; border-radius:3px; padding:28px; display:flex; flex-direction:column; gap:10px; border:1px solid var(--gold);">
+        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold);">Cenário base</div>
+        <div style="font-family:var(--font-display); font-size:36px; color:var(--white);">252 leads/mês</div>
+        <div style="font-size:13px; color:var(--gray-4);">CPL R$10</div>
+        <div style="font-size:13px; color:var(--gray-4);">~262 membros grupo no mês 6</div>
+      </div>
+      <div style="background:#1a1a1a; border-radius:3px; padding:28px; display:flex; flex-direction:column; gap:10px;">
+        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4);">Cenário otimista</div>
+        <div style="font-family:var(--font-display); font-size:36px; color:var(--red);">357 leads/mês</div>
+        <div style="font-size:13px; color:var(--gray-5);">CPL R$7</div>
+        <div style="font-size:13px; color:var(--gray-5);">~370+ membros grupo no mês 6</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 19 — CRONOGRAMA ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">10 · Cronograma</span>
   </div>
   <div class="slide-body">
     <div class="eyebrow">Execução — Semana a Semana</div>
@@ -1551,207 +1805,6 @@
           <li>Ampliar base de grupos e conteúdo</li>
           <li>Primeiro diagnóstico de LTV da base</li>
         </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ SLIDE 17 — KPIs FASE 1 ═══════════════ -->
-<section class="slide">
-  <div class="slide-header">
-    <span class="slide-logo">Premium Gourmet</span>
-    <span class="slide-module">08 · KPIs · Fase 1</span>
-  </div>
-  <div class="slide-body">
-    <div class="eyebrow">Métricas de Sucesso — Meses 1 a 6</div>
-    <h2 class="slide-title">O que vamos <em>medir</em> para saber se está funcionando</h2>
-    <div class="kpi-grid" style="grid-template-columns: repeat(4,1fr);">
-      <div class="kpi-card">
-        <div class="kpi-label">CPL Meta Ads</div>
-        <div class="kpi-val red">R$10–15</div>
-        <div class="kpi-unit">custo por lead — meta de eficiência</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Leads / mês</div>
-        <div class="kpi-val gold">150–250</div>
-        <div class="kpi-unit">todas as 7 campanhas combinadas</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Adesão ao Grupo</div>
-        <div class="kpi-val">+25%</div>
-        <div class="kpi-unit">% de leads que entram no grupo WA</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Conversão Grupo</div>
-        <div class="kpi-val">+15%</div>
-        <div class="kpi-unit">% do grupo que faz pedido no mês</div>
-      </div>
-    </div>
-    <div class="content-grid col-2" style="flex: 1 1 auto; min-height: 0; margin-top: 4px;">
-      <div>
-        <ul class="bullet-list">
-          <li><strong>CTR do anúncio:</strong> meta ≥1,5% — indica qualidade do criativo</li>
-          <li><strong>Taxa de preenchimento do formulário:</strong> ≥60% dos cliques</li>
-          <li><strong>Tempo de resposta da automação:</strong> ≤60 segundos após formulário</li>
-          <li><strong>Crescimento da base de grupos:</strong> +20% ao mês</li>
-        </ul>
-      </div>
-      <div>
-        <ul class="bullet-list">
-          <li><strong>Pedidos gerados por grupo:</strong> rastreados via UTM nos links iFood</li>
-          <li><strong>Custo por pedido gerado:</strong> calculado mês a mês</li>
-          <li><strong>Taxa de recompra dos membros do grupo:</strong> ≥30% compram 2x ou mais</li>
-          <li><strong>NPS informal:</strong> pesquisa trimestral no próprio grupo</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ SLIDE 18 — PROJEÇÕES ═══════════════ -->
-<section class="slide">
-  <div class="slide-header">
-    <span class="slide-logo">Premium Gourmet</span>
-    <span class="slide-module">08 · KPIs · Projeções</span>
-  </div>
-  <div class="slide-body">
-    <div class="eyebrow">Projeção — Fase 1 (6 meses)</div>
-    <h2 class="slide-title">Construção de base própria mês a mês — <em>progressiva</em></h2>
-    <div style="overflow-x: auto; flex: 0 0 auto; margin-bottom: 16px;">
-      <table class="proj-table">
-        <thead>
-          <tr>
-            <th>Mês</th>
-            <th>Leads Acumulados</th>
-            <th>Membros Grupo WA</th>
-            <th>Pedidos Estimados/mês</th>
-            <th>Ticket Médio</th>
-            <th>Receita Gerada</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Mês 1</td>
-            <td>~180</td>
-            <td>~45</td>
-            <td>~7</td>
-            <td>R$90</td>
-            <td class="highlight">~R$630</td>
-          </tr>
-          <tr>
-            <td>Mês 2</td>
-            <td>~380</td>
-            <td>~95</td>
-            <td>~19</td>
-            <td>R$90</td>
-            <td class="highlight">~R$1.710</td>
-          </tr>
-          <tr>
-            <td>Mês 3</td>
-            <td>~580</td>
-            <td>~145</td>
-            <td>~32</td>
-            <td>R$90</td>
-            <td class="highlight">~R$2.880</td>
-          </tr>
-          <tr>
-            <td>Mês 4</td>
-            <td>~780</td>
-            <td>~195</td>
-            <td>~42</td>
-            <td>R$95</td>
-            <td class="highlight">~R$3.990</td>
-          </tr>
-          <tr>
-            <td>Mês 5</td>
-            <td>~980</td>
-            <td>~245</td>
-            <td>~52</td>
-            <td>R$95</td>
-            <td class="highlight">~R$4.940</td>
-          </tr>
-          <tr>
-            <td>Mês 6</td>
-            <td>~1.180</td>
-            <td>~295</td>
-            <td>~63</td>
-            <td>R$100</td>
-            <td class="gold">~R$6.300</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="insight">
-      <strong>Nota importante:</strong> Estas projeções consideram o cenário base (CPL R$12, adesão 25%, conversão 15%). O mês 1 e 2 estão em fase de aprendizado — os números crescem a partir do mês 3, quando as campanhas já passaram da janela de estabilização do algoritmo. O valor principal não é a receita direta, mas a base de 1.000+ contatos próprios ao fim da Fase 1.
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ SLIDE 19 — INVESTIMENTO ═══════════════ -->
-<section class="slide invest-slide">
-  <div class="slide-header">
-    <span class="slide-logo">Premium Gourmet</span>
-    <span class="slide-module">09 · Investimento</span>
-  </div>
-  <div class="slide-body">
-    <div class="eyebrow">Estrutura de Investimento — Fase 1</div>
-    <h2 class="slide-title" style="color: var(--white);">Investimento <em>focado</em> em captação e estrutura</h2>
-    <table class="invest-table" style="flex: 0 0 auto; margin-bottom: 24px;">
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Descrição</th>
-          <th class="val">Valor/mês</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Verba de Mídia Meta Ads</td>
-          <td>7 campanhas · R$357 por loja · raio 7km</td>
-          <td class="val">R$2.500</td>
-        </tr>
-        <tr>
-          <td>Gestão de Tráfego</td>
-          <td>Setup, otimização, relatórios e acompanhamento semanal</td>
-          <td class="val">A definir</td>
-        </tr>
-        <tr>
-          <td>Ferramenta de Automação</td>
-          <td>Disparo automático de mensagem pós-formulário</td>
-          <td class="val">A definir</td>
-        </tr>
-        <tr>
-          <td>Produção de Criativos</td>
-          <td>Ensaio fotográfico (investimento único · Mês 1)</td>
-          <td class="val">A definir</td>
-        </tr>
-        <tr>
-          <td>Social Media</td>
-          <td>Instagram, Linktree, grupos WhatsApp, calendário</td>
-          <td class="val">A definir</td>
-        </tr>
-        <tr>
-          <td><strong>Total Mínimo Confirmado</strong></td>
-          <td>Verba de mídia — investimento direto em captação</td>
-          <td class="val">R$2.500/mês</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="content-grid col-3" style="flex: 0 0 auto;">
-      <div style="background:#1a1a1a; border-radius:3px; padding:18px; display:flex; flex-direction:column; gap:6px;">
-        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4);">Cenário conservador</div>
-        <div style="font-family:var(--font-display); font-size:28px; color:var(--gray-3);">167 leads/mês</div>
-        <div style="font-size:13px; color:var(--gray-5);">CPL R$15 · ~42 pedidos no mês 6</div>
-      </div>
-      <div style="background:#1a1a1a; border-radius:3px; padding:18px; display:flex; flex-direction:column; gap:6px; border:1px solid var(--gold);">
-        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold);">Cenário base</div>
-        <div style="font-family:var(--font-display); font-size:28px; color:var(--white);">208 leads/mês</div>
-        <div style="font-size:13px; color:var(--gray-4);">CPL R$12 · ~63 pedidos no mês 6</div>
-      </div>
-      <div style="background:#1a1a1a; border-radius:3px; padding:18px; display:flex; flex-direction:column; gap:6px;">
-        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4);">Cenário otimista</div>
-        <div style="font-family:var(--font-display); font-size:28px; color:var(--red);">312 leads/mês</div>
-        <div style="font-size:13px; color:var(--gray-5);">CPL R$8 · ~94 pedidos no mês 6</div>
       </div>
     </div>
   </div>
