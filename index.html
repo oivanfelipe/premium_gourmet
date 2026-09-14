@@ -885,7 +885,7 @@
 <body>
 
 <div id="progress"></div>
-<span id="counter">1 / 21</span>
+<span id="counter">1 / 22</span>
 <button class="nav-btn" id="prev" aria-label="Slide anterior">↑</button>
 <button class="nav-btn" id="next" aria-label="Próximo slide">↓</button>
 <div id="dots"></div>
@@ -939,7 +939,7 @@
       <div class="agenda-item">
         <div class="agenda-num">06</div>
         <div class="agenda-text">CRM e Retenção</div>
-        <div class="agenda-sub">Régua AutomaX, grupos WA e reativação</div>
+        <div class="agenda-sub">Grupos WA, reativação e projeção de retorno</div>
       </div>
       <div class="agenda-item">
         <div class="agenda-num">07</div>
@@ -1565,138 +1565,145 @@
   </div>
 </section>
 
-<!-- ═══════════════ SLIDE 15 — RÉGUA DE ATIVAÇÃO ═══════════════ -->
+<!-- ═══════════════ SLIDE 15 — CRM: O QUE ACONTECE COM O LEAD ═══════════════ -->
 <section class="slide">
   <div class="slide-header">
     <span class="slide-logo">Premium Gourmet</span>
-    <span class="slide-module">06 · CRM · Régua de Ativação</span>
+    <span class="slide-module">06 · CRM</span>
   </div>
   <div class="slide-body">
-    <div class="eyebrow">AutomaX — leads captados pelo formulário</div>
-    <h2 class="slide-title">5 mensagens que convertem intenção em pedido — <em>e constroem base</em></h2>
-    <div class="content-grid col-2" style="flex: 1 1 auto; min-height: 0; align-items: start;">
-      <div style="display: flex; flex-direction: column; gap: 0; overflow-x: auto;">
-        <table class="regua-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Quando</th>
-              <th>Categoria</th>
-              <th>Mensagem</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Imediato</td>
-              <td><span class="regua-badge util">Utilidade</span></td>
-              <td>Boas-vindas + confirma cadastro + avisa que o cardápio de hoje chega em breve</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>+2h</td>
-              <td><span class="regua-badge util">Utilidade</span></td>
-              <td>Cardápio do dia + link iFood da loja mais próxima + <strong>convite para o grupo WA</strong></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>+24h <em style="color:var(--gray-4);font-size:11px;">(se não comprou)</em></td>
-              <td><span class="regua-badge mktg">Marketing</span></td>
-              <td>Combo especial de boas-vindas com oferta por tempo limitado</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>+48h <em style="color:var(--gray-4);font-size:11px;">(se não comprou)</em></td>
-              <td><span class="regua-badge util">Utilidade</span></td>
-              <td>Prova social — nota 4,7–4,8 no iFood + chamada para experimentar</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>+72h <em style="color:var(--gray-4);font-size:11px;">(último toque)</em></td>
-              <td><span class="regua-badge mktg">Marketing</span></td>
-              <td>Última chamada: combo de boas-vindas expira hoje</td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="font-size:12px; color:var(--gray-4); margin-top:10px; line-height:1.5;">Quem responder ou comprar em qualquer etapa sai da régua automaticamente — sem cobrar por mensagem desnecessária.</div>
+    <div class="eyebrow">O que acontece depois que o cliente preenche o formulário</div>
+    <h2 class="slide-title">Ele vai pro iFood comprar — e entra no grupo da <em>loja mais próxima</em></h2>
+    <div style="display: flex; flex-direction: column; gap: 14px; flex: 1 1 auto; min-height: 0;">
+      <div style="display: flex; gap: 10px; align-items: stretch;">
+        <div style="flex:1; background:var(--black); border-radius:3px; padding:18px 20px; display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:22px;">⚡</div>
+          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); font-weight:600;">Na hora</div>
+          <div style="font-size:14px; color:var(--gray-3); line-height:1.5;">Recebe boas-vindas confirmando o cadastro</div>
+        </div>
+        <div style="flex:0 0 auto; color:var(--gray-3); font-size:18px; align-self:center;">→</div>
+        <div style="flex:1; background:var(--gray-1); border-radius:3px; padding:18px 20px; display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:22px;">🍲</div>
+          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); font-weight:600;">+2h</div>
+          <div style="font-size:14px; color:var(--gray-5); line-height:1.5;">Cardápio do dia + link iFood da loja mais próxima + convite pro grupo WA</div>
+        </div>
+        <div style="flex:0 0 auto; color:var(--gray-3); font-size:18px; align-self:center;">→</div>
+        <div style="flex:1; background:var(--gray-1); border-radius:3px; padding:18px 20px; display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:22px;">🎁</div>
+          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); font-weight:600;">+24h a +72h</div>
+          <div style="font-size:14px; color:var(--gray-5); line-height:1.5;">3 lembretes com oferta especial de boas-vindas, se ainda não comprou</div>
+        </div>
+        <div style="flex:0 0 auto; color:var(--gold); font-size:18px; align-self:center;">→</div>
+        <div style="flex:1; background:var(--gold-light); border:1px solid rgba(184,134,42,.3); border-radius:3px; padding:18px 20px; display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:22px;">👥</div>
+          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); font-weight:600;">Base própria</div>
+          <div style="font-size:14px; color:var(--gray-5); line-height:1.5;">Membro do grupo da loja — recebe cardápio todo dia, sem pagar mais por isso</div>
+        </div>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div class="content-grid col-3" style="flex: 1 1 auto; min-height: 0;">
         <div class="card accent">
-          <div class="card-label">Ferramenta</div>
-          <div style="font-size:15px; font-weight:600; margin-top:4px;">AutomaX</div>
-          <div class="card-desc">CRM próprio da V4, operado pelo Gabriel. Custo por mensagem enviada — por isso fica reservado para a régua individual dos leads captados, não para os grupos de massa.</div>
+          <div class="card-label">7 grupos regionais</div>
+          <div style="font-size:14px; color:var(--gray-5); margin-top:6px; line-height:1.5;">Um grupo por loja. Cada cliente entra no grupo da unidade mais próxima da casa dele — conteúdo local e relevante.</div>
         </div>
-        <div>
-          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:8px; font-weight:600;">Custo da régua — 1.400 leads/mês · 5 disparos</div>
-          <div class="cost-row">
-            <div class="cost-box util">
-              <div class="cost-box-label">Classificação Utilidade</div>
-              <div class="cost-box-val">~R$245/mês</div>
-              <div class="cost-box-sub">R$0,035/msg — confirmar com Biel</div>
-            </div>
-            <div class="cost-box mktg">
-              <div class="cost-box-label">Classificação Marketing</div>
-              <div class="cost-box-val">~R$2.252/mês</div>
-              <div class="cost-box-sub">R$0,3217/msg — 10× mais caro</div>
-            </div>
-          </div>
+        <div class="card accent">
+          <div class="card-label">Calendário fixo de conteúdo</div>
+          <div style="font-size:14px; color:var(--gray-5); margin-top:6px; line-height:1.5;">Cardápio diário, prévia do combo de fim de semana toda quinta, chamada de sexta e ofertas em datas especiais.</div>
         </div>
-        <div class="insight" style="margin: 0;">
-          <strong>Ação crítica:</strong> confirmar com o Gabriel se as mensagens da régua de ativação podem ser classificadas como Utilidade — a diferença de custo é quase 10×.
+        <div class="card accent">
+          <div class="card-label">Recompra sem custo extra</div>
+          <div style="font-size:14px; color:var(--gray-5); margin-top:6px; line-height:1.5;">Quem está no grupo vê o cardápio todo dia. Não precisa de novo anúncio para comprar de novo — esse é o ativo que estamos construindo.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ SLIDE 15b — GRUPOS WA + REATIVAÇÃO ═══════════════ -->
+<!-- ═══════════════ SLIDE 15b — CRM: BASE HISTÓRICA ═══════════════ -->
 <section class="slide">
   <div class="slide-header">
     <span class="slide-logo">Premium Gourmet</span>
-    <span class="slide-module">06 · CRM · Grupos e Reativação</span>
+    <span class="slide-module">06 · CRM · Fase 2</span>
   </div>
   <div class="slide-body">
-    <div class="eyebrow">CRM de massa — sem custo por mensagem</div>
-    <h2 class="slide-title">7 grupos por loja na Fase 1 · base histórica reativada na <em>Fase 2</em></h2>
+    <div class="eyebrow">A partir do Mês 4 — base histórica entra em cena</div>
+    <h2 class="slide-title">5.000 contatos que já conhecem a marca — <em>ainda não estão sendo ativados</em></h2>
     <div class="content-grid col-2" style="flex: 1 1 auto; min-height: 0; align-items: start;">
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <div class="card accent">
-          <div class="card-label">Estrutura</div>
-          <div style="font-size:15px; font-weight:600; margin-top:4px;">7 grupos — um por loja</div>
-          <div class="card-desc">Entrada por adesão (convite enviado na mensagem 2 da régua). Ninguém é adicionado sem consentimento — viola política WA e arrisca bloqueio da conta.</div>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card gold-accent">
+          <div class="card-label">O que temos hoje</div>
+          <div style="font-size:15px; font-weight:600; margin-top:4px; color:var(--black);">~5.220 contatos dormentes</div>
+          <div class="card-desc">~5.000 da base histórica + 220 membros do grupo VIP atual. Pessoas que já compraram e já conhecem a Premium Gourmet — só precisam de um convite de volta.</div>
         </div>
+        <div class="insight" style="margin:0;">
+          <strong>Por que esperar o Mês 4?</strong> Porque a captação via Meta precisa estar validada primeiro — CPL, taxa de adesão, conversão funcionando. Aí sim migramos parte do orçamento para reativar a base histórica.
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:16px;">
         <div>
-          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:10px; font-weight:600;">Calendário de conteúdo</div>
-          <div class="cal-grid">
-            <div class="cal-day">Seg – Sex</div><div class="cal-content">Cardápio executivo do dia</div>
-            <div class="cal-day">Quinta</div><div class="cal-content">Prévia do combo de fim de semana</div>
-            <div class="cal-day">Sexta</div><div class="cal-content">Chamada "dia de feijoada"</div>
-            <div class="cal-day">Datas esp.</div><div class="cal-content">Oferta ou prato especial sazonal</div>
+          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:10px; font-weight:600;">Como reativar — 3 mensagens</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <div style="flex:0 0 auto; width:26px; height:26px; border-radius:50%; background:var(--gray-2); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--black);">1</div>
+              <div style="font-size:13px; color:var(--gray-5); line-height:1.5;"><strong>Saudade</strong> — mensagem calorosa relembrando a marca + convite para o grupo da loja mais próxima</div>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <div style="flex:0 0 auto; width:26px; height:26px; border-radius:50%; background:var(--gray-2); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--black);">2</div>
+              <div style="font-size:13px; color:var(--gray-5); line-height:1.5;"><strong>Oferta</strong> — kit especial de boas-vindas com desconto para a primeira compra do retorno</div>
+            </div>
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+              <div style="flex:0 0 auto; width:26px; height:26px; border-radius:50%; background:var(--gray-2); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--black);">3</div>
+              <div style="font-size:13px; color:var(--gray-5); line-height:1.5;"><strong>Lembrete sazonal</strong> — "fim de semana é dia de feijoada" — chamada leve, sem pressão</div>
+            </div>
           </div>
         </div>
-        <div class="insight" style="margin: 0;">
-          <strong>Lógica de custo zero:</strong> um cliente no grupo reativa sem pagar Meta Ads. Sem o grupo, cada recompra custa um novo CPL.
+        <div style="background:var(--gray-1); border-radius:3px; padding:16px 18px; font-size:13px; color:var(--gray-5); line-height:1.6;">
+          Quem responde ou compra sai do fluxo automaticamente. Base fria pede abordagem leve — o objetivo é trazer de volta para o grupo, não forçar a compra na primeira mensagem.
         </div>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <div class="card gold-accent">
-          <div class="card-label">Fase 2 — a partir do Mês 4</div>
-          <div style="font-size:15px; font-weight:600; margin-top:4px;">Reativação da base histórica</div>
-          <div class="card-desc">~5.000 contatos históricos + grupo VIP (220 membros). Só entra em cena depois que a captação via Meta estiver validada, com verba migrando do iFood para o CRM.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 15c — CRM: PROJEÇÃO DE RETORNO ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">06 · CRM · Projeção</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">O que a base própria gera — em pedidos e faturamento</div>
+    <h2 class="slide-title">No Mês 6, a base própria gera entre <em>R$7.000 e R$11.000/mês</em> sem pagar novo anúncio</h2>
+    <div class="content-grid col-3" style="flex: 0 0 auto; margin-bottom: 20px;">
+      <div style="background:var(--gray-1); border-radius:3px; padding:24px; display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); font-weight:600;">Base Nova — leads Meta Ads</div>
+        <div style="font-family:var(--font-display); font-size:32px; color:var(--black);">~260 membros</div>
+        <div style="font-size:13px; color:var(--gray-5); line-height:1.5;">ao fim do Mês 6 nos grupos das lojas</div>
+        <div style="border-top:1px solid var(--gray-2); margin-top:4px; padding-top:12px;">
+          <div style="font-size:13px; color:var(--gray-5);">~39 pedidos/mês</div>
+          <div style="font-family:var(--font-display); font-size:24px; color:var(--red); margin-top:2px;">~R$3.900/mês</div>
         </div>
-        <div>
-          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:8px; font-weight:600;">Régua de Reativação — 3 disparos</div>
-          <table class="regua-table">
-            <thead><tr><th>#</th><th>Quando</th><th>Mensagem</th></tr></thead>
-            <tbody>
-              <tr><td>1</td><td>Início</td><td>Saudade + convite para o grupo da loja mais próxima</td></tr>
-              <tr><td>2</td><td>+48h</td><td>Oferta de reativação — kit com desconto</td></tr>
-              <tr><td>3</td><td>+7d</td><td>Lembrete sazonal: fim de semana é dia de feijoada</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div style="font-size:12px; color:var(--gray-4); line-height:1.5;">Cadência mais enxuta que a de Ativação — base fria precisa de abordagem leve antes de converter.</div>
       </div>
+      <div style="background:var(--gold-light); border:1px solid rgba(184,134,42,.3); border-radius:3px; padding:24px; display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); font-weight:600;">Base Histórica — reativação Fase 2</div>
+        <div style="font-family:var(--font-display); font-size:32px; color:var(--black);">~520 membros</div>
+        <div style="font-size:13px; color:var(--gray-5); line-height:1.5;">dos 5.220 contatos dormentes reativados para os grupos</div>
+        <div style="border-top:1px solid rgba(184,134,42,.2); margin-top:4px; padding-top:12px;">
+          <div style="font-size:13px; color:var(--gray-5);">~78 pedidos/mês</div>
+          <div style="font-family:var(--font-display); font-size:24px; color:var(--gold); margin-top:2px;">~R$7.125/mês</div>
+        </div>
+      </div>
+      <div style="background:var(--black); border-radius:3px; padding:24px; display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); font-weight:600;">Total Combinado — Mês 6</div>
+        <div style="font-family:var(--font-display); font-size:32px; color:var(--white);">~780 membros</div>
+        <div style="font-size:13px; color:var(--gray-4); line-height:1.5;">na base própria — contato direto da Premium Gourmet</div>
+        <div style="border-top:1px solid #333; margin-top:4px; padding-top:12px;">
+          <div style="font-size:13px; color:var(--gray-4);">~117 pedidos/mês</div>
+          <div style="font-family:var(--font-display); font-size:28px; color:var(--gold); margin-top:2px;">~R$11.000/mês</div>
+        </div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>O ponto principal:</strong> esses pedidos saem de uma base que já foi conquistada — sem pagar Meta Ads novamente. Cada membro que fica no grupo é um cliente com custo de recompra R$0. A Fase 1 constrói o ativo; a Fase 2 faz ele trabalhar.
     </div>
   </div>
 </section>
