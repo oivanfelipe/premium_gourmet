@@ -856,12 +856,36 @@
   .ecard-icon { font-size: 26px; }
   .ecard-title { font-size: 15px; font-weight: 600; color: var(--black); }
   .ecard-desc { font-size: 14px; color: var(--gray-5); line-height: 1.6; }
+
+  /* ── CRM Régua ── */
+  .regua-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .regua-table th {
+    text-align: left; padding: 8px 10px;
+    font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gray-4); border-bottom: 2px solid var(--gray-2); font-weight: 500;
+  }
+  .regua-table td { padding: 10px 10px; border-bottom: 1px solid var(--gray-2); color: var(--gray-5); vertical-align: top; line-height: 1.5; }
+  .regua-table td:first-child { font-weight: 700; color: var(--black); font-size: 14px; text-align: center; width: 30px; }
+  .regua-table td:nth-child(2) { color: var(--gray-4); font-size: 12px; white-space: nowrap; width: 110px; }
+  .regua-badge { display: inline-block; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; padding: 2px 7px; border-radius: 2px; }
+  .regua-badge.util { background: var(--gray-2); color: var(--gray-5); }
+  .regua-badge.mktg { background: var(--gold-light); color: var(--gold); border: 1px solid rgba(184,134,42,.3); }
+  .cost-row { display: flex; gap: 12px; margin-top: 14px; }
+  .cost-box { flex: 1; border-radius: 3px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .cost-box.util { background: var(--gray-1); border: 1px solid var(--gray-2); }
+  .cost-box.mktg { background: var(--gold-light); border: 1px solid rgba(184,134,42,.3); }
+  .cost-box-label { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--gray-4); font-weight: 600; }
+  .cost-box-val { font-family: var(--font-display); font-size: 22px; color: var(--black); }
+  .cost-box-sub { font-size: 11px; color: var(--gray-4); }
+  .cal-grid { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: baseline; }
+  .cal-day { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--black); white-space: nowrap; }
+  .cal-content { font-size: 13px; color: var(--gray-5); line-height: 1.5; }
 </style>
 </head>
 <body>
 
 <div id="progress"></div>
-<span id="counter">1 / 19</span>
+<span id="counter">1 / 21</span>
 <button class="nav-btn" id="prev" aria-label="Slide anterior">↑</button>
 <button class="nav-btn" id="next" aria-label="Próximo slide">↓</button>
 <div id="dots"></div>
@@ -914,8 +938,8 @@
       </div>
       <div class="agenda-item">
         <div class="agenda-num">06</div>
-        <div class="agenda-text">Quatro Pilares</div>
-        <div class="agenda-sub">Captação, conteúdo, CRM e dados</div>
+        <div class="agenda-text">CRM e Retenção</div>
+        <div class="agenda-sub">Régua AutomaX, grupos WA e reativação</div>
       </div>
       <div class="agenda-item">
         <div class="agenda-num">07</div>
@@ -1541,43 +1565,138 @@
   </div>
 </section>
 
-<!-- ═══════════════ SLIDE 15 — CRM & RETENÇÃO ═══════════════ -->
+<!-- ═══════════════ SLIDE 15 — RÉGUA DE ATIVAÇÃO ═══════════════ -->
 <section class="slide">
   <div class="slide-header">
     <span class="slide-logo">Premium Gourmet</span>
-    <span class="slide-module">06 · Quatro Pilares · CRM</span>
+    <span class="slide-module">06 · CRM · Régua de Ativação</span>
   </div>
   <div class="slide-body">
-    <div class="eyebrow">CRM de Entrada — Fase 1</div>
-    <h2 class="slide-title">WhatsApp como <em>canal de relacionamento</em> e recompra</h2>
-    <div class="content-grid col-2" style="flex: 0 0 auto; margin-bottom: 20px;">
-      <div>
-        <div class="card accent" style="margin-bottom: 14px;">
-          <div class="card-label">Estrutura de grupos</div>
-          <div style="font-size:15px; font-weight:500; margin-top:4px;">7 grupos — um por loja</div>
-          <div class="card-desc">Cada campanha direciona leads para o grupo da loja mais próxima. Comunicação regional e relevante.</div>
-        </div>
-        <ul class="bullet-list">
-          <li><strong>Cardápio diário:</strong> foto do produto do dia + preço + link iFood</li>
-          <li><strong>Promoções pontuais:</strong> sexta-feira, feriados, datas sazonais</li>
-          <li><strong>Conteúdo de bastidores:</strong> processo de produção, equipe, história</li>
-        </ul>
+    <div class="eyebrow">AutomaX — leads captados pelo formulário</div>
+    <h2 class="slide-title">5 mensagens que convertem intenção em pedido — <em>e constroem base</em></h2>
+    <div class="content-grid col-2" style="flex: 1 1 auto; min-height: 0; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 0; overflow-x: auto;">
+        <table class="regua-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Quando</th>
+              <th>Categoria</th>
+              <th>Mensagem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Imediato</td>
+              <td><span class="regua-badge util">Utilidade</span></td>
+              <td>Boas-vindas + confirma cadastro + avisa que o cardápio de hoje chega em breve</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>+2h</td>
+              <td><span class="regua-badge util">Utilidade</span></td>
+              <td>Cardápio do dia + link iFood da loja mais próxima + <strong>convite para o grupo WA</strong></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>+24h <em style="color:var(--gray-4);font-size:11px;">(se não comprou)</em></td>
+              <td><span class="regua-badge mktg">Marketing</span></td>
+              <td>Combo especial de boas-vindas com oferta por tempo limitado</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>+48h <em style="color:var(--gray-4);font-size:11px;">(se não comprou)</em></td>
+              <td><span class="regua-badge util">Utilidade</span></td>
+              <td>Prova social — nota 4,7–4,8 no iFood + chamada para experimentar</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>+72h <em style="color:var(--gray-4);font-size:11px;">(último toque)</em></td>
+              <td><span class="regua-badge mktg">Marketing</span></td>
+              <td>Última chamada: combo de boas-vindas expira hoje</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="font-size:12px; color:var(--gray-4); margin-top:10px; line-height:1.5;">Quem responder ou comprar em qualquer etapa sai da régua automaticamente — sem cobrar por mensagem desnecessária.</div>
       </div>
-      <div>
-        <div class="card gold-accent" style="margin-bottom: 14px;">
-          <div class="card-label">Agente de conversão</div>
-          <div style="font-size:15px; font-weight:500; margin-top:4px;">Conversas individuais → iFood</div>
-          <div class="card-desc">Ferramenta própria para responder dúvidas individualmente e empurrar para pedido.</div>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="card accent">
+          <div class="card-label">Ferramenta</div>
+          <div style="font-size:15px; font-weight:600; margin-top:4px;">AutomaX</div>
+          <div class="card-desc">CRM próprio da V4, operado pelo Gabriel. Custo por mensagem enviada — por isso fica reservado para a régua individual dos leads captados, não para os grupos de massa.</div>
         </div>
-        <ul class="bullet-list">
-          <li><strong>Sem spam:</strong> máximo 1 mensagem por dia no grupo</li>
-          <li><strong>Meta de adesão:</strong> >25% dos leads entram no grupo</li>
-          <li><strong>Meta de conversão:</strong> >15% do grupo faz pedido no mês</li>
-        </ul>
+        <div>
+          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:8px; font-weight:600;">Custo da régua — 1.400 leads/mês · 5 disparos</div>
+          <div class="cost-row">
+            <div class="cost-box util">
+              <div class="cost-box-label">Classificação Utilidade</div>
+              <div class="cost-box-val">~R$245/mês</div>
+              <div class="cost-box-sub">R$0,035/msg — confirmar com Biel</div>
+            </div>
+            <div class="cost-box mktg">
+              <div class="cost-box-label">Classificação Marketing</div>
+              <div class="cost-box-val">~R$2.252/mês</div>
+              <div class="cost-box-sub">R$0,3217/msg — 10× mais caro</div>
+            </div>
+          </div>
+        </div>
+        <div class="insight" style="margin: 0;">
+          <strong>Ação crítica:</strong> confirmar com o Gabriel se as mensagens da régua de ativação podem ser classificadas como Utilidade — a diferença de custo é quase 10×.
+        </div>
       </div>
     </div>
-    <div class="insight">
-      <strong>Lógica de retenção:</strong> Um cliente no grupo tem custo de reativação zero — basta enviar o cardápio do dia. Sem o grupo, precisaríamos pagar Meta Ads novamente para trazer o mesmo cliente de volta.
+  </div>
+</section>
+
+<!-- ═══════════════ SLIDE 15b — GRUPOS WA + REATIVAÇÃO ═══════════════ -->
+<section class="slide">
+  <div class="slide-header">
+    <span class="slide-logo">Premium Gourmet</span>
+    <span class="slide-module">06 · CRM · Grupos e Reativação</span>
+  </div>
+  <div class="slide-body">
+    <div class="eyebrow">CRM de massa — sem custo por mensagem</div>
+    <h2 class="slide-title">7 grupos por loja na Fase 1 · base histórica reativada na <em>Fase 2</em></h2>
+    <div class="content-grid col-2" style="flex: 1 1 auto; min-height: 0; align-items: start;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="card accent">
+          <div class="card-label">Estrutura</div>
+          <div style="font-size:15px; font-weight:600; margin-top:4px;">7 grupos — um por loja</div>
+          <div class="card-desc">Entrada por adesão (convite enviado na mensagem 2 da régua). Ninguém é adicionado sem consentimento — viola política WA e arrisca bloqueio da conta.</div>
+        </div>
+        <div>
+          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:10px; font-weight:600;">Calendário de conteúdo</div>
+          <div class="cal-grid">
+            <div class="cal-day">Seg – Sex</div><div class="cal-content">Cardápio executivo do dia</div>
+            <div class="cal-day">Quinta</div><div class="cal-content">Prévia do combo de fim de semana</div>
+            <div class="cal-day">Sexta</div><div class="cal-content">Chamada "dia de feijoada"</div>
+            <div class="cal-day">Datas esp.</div><div class="cal-content">Oferta ou prato especial sazonal</div>
+          </div>
+        </div>
+        <div class="insight" style="margin: 0;">
+          <strong>Lógica de custo zero:</strong> um cliente no grupo reativa sem pagar Meta Ads. Sem o grupo, cada recompra custa um novo CPL.
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="card gold-accent">
+          <div class="card-label">Fase 2 — a partir do Mês 4</div>
+          <div style="font-size:15px; font-weight:600; margin-top:4px;">Reativação da base histórica</div>
+          <div class="card-desc">~5.000 contatos históricos + grupo VIP (220 membros). Só entra em cena depois que a captação via Meta estiver validada, com verba migrando do iFood para o CRM.</div>
+        </div>
+        <div>
+          <div style="font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-4); margin-bottom:8px; font-weight:600;">Régua de Reativação — 3 disparos</div>
+          <table class="regua-table">
+            <thead><tr><th>#</th><th>Quando</th><th>Mensagem</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Início</td><td>Saudade + convite para o grupo da loja mais próxima</td></tr>
+              <tr><td>2</td><td>+48h</td><td>Oferta de reativação — kit com desconto</td></tr>
+              <tr><td>3</td><td>+7d</td><td>Lembrete sazonal: fim de semana é dia de feijoada</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="font-size:12px; color:var(--gray-4); line-height:1.5;">Cadência mais enxuta que a de Ativação — base fria precisa de abordagem leve antes de converter.</div>
+      </div>
     </div>
   </div>
 </section>
